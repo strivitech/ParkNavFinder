@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UserService.Database;
 using UserService.Models;
+using UserService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.AddServiceDefaults();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 
 builder.Services.AddAuthentication()
     .AddBearerToken(IdentityConstants.BearerScheme);
@@ -26,6 +28,10 @@ builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<UserDbContext>()
     .AddApiEndpoints();
 
+builder.AddRedisDistributedCache("userredis");
+
+builder.Services.AddScoped<IUserService, UserService.Services.UserService>();
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
@@ -39,6 +45,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapGroup("/identity").MapIdentityApi<User>();
+app.MapControllers();
 
 app.Run();

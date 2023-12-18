@@ -2,4 +2,4 @@
 
 namespace UserService.Models;
 
-internal class User : IdentityUser;
+public class User : IdentityUser;
