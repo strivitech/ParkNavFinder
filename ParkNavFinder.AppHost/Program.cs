@@ -1,5 +1,7 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.AddProject<Projects.UserService>("userservice");
+var userRedis = builder.AddRedisContainer("userredis");
+builder.AddProject<Projects.UserService>("userservice")
+    .WithReference(userRedis);
 
 builder.Build().Run();
