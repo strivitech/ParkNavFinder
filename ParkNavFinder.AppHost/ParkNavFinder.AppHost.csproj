@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UserService\UserService.csproj" />
+    <ProjectReference Include="..\UserWsHandler\UserWsHandler.csproj" />
   </ItemGroup>
 
 </Project>
