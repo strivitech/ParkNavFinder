@@ -8,6 +8,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParkNavFinder.ServiceDefaul
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "UserService\UserService.csproj", "{77A4505F-6B51-4303-9A74-965D7A305972}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserWsHandler", "UserWsHandler\UserWsHandler.csproj", "{9F58ACF1-EC1E-4EBA-8D06-39883418D209}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Shared", "Auth.Shared\Auth.Shared.csproj", "{BC2CB173-BD63-4BA8-9FDC-5D7ED58C687C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +30,14 @@ Global
 		{77A4505F-6B51-4303-9A74-965D7A305972}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77A4505F-6B51-4303-9A74-965D7A305972}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77A4505F-6B51-4303-9A74-965D7A305972}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F58ACF1-EC1E-4EBA-8D06-39883418D209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F58ACF1-EC1E-4EBA-8D06-39883418D209}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F58ACF1-EC1E-4EBA-8D06-39883418D209}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F58ACF1-EC1E-4EBA-8D06-39883418D209}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC2CB173-BD63-4BA8-9FDC-5D7ED58C687C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC2CB173-BD63-4BA8-9FDC-5D7ED58C687C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC2CB173-BD63-4BA8-9FDC-5D7ED58C687C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC2CB173-BD63-4BA8-9FDC-5D7ED58C687C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
