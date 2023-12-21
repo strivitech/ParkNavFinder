@@ -1,3 +1,4 @@
+using Auth.Shared;
 using Microsoft.AspNetCore.Identity;
 using UserWsHandler.Hubs;
 using UserWsHandler.Services;
@@ -13,9 +14,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSignalR();
 
-builder.Services.AddAuthentication()
-    .AddBearerToken(IdentityConstants.BearerScheme);
-builder.Services.AddAuthorizationBuilder();
+builder.Services.AddSharedAuth(new AuthConfig
+{
+    Authority = builder.Configuration["Auth0:Authority"]!,
+    Audience = builder.Configuration["Auth0:Audience"]!
+});
 
 builder.Services.AddControllers();
 
@@ -34,8 +37,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseSharedAuth();
 
 app.MapControllers();
 app.MapHub<UsersHub>("/usershub");
