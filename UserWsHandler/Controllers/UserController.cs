@@ -16,7 +16,7 @@ public class UserController(ILocationService locationService, IHubContext<UsersH
     private readonly ILocationService _locationService = locationService;
     private readonly IHubContext<UsersHub, IUsersClient> _hubContext = hubContext;
     
-    [Authorize]
+    [Authorize(Roles = Roles.User)]
     [HttpPost]
     public async Task<IActionResult> SendLocation(Coordinate coordinate)
     {
