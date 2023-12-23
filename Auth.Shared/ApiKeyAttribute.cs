@@ -6,32 +6,42 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Auth.Shared;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public class ApiKeyAttribute(string apiKeyName) : Attribute, IAuthorizationFilter
+public class ApiKeyAttribute : Attribute, IAuthorizationFilter
 {
-    private readonly string _apiKeyName = apiKeyName;
+    private readonly string[] _apiKeyNames;
+
+    public ApiKeyAttribute(params string[] apiKeyNames)
+    {
+        if (apiKeyNames is null || apiKeyNames.Length == 0)
+        {
+            throw new ArgumentException("You must provide at least one API key name", nameof(apiKeyNames));
+        }
+        
+        _apiKeyNames = apiKeyNames;
+    }
 
     public void OnAuthorization(AuthorizationFilterContext context)
     {
-        string? apiKey = context.HttpContext.Request.Headers[ApiKeyConstants.HeaderPrefix + _apiKeyName];
+        context.HttpContext.Request.Headers.TryGetValue(ApiKeyConstants.HeaderName, out var actualApiKey);
+
+        if (string.IsNullOrWhiteSpace(actualApiKey))
+        {
+            context.Result = new UnauthorizedResult();
+        }
         
         var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-        
-        if (!IsApiKeyValid(configuration, apiKey))
+
+        if (!IsApiKeyValid(configuration,actualApiKey!))
         {
             context.Result = new UnauthorizedResult();
         }
     }
 
-    private static bool IsApiKeyValid(IConfiguration configuration, string? apiKey)
-    {
-        if (string.IsNullOrWhiteSpace(apiKey))
-        {   
-            return false;
-        }
-
-        var apiKeyFromConfig = configuration
-            .GetValue<string>($"{ApiKeyConstants.ConfigSection}:{ApiKeyConstants.ParkingOfferingService}");
+    private bool IsApiKeyValid(IConfiguration configuration, string actualApiKey)
+    {   
+        var configSection = configuration.GetRequiredSection(ApiKeyConstants.ConfigSectionName);
         
-        return apiKey == apiKeyFromConfig;
+        return _apiKeyNames.Any(apiKeyName =>
+            configSection.GetValue<string>(apiKeyName) == actualApiKey);
     }
 }
