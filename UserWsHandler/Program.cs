@@ -1,5 +1,7 @@
 using Auth.Shared;
-using Microsoft.AspNetCore.Identity;
+using Polly;
+using Polly.Contrib.WaitAndRetry;
+using UserWsHandler.Common;
 using UserWsHandler.Hubs;
 using UserWsHandler.Services;
 
@@ -21,8 +23,21 @@ builder.Services.AddSharedAuth(new AuthConfig
 });
 
 builder.Services.AddControllers();
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 builder.Services.AddScoped<ILocationService, LocationService>();
+
+builder.Services.AddHttpClient<IWsManagerService, WsManagerService>(
+    client =>
+    {
+        client.BaseAddress = new Uri("http://websocketmanager/");
+        client.DefaultRequestHeaders.Add(ApiKeyConstants.HeaderName,
+            builder.Configuration[ApiKeyConstants.OwnApiKeyName]);
+    })
+    .AddTransientHttpErrorPolicy(
+        policyBuilder => policyBuilder.WaitAndRetryAsync(
+            Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(RequestPolly.MedianFirstRetryDelaySeconds),
+                RequestPolly.DefaultRetryCount)));
 
 var app = builder.Build();
 
