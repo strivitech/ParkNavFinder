@@ -1,5 +1,14 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.AddProject<Projects.UserWsHandler>("userwshandler");
+var userWsHandler = builder.AddProject<Projects.UserWsHandler>("userwshandler");
+
+var webSocketManagerRedis = builder.AddRedisContainer("webSocketManagerRedis");
+var webSocketManager = builder.AddProject<Projects.WebSocketManager>("websocketmanager");
+
+userWsHandler.WithReference(webSocketManager);
+
+webSocketManager
+    .WithReference(userWsHandler)
+    .WithReference(webSocketManagerRedis);
 
 builder.Build().Run();
