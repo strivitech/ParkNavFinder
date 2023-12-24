@@ -11,4 +11,6 @@ webSocketManager
     .WithReference(userWsHandler)
     .WithReference(webSocketManagerRedis);
 
+builder.AddProject<Projects.MapService>("mapservice");
+
 builder.Build().Run();
