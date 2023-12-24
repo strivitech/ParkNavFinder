@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Shared", "Auth.Shared\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSocketManager", "WebSocketManager\WebSocketManager.csproj", "{CCFB37F4-1AD3-42C6-A02B-140FB72575E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapService", "MapService\MapService.csproj", "{B292CB40-4F98-43A1-8EF8-FC0062541080}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{CCFB37F4-1AD3-42C6-A02B-140FB72575E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCFB37F4-1AD3-42C6-A02B-140FB72575E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCFB37F4-1AD3-42C6-A02B-140FB72575E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B292CB40-4F98-43A1-8EF8-FC0062541080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B292CB40-4F98-43A1-8EF8-FC0062541080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B292CB40-4F98-43A1-8EF8-FC0062541080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B292CB40-4F98-43A1-8EF8-FC0062541080}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
