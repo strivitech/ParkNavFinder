@@ -8,4 +8,6 @@ public static class ApiKeyConstants
     
     public const string ParkingOfferingService = nameof(ParkingOfferingService);
     public const string UserWsHandler = nameof(UserWsHandler);
+    public const string MapService = nameof(MapService);
+    public const string LocationService = nameof(LocationService);
 }

@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSocketManager", "WebSock
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapService", "MapService\MapService.csproj", "{B292CB40-4F98-43A1-8EF8-FC0062541080}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationService", "LocationService\LocationService.csproj", "{67A297DB-3569-4925-A8B5-93F31E22608E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{B292CB40-4F98-43A1-8EF8-FC0062541080}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B292CB40-4F98-43A1-8EF8-FC0062541080}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B292CB40-4F98-43A1-8EF8-FC0062541080}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67A297DB-3569-4925-A8B5-93F31E22608E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67A297DB-3569-4925-A8B5-93F31E22608E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67A297DB-3569-4925-A8B5-93F31E22608E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67A297DB-3569-4925-A8B5-93F31E22608E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

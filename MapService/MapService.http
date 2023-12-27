@@ -1,6 +1,0 @@
-@MapService_HostAddress = http://localhost:5052
-
-GET {{MapService_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
