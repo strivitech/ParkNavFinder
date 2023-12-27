@@ -16,10 +16,10 @@ public class HexagonController : ControllerBase
     /// <param name="lat">Latitude in degrees</param>
     /// <param name="lon">Longitude in degrees</param>
     /// <param name="resolution">The resolution of the hexagon</param>
-    /// <returns></returns> 
-    [ApiKey(ApiKeyConstants.UserWsHandler)]
+    /// <returns>H3Index</returns>
+    [ApiKey(ApiKeyConstants.LocationService)]
     [HttpGet]
-    public IActionResult GetH3Index(double lat, double lon, int resolution)
+    public ActionResult<H3Index> GetH3Index(double lat, double lon, int resolution) 
     {   
         var latLng = LatLng.FromCoordinate(new Coordinate(lon, lat));
         var h3Index = H3Index.FromLatLng(latLng, resolution);
