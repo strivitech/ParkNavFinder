@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LocationService\LocationService.csproj" />
     <ProjectReference Include="..\MapService\MapService.csproj" />
     <ProjectReference Include="..\UserWsHandler\UserWsHandler.csproj" />
     <ProjectReference Include="..\WebSocketManager\WebSocketManager.csproj" />
