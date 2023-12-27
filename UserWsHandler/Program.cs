@@ -25,7 +25,7 @@ builder.Services.AddSharedAuth(new AuthConfig
 builder.Services.AddControllers();
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
-builder.Services.AddScoped<ILocationService, LocationService>();
+builder.Services.AddScoped<IUserLocationService, UserLocationService>();
 
 builder.Services.AddHttpClient<IWsManagerService, WsManagerService>(
     client =>
@@ -38,6 +38,14 @@ builder.Services.AddHttpClient<IWsManagerService, WsManagerService>(
         policyBuilder => policyBuilder.WaitAndRetryAsync(
             Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(RequestPolly.MedianFirstRetryDelaySeconds),
                 RequestPolly.DefaultRetryCount)));
+
+builder.Services.AddHttpClient<IUserLocationService, UserLocationService>(
+    client =>
+    {
+        client.BaseAddress = new Uri("http://locationservice/");
+        client.DefaultRequestHeaders.Add(ApiKeyConstants.HeaderName,
+            builder.Configuration[ApiKeyConstants.OwnApiKeyName]);
+    });
 
 var app = builder.Build();
 

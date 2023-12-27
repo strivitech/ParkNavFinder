@@ -4,17 +4,19 @@ using Auth.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using UserWsHandler.Hubs.Clients;
+using UserWsHandler.Models;
 using UserWsHandler.Services;
 
 namespace UserWsHandler.Hubs;
 
 [Authorize(Roles = Roles.User)]
-public class UsersHub(IWsManagerService wsManagerService,
+public class UsersHub(IWsManagerService wsManagerService, IUserLocationService userLocationService,
     ILogger<UsersHub> logger) : Hub<IUsersClient>
 {
     private readonly ConcurrentDictionary<string, string> _userIdToConnectionIdMap = new();
     private readonly IWsManagerService _wsManagerService = wsManagerService;
     private readonly ILogger<UsersHub> _logger = logger;
+    private readonly IUserLocationService _userLocationService = userLocationService;
     
     public override async Task OnConnectedAsync()
     {
@@ -50,5 +52,11 @@ public class UsersHub(IWsManagerService wsManagerService,
         }
         _userIdToConnectionIdMap.TryRemove(Context.ConnectionId, out _);
         await base.OnDisconnectedAsync(exception);
+    }
+    
+    public async Task SendLocation(Coordinate coordinate)
+    {
+        var userId = Context.User!.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        await _userLocationService.SendLocation(userId, coordinate);
     }
 }
