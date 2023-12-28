@@ -8,7 +8,7 @@ using UserWsHandler.Models;
 namespace UserWsHandler.Controllers;
 
 [ApiController]
-[Route("[controller]/[action]")]
+[Route("api/[controller]/[action]")]
 public class UserController(IHubContext<UsersHub, IUsersClient> hubContext) : ControllerBase
 {
     private readonly IHubContext<UsersHub, IUsersClient> _hubContext = hubContext;
