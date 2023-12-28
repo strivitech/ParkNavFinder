@@ -17,4 +17,8 @@ webSocketManager
     .WithReference(userWsHandler)
     .WithReference(webSocketManagerRedis);
 
+builder.AddProject<Projects.Yarp_ApiGateway>("yarpapigateway")
+    .WithReference(userWsHandler)
+    .WithLaunchProfile("https");
+
 builder.Build().Run();

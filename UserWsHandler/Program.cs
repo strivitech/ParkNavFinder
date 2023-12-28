@@ -63,6 +63,6 @@ app.UseHttpsRedirection();
 app.UseSharedAuth();
 
 app.MapControllers();
-app.MapHub<UsersHub>("/usershub");
+app.MapHub<UsersHub>("/api/usershub");
 
 app.Run();
