@@ -7,7 +7,7 @@ var webSocketManager = builder.AddProject<Projects.WebSocketManager>("websocketm
 
 var locationService = builder.AddProject<Projects.LocationService>("locationservice");
 
-builder.AddProject<Projects.MapService>("mapservice");
+var mapService = builder.AddProject<Projects.MapService>("mapservice");
 
 userWsHandler
     .WithReference(webSocketManager)
@@ -20,5 +20,11 @@ webSocketManager
 builder.AddProject<Projects.Yarp_ApiGateway>("yarpapigateway")
     .WithReference(userWsHandler)
     .WithLaunchProfile("https");
+
+var userActiveGeoIndexRedis = builder.AddRedisContainer("userActiveGeoIndexRedis");
+
+builder.AddProject<Projects.UserActiveGeoIndexService>("useractivegeoindexservice")
+    .WithReference(userActiveGeoIndexRedis)
+    .WithReference(mapService);
 
 builder.Build().Run();

@@ -17,7 +17,7 @@ public class HexagonController : ControllerBase
     /// <param name="lon">Longitude in degrees</param>
     /// <param name="resolution">The resolution of the hexagon</param>
     /// <returns>H3Index</returns>
-    [ApiKey(ApiKeyConstants.LocationService)]
+    [ApiKey(ApiKeyConstants.UserActiveGeoIndexService)]
     [HttpGet]
     public ActionResult<H3Index> GetH3Index(double lat, double lon, int resolution) 
     {   
