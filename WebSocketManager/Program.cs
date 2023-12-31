@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
-builder.AddRedisDistributedCache("webSocketManagerRedis");
+builder.AddRedis("webSocketManagerRedis");
 
 builder.Services.AddScoped<IUserWsManagementService, UserWsManagementService>();
 

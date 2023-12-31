@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.StackExchange.Redis.DistributedCaching" Version="8.0.0-preview.2.23619.3" />
+        <PackageReference Include="Aspire.StackExchange.Redis" Version="8.0.0-preview.2.23619.3" />
         <PackageReference Include="KafkaFlow" Version="3.0.3" />
         <PackageReference Include="KafkaFlow.Extensions.Hosting" Version="3.0.3" />
         <PackageReference Include="KafkaFlow.LogHandler.Microsoft" Version="3.0.3" />
