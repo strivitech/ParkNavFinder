@@ -18,7 +18,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
-builder.AddRedisDistributedCache("userActiveGeoIndexRedis");
+builder.AddRedis("userActiveGeoIndexRedis");
 
 builder.Services.Configure<KafkaConfig>(builder.Configuration.GetSection(KafkaConfig.SectionName));
 
