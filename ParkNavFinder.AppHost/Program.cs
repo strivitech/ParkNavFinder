@@ -27,4 +27,13 @@ builder.AddProject<Projects.UserActiveGeoIndexService>("useractivegeoindexservic
     .WithReference(userActiveGeoIndexRedis)
     .WithReference(mapService);
 
+var parkingManagementServiceRedis = builder.AddRedisContainer("parkingManagementServiceRedis");
+var parkingManagementServicePostgres = builder
+    .AddPostgresContainer("parkingManagementServicePostgres")
+    .AddDatabase("parkingsdb");
+
+builder.AddProject<Projects.ParkingManagementService>("parkingmanagementservice")
+    .WithReference(parkingManagementServiceRedis)
+    .WithReference(parkingManagementServicePostgres);
+
 builder.Build().Run();

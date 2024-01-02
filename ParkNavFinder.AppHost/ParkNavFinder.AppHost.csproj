@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LocationService\LocationService.csproj" />
     <ProjectReference Include="..\MapService\MapService.csproj" />
+    <ProjectReference Include="..\ParkingManagementService\ParkingManagementService.csproj" />
     <ProjectReference Include="..\UserActiveGeoIndexService\UserActiveGeoIndexService.csproj" />
     <ProjectReference Include="..\UserWsHandler\UserWsHandler.csproj" />
     <ProjectReference Include="..\WebSocketManager\WebSocketManager.csproj" />
