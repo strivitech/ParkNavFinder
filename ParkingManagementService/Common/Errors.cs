@@ -14,6 +14,8 @@ public static class Errors
         public static Error DeleteFailed(Guid id) => Error.Failure("Failed to delete parking with id {0}.", id.ToString());
         
         public static Error LocationCannotBeChanged() => Error.Failure("Parking location cannot be changed.");
+
+        public static Error NotOwnedByCurrentUser(Guid id) => Error.Unauthorized("Parking with id {0} is not owned by current user.", id.ToString());
     }
     
     public static class EventPublisher

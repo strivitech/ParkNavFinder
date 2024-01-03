@@ -1,5 +1,6 @@
 ﻿using ParkingManagementService.Models;
 using ParkingManagementService.Requests;
+using ParkingManagementService.Responses;
 using Riok.Mapperly.Abstractions;
 
 namespace ParkingManagementService.Mappers;
@@ -13,4 +14,6 @@ public partial class ParkingMapper
     [MapperIgnoreSource(nameof(UpdateParkingRequest.Latitude))]
     [MapperIgnoreSource(nameof(UpdateParkingRequest.Longitude))]
     public partial void ToEntity(UpdateParkingRequest request, Parking parking);
+    
+    public partial GetParkingResponse ToGetParkingResponse(Parking parking);
 }

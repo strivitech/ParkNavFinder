@@ -20,6 +20,8 @@ builder.Services.AddControllers();
 builder.AddNpgsqlDbContext<ParkingDbContext>("parkingsdb");
 builder.Services.AddKafkaBroker(builder.Configuration);
 
+builder.Services.AddScoped<IUserSessionData, CurrentUserSessionData>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IParkingService, ParkingService>();
 builder.Services.AddScoped<IParkingServiceEventPublisher, ParkingServiceEventPublisher>();
 
