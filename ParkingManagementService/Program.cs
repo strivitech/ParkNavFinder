@@ -1,4 +1,6 @@
+using System.Reflection;
 using Auth.Shared;
+using FluentValidation;
 using ParkingManagementService.Common;
 using ParkingManagementService.Configuration;
 using ParkingManagementService.Database;
@@ -19,6 +21,9 @@ builder.Services.AddControllers();
 
 builder.AddNpgsqlDbContext<ParkingDbContext>("parkingsdb");
 builder.Services.AddKafkaBroker(builder.Configuration);
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.AddScoped<IUserSessionData, CurrentUserSessionData>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
