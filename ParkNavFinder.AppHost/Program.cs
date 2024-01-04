@@ -13,9 +13,7 @@ userWsHandler
     .WithReference(webSocketManager)
     .WithReference(locationService);
 
-webSocketManager
-    .WithReference(userWsHandler)
-    .WithReference(webSocketManagerRedis);
+webSocketManager.WithReference(webSocketManagerRedis);
 
 builder.AddProject<Projects.Yarp_ApiGateway>("yarpapigateway")
     .WithReference(userWsHandler)
@@ -26,5 +24,12 @@ var userActiveGeoIndexRedis = builder.AddRedisContainer("userActiveGeoIndexRedis
 builder.AddProject<Projects.UserActiveGeoIndexService>("useractivegeoindexservice")
     .WithReference(userActiveGeoIndexRedis)
     .WithReference(mapService);
+
+var parkingManagementServicePostgres = builder
+    .AddPostgresContainer("parkingManagementPostgres", port: 8001, password: "admin")
+    .AddDatabase("parkingsdb");
+
+builder.AddProject<Projects.ParkingManagementService>("parkingmanagementservice")
+    .WithReference(parkingManagementServicePostgres);
 
 builder.Build().Run();
