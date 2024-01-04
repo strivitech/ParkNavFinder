@@ -30,7 +30,7 @@ builder.Services.AddScoped<IUserLocationService, UserLocationService>();
 builder.Services.AddHttpClient<IWsManagerService, WsManagerService>(
     client =>
     {
-        client.BaseAddress = new Uri("http://websocketmanager/");
+        client.BaseAddress = new Uri("http://WebSocketManager/");
         client.DefaultRequestHeaders.Add(ApiKeyConstants.HeaderName,
             builder.Configuration[ApiKeyConstants.OwnApiKeyName]);
     })
@@ -42,7 +42,7 @@ builder.Services.AddHttpClient<IWsManagerService, WsManagerService>(
 builder.Services.AddHttpClient<IUserLocationService, UserLocationService>(
     client =>
     {
-        client.BaseAddress = new Uri("http://locationservice/");
+        client.BaseAddress = new Uri("http://LocationService/");
         client.DefaultRequestHeaders.Add(ApiKeyConstants.HeaderName,
             builder.Configuration[ApiKeyConstants.OwnApiKeyName]);
     });

@@ -18,7 +18,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
-builder.AddRedis("userActiveGeoIndexRedis");
+builder.AddRedis("UserActiveGeoIndexRedis");
 
 builder.Services.Configure<KafkaConfig>(builder.Configuration.GetSection(KafkaConfig.SectionName));
 
@@ -27,7 +27,7 @@ builder.Services.AddKafkaBroker(builder.Configuration);
 builder.Services.AddHttpClient<IGeoIndexService, GeoIndexService>(
         client =>
         {
-            client.BaseAddress = new Uri("http://mapservice/");
+            client.BaseAddress = new Uri("http://MapService/");
             client.DefaultRequestHeaders.Add(ApiKeyConstants.HeaderName,
                 builder.Configuration[ApiKeyConstants.OwnApiKeyName]);
         })
