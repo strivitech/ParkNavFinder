@@ -33,14 +33,20 @@ builder.AddProject<Projects.UserActiveGeoIndexService>("useractivegeoindexservic
     .WithReference(userActiveGeoIndexRedis)
     .WithReference(mapService);
 
-var parkingManagementServicePostgres = builder
+var parkingManagementPostgres = builder
     .AddPostgresContainer(
         name: "parkingManagementPostgres", 
         port: builder.Configuration.GetValue<int>("parkingsdb:port"),
         password: builder.Configuration.GetValue<string>("parkingsdb:password"))
     .AddDatabase("parkingsdb");
 
+var parkingManagementRedis = builder
+    .AddRedisContainer(
+        name: "parkingManagementRedis",
+        port: builder.Configuration.GetValue<int>("parkingManagementRedis:port"));
+
 builder.AddProject<Projects.ParkingManagementService>("parkingmanagementservice")
-    .WithReference(parkingManagementServicePostgres);
+    .WithReference(parkingManagementPostgres)
+    .WithReference(parkingManagementRedis);
 
 builder.Build().Run();
