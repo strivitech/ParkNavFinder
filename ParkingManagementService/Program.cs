@@ -25,9 +25,9 @@ builder.Services.AddSharedAuth(new AuthConfig
     Audience = builder.Configuration["Auth0:Audience"]!
 });
 
-builder.AddNpgsqlDbContext<ParkingDbContext>("parkingsdb");
+builder.AddNpgsqlDbContext<ParkingDbContext>("ParkingDb");
 builder.Services.AddKafkaBroker(builder.Configuration);
-builder.AddRedis("parkingManagementRedis");
+builder.AddRedis("ParkingManagementRedis");
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
