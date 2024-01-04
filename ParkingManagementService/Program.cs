@@ -1,8 +1,8 @@
 using System.Reflection;
 using Auth.Shared;
 using FluentValidation;
+using ParkingManagementService.Broker;
 using ParkingManagementService.Common;
-using ParkingManagementService.Configuration;
 using ParkingManagementService.Database;
 using ParkingManagementService.Services;
 
@@ -19,6 +19,12 @@ builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 builder.Services.AddControllers();
 
+builder.Services.AddSharedAuth(new AuthConfig
+{
+    Authority = builder.Configuration["Auth0:Authority"]!,
+    Audience = builder.Configuration["Auth0:Audience"]!
+});
+
 builder.AddNpgsqlDbContext<ParkingDbContext>("parkingsdb");
 builder.Services.AddKafkaBroker(builder.Configuration);
 
@@ -29,6 +35,7 @@ builder.Services.AddScoped<IUserSessionData, CurrentUserSessionData>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IParkingService, ParkingService>();
 builder.Services.AddScoped<IParkingServiceEventPublisher, ParkingServiceEventPublisher>();
+builder.Services.AddScoped<IModelValidationService, ModelValidationService>();
 
 var app = builder.Build();
 
@@ -47,4 +54,20 @@ app.UseSharedAuth();
 
 app.MapControllers();
 
-app.Run();
+try
+{
+    if (app.Environment.IsDevelopment())
+    {
+        app.EnsureDbCreated();
+    }
+    app.Run();
+}
+catch (Exception ex)
+{
+    // Log the exception
+    throw;
+}
+finally
+{
+    
+}
