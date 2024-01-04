@@ -9,8 +9,6 @@ public record UpdateParkingRequest(
     string Name,
     string Description,
     Address Address,
-    double Latitude,
-    double Longitude,
     int TotalSpaces);
     
 public class UpdateParkingRequestValidator : AbstractValidator<UpdateParkingRequest>
@@ -30,12 +28,6 @@ public class UpdateParkingRequestValidator : AbstractValidator<UpdateParkingRequ
 
         RuleFor(x => x.Address)
             .SetValidator(addressValidator);
-        
-        RuleFor(x => x.Latitude)
-            .InclusiveBetween(-90, 90);
-        
-        RuleFor(x => x.Longitude)
-            .InclusiveBetween(-180, 180);
         
         RuleFor(x => x.TotalSpaces)
             .GreaterThan(0)

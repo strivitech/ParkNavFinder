@@ -136,12 +136,6 @@ internal class ParkingService(
             return Errors.Parking.NotOwnedByCurrentUser(request.Id);
         }
 
-        if (IsParkingLatLongChanged(parking, request))
-        {
-            _logger.LogWarning("Parking location cannot be changed");
-            return Errors.Parking.LocationCannotBeChanged();
-        }
-
         MappersFinder.Parking.ToEntity(request, parking);
         
         return parking;
@@ -201,10 +195,6 @@ internal class ParkingService(
 
         return !response.IsError;
     }
-
-    private static bool IsParkingLatLongChanged(Parking parking, UpdateParkingRequest request) =>
-        Math.Abs(parking.Latitude - request.Latitude) > 0.0000001 ||    
-        Math.Abs(parking.Longitude - request.Longitude) > 0.0000001;    
 
     private async Task<bool> SaveChangesAsync()
     {

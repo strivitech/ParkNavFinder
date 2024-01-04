@@ -11,8 +11,6 @@ public partial class ParkingMapper
     public partial Parking ToEntity(AddParkingRequest request);
     
     [MapperIgnoreSource(nameof(UpdateParkingRequest.Id))]
-    [MapperIgnoreSource(nameof(UpdateParkingRequest.Latitude))]
-    [MapperIgnoreSource(nameof(UpdateParkingRequest.Longitude))]
     public partial void ToEntity(UpdateParkingRequest request, Parking parking);
     
     public partial GetParkingResponse ToGetParkingResponse(Parking parking);
