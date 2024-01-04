@@ -2,9 +2,9 @@
 using KafkaFlow;
 using KafkaFlow.Serializer;
 
-namespace ParkingManagementService.Configuration;
+namespace ParkingManagementService.Broker;
 
-public static class StartupExtensions
+public static class KafkaExtensions
 {
     public static IServiceCollection AddKafkaBroker(this IServiceCollection services, IConfiguration configuration)
     {

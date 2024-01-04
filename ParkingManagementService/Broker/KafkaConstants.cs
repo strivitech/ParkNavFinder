@@ -1,6 +1,6 @@
-﻿namespace ParkingManagementService.Configuration;
+﻿namespace ParkingManagementService.Broker;
 
-public class KafkaConstants
+public static class KafkaConstants
 {
     public const string ProducerName = "ParkingManagementService";
     

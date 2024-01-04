@@ -1,4 +1,4 @@
-﻿namespace ParkingManagementService.Configuration;
+﻿namespace ParkingManagementService.Broker;
 
 public class KafkaConfig
 {
