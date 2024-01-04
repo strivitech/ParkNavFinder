@@ -27,6 +27,7 @@ builder.Services.AddSharedAuth(new AuthConfig
 
 builder.AddNpgsqlDbContext<ParkingDbContext>("parkingsdb");
 builder.Services.AddKafkaBroker(builder.Configuration);
+builder.AddRedis("parkingManagementRedis");
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
@@ -34,6 +35,7 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<IUserSessionData, CurrentUserSessionData>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IParkingService, ParkingService>();
+builder.Services.Decorate<IParkingService, CachingParkingService>();
 builder.Services.AddScoped<IParkingServiceEventPublisher, ParkingServiceEventPublisher>();
 builder.Services.AddScoped<IModelValidationService, ModelValidationService>();
 
