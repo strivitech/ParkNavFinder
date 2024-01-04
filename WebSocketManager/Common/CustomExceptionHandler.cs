@@ -20,11 +20,10 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
 
         await httpContext.Response.WriteAsJsonAsync(new ProblemDetails
         {
+            Type = "https://tools.ietf.org/html/rfc9110#section-15.6.1",
             Status = (int)HttpStatusCode.InternalServerError,
-            Type = exception.GetType().Name,
-            Title = "An unexpected error occurred",
-            Detail = exception.Message,
-            Instance = $"{httpContext.Request.Method} {httpContext.Request.Path}"
+            Title = "An error occurred while processing your request.",
+            Detail = "An unexpected error occurred. Please try again later."
         }, cancellationToken: cancellationToken);
 
         return true;
