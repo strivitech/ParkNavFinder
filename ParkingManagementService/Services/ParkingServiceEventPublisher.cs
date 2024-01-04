@@ -2,8 +2,8 @@
 using ErrorOr;
 using KafkaFlow;
 using KafkaFlow.Producers;
+using ParkingManagementService.Broker;
 using ParkingManagementService.Common;
-using ParkingManagementService.Configuration;
 using ParkingManagementService.Events;
 
 namespace ParkingManagementService.Services;
@@ -22,7 +22,7 @@ internal class ParkingServiceEventPublisher(
             parkingAddedEvent.ParkingId, parkingAddedEvent.Latitude, parkingAddedEvent.Longitude);
 
         var response = await _messageProducer.ProduceAsync(KafkaConstants.ParkingManagementEvents,
-            parkingAddedEvent.ParkingId, parkingAddedEvent);
+            parkingAddedEvent.ParkingId.ToString(), parkingAddedEvent);
 
         if (response.Status != PersistenceStatus.Persisted)
         {
@@ -41,7 +41,7 @@ internal class ParkingServiceEventPublisher(
         _logger.LogDebug("Publishing parking updated event for parking {ParkingId}", parkingUpdatedEvent.ParkingId);
 
         var response = await _messageProducer.ProduceAsync(KafkaConstants.ParkingManagementEvents,
-            parkingUpdatedEvent.ParkingId, parkingUpdatedEvent);
+            parkingUpdatedEvent.ParkingId.ToString(), parkingUpdatedEvent);
 
         if (response.Status != PersistenceStatus.Persisted)
         {
@@ -60,7 +60,7 @@ internal class ParkingServiceEventPublisher(
         _logger.LogDebug("Publishing parking deleted event for parking {ParkingId}", parkingDeletedEvent.ParkingId);
 
         var response = await _messageProducer.ProduceAsync(KafkaConstants.ParkingManagementEvents,
-            parkingDeletedEvent.ParkingId, parkingDeletedEvent);
+            parkingDeletedEvent.ParkingId.ToString(), parkingDeletedEvent);
 
         if (response.Status != PersistenceStatus.Persisted)
         {
