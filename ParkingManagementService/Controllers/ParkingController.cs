@@ -11,14 +11,9 @@ namespace ParkingManagementService.Controllers;
 [ApiController]
 [Authorize(Roles = Roles.Provider)]
 [Route("api/[controller]")]
-public class ParkingController : ControllerBase
+public class ParkingController(IParkingService parkingService) : ControllerBase
 {
-    private readonly IParkingService _parkingService;
-
-    public ParkingController(IParkingService parkingService)
-    {
-        _parkingService = parkingService;
-    }
+    private readonly IParkingService _parkingService = parkingService;
 
     [AllowAnonymous]
     [HttpGet]
@@ -52,7 +47,7 @@ public class ParkingController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<ActionResult> Delete(DeleteParkingRequest request)
+    public async Task<ActionResult> Delete([FromQuery] DeleteParkingRequest request)
     {
         var response = await _parkingService.DeleteAsync(request);
 
