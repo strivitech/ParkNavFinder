@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace LocationService.Requests;
+namespace LocationService.UserLocation;
 
 public record PostUserLocationRequest(string UserId, double Latitude, double Longitude, DateTime Timestamp);
 

@@ -5,7 +5,7 @@ using KafkaFlow.Serializer;
 using SaslMechanism = KafkaFlow.Configuration.SaslMechanism;
 using SecurityProtocol = KafkaFlow.Configuration.SecurityProtocol;
 
-namespace LocationService.Common.Configuration;
+namespace LocationService.Kafka;
 
 public static class KafkaExtensions
 {

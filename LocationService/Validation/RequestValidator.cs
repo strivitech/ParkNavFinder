@@ -2,29 +2,14 @@
 using System.Runtime.CompilerServices;
 using FluentValidation;
 using FluentValidation.Results;
-using LocationService.Common;
 
-namespace LocationService.Services;
+namespace LocationService.Validation;
 
-/// <summary>
-/// Validates input models using FluentValidation.
-/// </summary>
-public sealed class ModelValidationService : IModelValidationService
+public sealed class RequestValidator(IServiceProvider serviceProvider, ILogger<RequestValidator> logger)
+    : IRequestValidator
 {
-    private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<ModelValidationService> _logger;
-
-    /// <summary>
-    /// Initializes a new instance of <see cref="ModelValidationService"/>.
-    /// </summary>
-    /// <param name="serviceProvider">Service provider.</param>
-    /// <param name="logger">Logger.</param>
-    /// <exception cref="ArgumentNullException">If some parameter contains null.</exception>
-    public ModelValidationService(IServiceProvider serviceProvider, ILogger<ModelValidationService> logger)
-    {
-        _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-        _logger = logger;
-    }
+    private readonly IServiceProvider _serviceProvider = serviceProvider;
+    private readonly ILogger<RequestValidator> _logger = logger;
 
     public void ThrowIfNotValid<T>([NotNull]T model, [CallerArgumentExpression("model")] string? paramName = null)
     {   
@@ -38,7 +23,7 @@ public sealed class ModelValidationService : IModelValidationService
             _logger.LogWarning("Model is invalid: {Model}", model);
             _logger.LogWarning("Validation errors: {Errors}", errors);
             
-            throw new ModelValidationException(validationResult.Errors);
+            throw new RequestValidationException(validationResult.Errors);
         }
     }
     

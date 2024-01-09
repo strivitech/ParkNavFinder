@@ -1,6 +1,4 @@
-﻿using LocationService.Requests;
-
-namespace LocationService.Services;
+﻿namespace LocationService.UserLocation;
 
 public interface IUserLocationService
 {

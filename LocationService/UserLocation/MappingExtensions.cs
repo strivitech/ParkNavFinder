@@ -1,7 +1,6 @@
 ﻿using Kafka.Events.Contracts.Location;
-using LocationService.Requests;
 
-namespace LocationService.Common;
+namespace LocationService.UserLocation;
 
 public static class MappingExtensions
 {

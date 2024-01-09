@@ -1,4 +1,4 @@
-﻿namespace LocationService.Common.Configuration;
+﻿namespace LocationService.Kafka;
 
 public class KafkaConfig
 {

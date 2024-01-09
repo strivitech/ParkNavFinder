@@ -1,25 +1,24 @@
 ﻿using Kafka.Settings;
 using KafkaFlow;
 using KafkaFlow.Producers;
-using LocationService.Common;
-using LocationService.Common.Configuration;
-using LocationService.Requests;
+using LocationService.Kafka;
+using LocationService.Validation;
 
-namespace LocationService.Services;
+namespace LocationService.UserLocation;
 
 public class UserLocationService(
     IProducerAccessor producerAccessor,
     ILogger<UserLocationService> logger,
-    IModelValidationService modelValidationService)
+    IRequestValidator requestValidator)
     : IUserLocationService
 {
     private readonly IMessageProducer _messageProducer = producerAccessor.GetProducer(KafkaConstants.ProducerName);
     private readonly ILogger<UserLocationService> _logger = logger;
-    private readonly IModelValidationService _modelValidationService = modelValidationService;
+    private readonly IRequestValidator _requestValidator = requestValidator;
     
     public async Task PostNewLocation(PostUserLocationRequest postUserLocationRequest)
     {
-        _modelValidationService.ThrowIfNotValid(postUserLocationRequest);
+        _requestValidator.ThrowIfNotValid(postUserLocationRequest);
 
         _logger.LogDebug(
             "Posting new location for user {UserId}, Latitude: {Latitude}, Longitude: {Longitude}, DateTime: {Timestamp}",

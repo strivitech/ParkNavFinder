@@ -1,9 +1,7 @@
 ﻿using Auth.Shared;
-using LocationService.Requests;
-using LocationService.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LocationService.Controllers;
+namespace LocationService.UserLocation;
 
 [Route("api/[controller]")]
 [ApiController]
