@@ -2,7 +2,5 @@
 
 public class KafkaConstants
 {
-    public const string UserLocationTopic = "user-locations";
-    
-    public const string UserActiveGeoIndexTopic = "user-active-geo-index";
+    public const string ConsumerName = "UserActiveGeoIndexService";
 }

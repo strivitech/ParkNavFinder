@@ -1,7 +1,8 @@
-﻿using KafkaFlow;
+﻿using Kafka.Settings;
+using KafkaFlow;
 using KafkaFlow.Producers;
+using LocationService.Common;
 using LocationService.Common.Configuration;
-using LocationService.Models;
 using LocationService.Requests;
 
 namespace LocationService.Services;
@@ -25,9 +26,9 @@ public class UserLocationService(
             postUserLocationRequest.UserId, postUserLocationRequest.Latitude, postUserLocationRequest.Longitude,
             postUserLocationRequest.Timestamp);
 
-        var message = UserLocationMessage.FromPostUserLocationRequest(postUserLocationRequest);
+        var message = postUserLocationRequest.ToUserLocationChangedEvent();
 
-        _ = await _messageProducer.ProduceAsync(KafkaConstants.UserLocationTopic, message.UserId, message);
+        _ = await _messageProducer.ProduceAsync(TopicConfig.UserLocations.TopicName, message.UserId, message);
 
         _logger.LogDebug("New location posted for user {UserId}", postUserLocationRequest.UserId);
     }

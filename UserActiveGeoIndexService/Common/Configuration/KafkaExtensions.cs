@@ -1,12 +1,13 @@
-﻿using KafkaFlow;
+﻿using Kafka.Events.Contracts.Location;
+using Kafka.Settings;
+using KafkaFlow;
 using KafkaFlow.Serializer;
-using UserActiveGeoIndexService.Events;
 using UserActiveGeoIndexService.Handlers;
 using AutoOffsetReset = KafkaFlow.AutoOffsetReset;
 
 namespace UserActiveGeoIndexService.Common.Configuration;
 
-public static class StartupExtensions
+public static class KafkaExtensions
 {
     public static IServiceCollection AddKafkaBroker(this IServiceCollection services, IConfiguration configuration)
     {
@@ -19,9 +20,9 @@ public static class StartupExtensions
                     cluster => cluster
                         .WithBrokers(new[] { kafkaConfig.Server })
                         .AddConsumer(consumer => consumer
-                            .Topic(KafkaConstants.UserLocationTopic)
-                            .WithName($"{KafkaConstants.UserActiveGeoIndexTopic}-{Guid.NewGuid()}")
-                            .WithGroupId(KafkaConstants.UserActiveGeoIndexTopic)
+                            .Topic(TopicConfig.UserLocations.TopicName)
+                            .WithName($"{KafkaConstants.ConsumerName}-{Guid.NewGuid()}")
+                            .WithGroupId(KafkaConstants.ConsumerName)
                             .WithBufferSize(100)
                             .WithWorkersCount(3)
                             .WithAutoOffsetReset(AutoOffsetReset.Latest)

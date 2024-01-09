@@ -1,10 +1,11 @@
 ﻿using Confluent.Kafka;
 using ErrorOr;
+using Kafka.Events.Contracts.Parking.Management;
+using Kafka.Settings;
 using KafkaFlow;
 using KafkaFlow.Producers;
 using ParkingManagementService.Broker;
 using ParkingManagementService.Common;
-using ParkingManagementService.Events;
 
 namespace ParkingManagementService.Services;
 
@@ -21,7 +22,7 @@ internal class ParkingServiceEventPublisher(
             "Publishing parking added event for parking {ParkingId}, Latitude: {Latitude}, Longitude: {Longitude}",
             parkingAddedEvent.ParkingId, parkingAddedEvent.Latitude, parkingAddedEvent.Longitude);
 
-        var response = await _messageProducer.ProduceAsync(KafkaConstants.ParkingManagementEvents,
+        var response = await _messageProducer.ProduceAsync(TopicConfig.ParkingManagementEvents.TopicName,
             parkingAddedEvent.ParkingId.ToString(), parkingAddedEvent);
 
         if (response.Status != PersistenceStatus.Persisted)
@@ -40,7 +41,7 @@ internal class ParkingServiceEventPublisher(
     {
         _logger.LogDebug("Publishing parking updated event for parking {ParkingId}", parkingUpdatedEvent.ParkingId);
 
-        var response = await _messageProducer.ProduceAsync(KafkaConstants.ParkingManagementEvents,
+        var response = await _messageProducer.ProduceAsync(TopicConfig.ParkingManagementEvents.TopicName,
             parkingUpdatedEvent.ParkingId.ToString(), parkingUpdatedEvent);
 
         if (response.Status != PersistenceStatus.Persisted)
@@ -59,7 +60,7 @@ internal class ParkingServiceEventPublisher(
     {
         _logger.LogDebug("Publishing parking deleted event for parking {ParkingId}", parkingDeletedEvent.ParkingId);
 
-        var response = await _messageProducer.ProduceAsync(KafkaConstants.ParkingManagementEvents,
+        var response = await _messageProducer.ProduceAsync(TopicConfig.ParkingManagementEvents.TopicName,
             parkingDeletedEvent.ParkingId.ToString(), parkingDeletedEvent);
 
         if (response.Status != PersistenceStatus.Persisted)

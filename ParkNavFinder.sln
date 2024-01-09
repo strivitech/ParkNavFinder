@@ -24,6 +24,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkingManagementService", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkingStateService", "ParkingStateService\ParkingStateService.csproj", "{2BE27A40-47F3-4CE4-859F-C535784096AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kafka.Events.Contracts", "Kafka.Events.Contracts\Kafka.Events.Contracts.csproj", "{94B5D199-A6B2-4DC7-9A02-4670381D4A1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kafka.Settings", "Kafka.Settings\Kafka.Settings.csproj", "{5867D3E8-2014-42AC-A4DC-97B39625DD93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +78,14 @@ Global
 		{2BE27A40-47F3-4CE4-859F-C535784096AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BE27A40-47F3-4CE4-859F-C535784096AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BE27A40-47F3-4CE4-859F-C535784096AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94B5D199-A6B2-4DC7-9A02-4670381D4A1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94B5D199-A6B2-4DC7-9A02-4670381D4A1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94B5D199-A6B2-4DC7-9A02-4670381D4A1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94B5D199-A6B2-4DC7-9A02-4670381D4A1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5867D3E8-2014-42AC-A4DC-97B39625DD93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5867D3E8-2014-42AC-A4DC-97B39625DD93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5867D3E8-2014-42AC-A4DC-97B39625DD93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5867D3E8-2014-42AC-A4DC-97B39625DD93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

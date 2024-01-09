@@ -30,6 +30,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Kafka.Events.Contracts\Kafka.Events.Contracts.csproj" />
+      <ProjectReference Include="..\Kafka.Settings\Kafka.Settings.csproj" />
       <ProjectReference Include="..\ParkNavFinder.ServiceDefaults\ParkNavFinder.ServiceDefaults.csproj" />
     </ItemGroup>
 
