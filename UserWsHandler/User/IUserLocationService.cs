@@ -1,6 +1,4 @@
-﻿using UserWsHandler.Models;
-
-namespace UserWsHandler.Services;
+﻿namespace UserWsHandler.User;
 
 public interface IUserLocationService
 {   

@@ -1,4 +1,4 @@
-﻿namespace UserWsHandler.Services;
+﻿namespace UserWsHandler.User;
 
 public interface IWsManagerService
 {

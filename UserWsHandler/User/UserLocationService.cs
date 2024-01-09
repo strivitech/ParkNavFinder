@@ -1,6 +1,4 @@
-﻿using UserWsHandler.Models;
-
-namespace UserWsHandler.Services;
+﻿namespace UserWsHandler.User;
 
 internal class UserLocationService(HttpClient httpClient, ILogger<UserLocationService> logger) : IUserLocationService
 {

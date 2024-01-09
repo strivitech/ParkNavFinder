@@ -1,4 +1,4 @@
-﻿namespace UserWsHandler.Services;
+﻿namespace UserWsHandler.User;
 
 internal class WsManagerService(HttpClient httpClient, ILogger<WsManagerService> logger) : IWsManagerService
 {

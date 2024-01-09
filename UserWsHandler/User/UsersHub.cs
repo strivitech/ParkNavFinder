@@ -3,11 +3,8 @@ using System.Security.Claims;
 using Auth.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using UserWsHandler.Hubs.Clients;
-using UserWsHandler.Models;
-using UserWsHandler.Services;
 
-namespace UserWsHandler.Hubs;
+namespace UserWsHandler.User;
 
 [Authorize(Roles = Roles.User)]
 public class UsersHub(IWsManagerService wsManagerService, IUserLocationService userLocationService,
