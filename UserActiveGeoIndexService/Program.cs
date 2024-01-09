@@ -2,15 +2,14 @@ using Auth.Shared;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
 using UserActiveGeoIndexService.Common;
-using UserActiveGeoIndexService.Common.Configuration;
-using UserActiveGeoIndexService.Services;
+using UserActiveGeoIndexService.GeoIndex;
+using UserActiveGeoIndexService.Infrastructure;
+using UserActiveGeoIndexService.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

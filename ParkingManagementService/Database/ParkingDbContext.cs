@@ -1,12 +1,12 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using ParkingManagementService.Models;
+using ParkingManagementService.Parking;
 
 namespace ParkingManagementService.Database;
 
 public class ParkingDbContext(DbContextOptions<ParkingDbContext> options) : DbContext(options)
 {
-    public DbSet<Parking> ParkingSet => Set<Parking>();    
+    public DbSet<ParkingModel> ParkingSet => Set<ParkingModel>();    
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

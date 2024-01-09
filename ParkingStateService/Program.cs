@@ -1,18 +1,16 @@
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
-using ParkingStateService.Broker;
-using ParkingStateService.Common;
 using ParkingStateService.Database;
-using ParkingStateService.Jobs;
-using ParkingStateService.Services;
+using ParkingStateService.Infrastructure;
+using ParkingStateService.Kafka;
+using ParkingStateService.Parking;
+using ParkingStateService.SpatialIndex;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -36,9 +34,9 @@ builder.Services.AddHangfire(cong => cong
 
 builder.Services.AddHangfireServer();
 
-builder.Services.AddScoped<IParkingIndicesRetrieverService, ParkingIndicesRetrieverService>();
-builder.Services.AddScoped<IIndexStateNotificationService, IndexStateNotificationService>();
-builder.Services.AddScoped<IIndexStateEventPublisher, IndexStateEventPublisher>();
+builder.Services.AddScoped<IGeoIndicesRetrieverService, GeoIndicesRetrieverService>();
+builder.Services.AddScoped<IGeoIndexStateNotificationService, GeoIndexStateNotificationService>();
+builder.Services.AddScoped<IGeoIndexStateEventPublisher, GeoIndexStateEventPublisher>();
 builder.Services.AddScoped<IParkingStateProvider, ParkingStateProvider>();
 
 var app = builder.Build();
@@ -67,8 +65,8 @@ try
 
     app.UseHangfireDashboard();
 
-    RecurringJob.AddOrUpdate<ParkingStateNotificationJob>(
-        recurringJobId: nameof(ParkingStateNotificationJob),
+    RecurringJob.AddOrUpdate<GeoIndexStateNotificationJob>(
+        recurringJobId: nameof(GeoIndexStateNotificationJob),
         methodCall: x => x.Complete(),
     cronExpression: "*/5 * * * *");
 

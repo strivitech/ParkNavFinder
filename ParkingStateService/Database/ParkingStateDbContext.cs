@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using ParkingStateService.Models;
+using ParkingStateService.Parking;
+using ParkingStateService.SpatialIndex;
 
 namespace ParkingStateService.Database;
 
 public class ParkingStateDbContext(DbContextOptions<ParkingStateDbContext> options) : DbContext(options)
 {
-    public DbSet<ActiveIndex> ActiveIndices => Set<ActiveIndex>();
+    public DbSet<GeoIndexModel> ActiveIndices => Set<GeoIndexModel>();
     
-    public DbSet<ActiveParkingState> ParkingStates => Set<ActiveParkingState>();
+    public DbSet<ParkingStateModel> ParkingStates => Set<ParkingStateModel>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
