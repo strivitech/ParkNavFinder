@@ -1,4 +1,4 @@
-﻿namespace UserActiveGeoIndexService.Common.Configuration;
+﻿namespace UserActiveGeoIndexService.Kafka;
 
 public class KafkaConfig
 {

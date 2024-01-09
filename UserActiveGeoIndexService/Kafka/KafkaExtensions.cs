@@ -2,10 +2,10 @@
 using Kafka.Settings;
 using KafkaFlow;
 using KafkaFlow.Serializer;
-using UserActiveGeoIndexService.Handlers;
+using UserActiveGeoIndexService.UserLocation;
 using AutoOffsetReset = KafkaFlow.AutoOffsetReset;
 
-namespace UserActiveGeoIndexService.Common.Configuration;
+namespace UserActiveGeoIndexService.Kafka;
 
 public static class KafkaExtensions
 {

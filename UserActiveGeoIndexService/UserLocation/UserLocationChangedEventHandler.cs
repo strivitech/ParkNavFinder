@@ -1,9 +1,9 @@
 ﻿using Kafka.Events.Contracts.Location;
 using KafkaFlow;
 using StackExchange.Redis;
-using UserActiveGeoIndexService.Services;
+using UserActiveGeoIndexService.GeoIndex;
 
-namespace UserActiveGeoIndexService.Handlers;
+namespace UserActiveGeoIndexService.UserLocation;
 
 public class UserLocationChangedEventHandler : IMessageHandler<UserLocationChangedEvent>
 {
