@@ -4,19 +4,12 @@ using H3.Model;
 using Microsoft.AspNetCore.Mvc;
 using NetTopologySuite.Geometries;
 
-namespace MapService.Controllers;
+namespace MapService.GeoIndex;
 
 [Route("api/[controller]")]
 [ApiController]
 public class HexagonController : ControllerBase
 {
-    /// <summary>
-    /// Get the hexagon that contains the provided coordinates. 
-    /// </summary>
-    /// <param name="lat">Latitude in degrees</param>
-    /// <param name="lon">Longitude in degrees</param>
-    /// <param name="resolution">The resolution of the hexagon</param>
-    /// <returns>H3Index</returns>
     [ApiKey(ApiKeyConstants.UserActiveGeoIndexService)]
     [HttpGet]
     public ActionResult<H3Index> GetH3Index(double lat, double lon, int resolution) 
