@@ -1,17 +1,17 @@
 using System.Reflection;
 using Auth.Shared;
 using FluentValidation;
-using ParkingManagementService.Broker;
 using ParkingManagementService.Common;
-using ParkingManagementService.Database;
-using ParkingManagementService.Services;
+using ParkingManagementService.Infrastructure;
+using ParkingManagementService.Kafka;
+using ParkingManagementService.Parking;
+using ParkingManagementService.User;
+using ParkingManagementService.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -37,7 +37,7 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IParkingService, ParkingService>();
 builder.Services.Decorate<IParkingService, CachingParkingService>();
 builder.Services.AddScoped<IParkingServiceEventPublisher, ParkingServiceEventPublisher>();
-builder.Services.AddScoped<IModelValidationService, ModelValidationService>();
+builder.Services.AddScoped<IRequestValidator, RequestValidator>();
 
 var app = builder.Build();
 
