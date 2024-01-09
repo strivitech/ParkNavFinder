@@ -2,6 +2,7 @@
 using ErrorOr;
 using Kafka.Events.Contracts.Parking.Management;
 using ParkingManagementService.Common;
+using ParkingManagementService.Database;
 using ParkingManagementService.User;
 using ParkingManagementService.Validation;
 

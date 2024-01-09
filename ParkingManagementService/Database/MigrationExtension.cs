@@ -1,4 +1,4 @@
-﻿namespace ParkingManagementService.Parking;
+﻿namespace ParkingManagementService.Database;
 
 public static class MigrationExtension
 {

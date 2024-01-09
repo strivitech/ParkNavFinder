@@ -2,6 +2,7 @@ using System.Reflection;
 using Auth.Shared;
 using FluentValidation;
 using ParkingManagementService.Common;
+using ParkingManagementService.Database;
 using ParkingManagementService.Infrastructure;
 using ParkingManagementService.Kafka;
 using ParkingManagementService.Parking;
