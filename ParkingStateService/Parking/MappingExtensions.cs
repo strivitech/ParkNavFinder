@@ -4,11 +4,11 @@ namespace ParkingStateService.Parking;
 
 public static class MappingExtensions
 {
-    public static ParkingState ToParkingState(this CurrentParkingState currentParkingState) =>
+    public static ParkingState ToParkingState(this ParkingStateModel parkingStateModel) =>
         new(
-            currentParkingState.ParkingId,
-            currentParkingState.TotalObservers,
-            currentParkingState.TotalPlaces,
-            currentParkingState.Probability,
-            currentParkingState.LastCalculatedUtc);
+            parkingStateModel.ParkingId,
+            parkingStateModel.TotalObservers,
+            parkingStateModel.TotalPlaces,
+            parkingStateModel.Probability,
+            parkingStateModel.LastCalculatedUtc);
 }

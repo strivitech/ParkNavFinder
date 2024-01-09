@@ -2,5 +2,5 @@
 
 public interface IParkingStateProvider
 {
-    Task<List<CurrentParkingState>> GetParkingStatesAsync(string index);  
+    Task<List<ParkingStateModel>> GetParkingStatesAsync(string index);  
 }

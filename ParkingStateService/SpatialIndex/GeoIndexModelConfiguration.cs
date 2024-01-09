@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ParkingStateService.SpatialIndex;
 
-public class GeoIndexConfiguration : IEntityTypeConfiguration<GeoIndex>
+public class GeoIndexModelConfiguration : IEntityTypeConfiguration<GeoIndexModel>
 {
-    public void Configure(EntityTypeBuilder<GeoIndex> builder)
+    public void Configure(EntityTypeBuilder<GeoIndexModel> builder)
     {
         builder.HasKey(p => p.Index);
         

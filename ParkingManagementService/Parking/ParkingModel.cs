@@ -1,6 +1,6 @@
 ﻿namespace ParkingManagementService.Parking;
 
-public class Parking
+public class ParkingModel
 {
     public Guid Id { get; set; }
     public string ProviderId { get; set; } = null!;

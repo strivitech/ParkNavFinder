@@ -7,7 +7,7 @@ internal class ParkingStateProvider(IDbContextFactory<ParkingStateDbContext> dbC
 {
     private readonly IDbContextFactory<ParkingStateDbContext> _dbContextFactory = dbContextFactory;
 
-    public async Task<List<CurrentParkingState>> GetParkingStatesAsync(string index)
+    public async Task<List<ParkingStateModel>> GetParkingStatesAsync(string index)
     {
         await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
         return await dbContext.ParkingStates.Where(ps => ps.Index == index).ToListAsync();

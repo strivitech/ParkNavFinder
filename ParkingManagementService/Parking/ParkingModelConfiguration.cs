@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ParkingManagementService.Parking;
 
-public class ParkingConfiguration : IEntityTypeConfiguration<Parking>
+public class ParkingModelConfiguration : IEntityTypeConfiguration<ParkingModel>
 {
-    public void Configure(EntityTypeBuilder<Parking> builder)
+    public void Configure(EntityTypeBuilder<ParkingModel> builder)
     {
         builder.HasKey(p => p.Id);
         

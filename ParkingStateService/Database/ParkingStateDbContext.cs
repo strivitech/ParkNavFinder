@@ -7,9 +7,9 @@ namespace ParkingStateService.Database;
 
 public class ParkingStateDbContext(DbContextOptions<ParkingStateDbContext> options) : DbContext(options)
 {
-    public DbSet<GeoIndex> ActiveIndices => Set<GeoIndex>();
+    public DbSet<GeoIndexModel> ActiveIndices => Set<GeoIndexModel>();
     
-    public DbSet<CurrentParkingState> ParkingStates => Set<CurrentParkingState>();
+    public DbSet<ParkingStateModel> ParkingStates => Set<ParkingStateModel>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

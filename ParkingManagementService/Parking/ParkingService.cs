@@ -67,26 +67,26 @@ internal class ParkingService(
         return MappersFinder.Parking.ToGetParkingResponse(parking);
     }
 
-    private async Task<ErrorOr<Created>> AddParkingAsync(ParkingManagementService.Parking.Parking parking, AddParkingRequest request)
+    private async Task<ErrorOr<Created>> AddParkingAsync(ParkingModel parkingModel, AddParkingRequest request)
     {
-        _dbContext.ParkingSet.Add(parking);
+        _dbContext.ParkingSet.Add(parkingModel);
 
         var isSaved = await SaveChangesAsync();
         if (!isSaved)
         {
-            return Errors.Parking.AddFailed(parking.Id);
+            return Errors.Parking.AddFailed(parkingModel.Id);
         }
 
         var isPublished = await PublishParkingAddedEvent(
-            new ParkingAddedEvent(parking.Id, request.Latitude, request.Longitude, DateTime.UtcNow),
-            parking);
+            new ParkingAddedEvent(parkingModel.Id, request.Latitude, request.Longitude, DateTime.UtcNow),
+            parkingModel);
 
         return isPublished
             ? new Created()
-            : Errors.Parking.AddFailed(parking.Id);
+            : Errors.Parking.AddFailed(parkingModel.Id);
     }
     
-    private ErrorOr<ParkingManagementService.Parking.Parking> CreateParkingEntityFromRequest(AddParkingRequest request)
+    private ErrorOr<ParkingModel> CreateParkingEntityFromRequest(AddParkingRequest request)
     {      
         var errorList = _requestValidator.Validate(request);
         if (errorList.Count != 0)
@@ -114,7 +114,7 @@ internal class ParkingService(
         return new Updated();
     }
     
-    private async Task<ErrorOr<ParkingManagementService.Parking.Parking>> UpdateParkingEntityFromRequest(UpdateParkingRequest request)
+    private async Task<ErrorOr<ParkingModel>> UpdateParkingEntityFromRequest(UpdateParkingRequest request)
     {
         var errorList = _requestValidator.Validate(request);
         if (errorList.Count != 0)
@@ -139,9 +139,9 @@ internal class ParkingService(
         return parking;
     }
 
-    private async Task<ErrorOr<Deleted>> DeleteParkingAsync(ParkingManagementService.Parking.Parking parking, DeleteParkingRequest request)
+    private async Task<ErrorOr<Deleted>> DeleteParkingAsync(ParkingModel parkingModel, DeleteParkingRequest request)
     {
-        _dbContext.ParkingSet.Remove(parking);  
+        _dbContext.ParkingSet.Remove(parkingModel);  
 
         var isSaved = await SaveChangesAsync();
         if (!isSaved)
@@ -159,7 +159,7 @@ internal class ParkingService(
         return new Deleted();
     }
     
-    private async Task<ErrorOr<ParkingManagementService.Parking.Parking>> DeleteParkingEntityFromRequest(DeleteParkingRequest request)
+    private async Task<ErrorOr<ParkingModel>> DeleteParkingEntityFromRequest(DeleteParkingRequest request)
     {
         var errorList = _requestValidator.Validate(request);
         if (errorList.Count != 0)   
@@ -219,7 +219,7 @@ internal class ParkingService(
         }
     }
 
-    private async Task<bool> PublishParkingAddedEvent(ParkingAddedEvent parkingAddedEvent, ParkingManagementService.Parking.Parking parking)
+    private async Task<bool> PublishParkingAddedEvent(ParkingAddedEvent parkingAddedEvent, ParkingModel parkingModel)
     {
         var response = await _eventPublisher.PublishParkingAddedAsync(parkingAddedEvent);
 
@@ -232,7 +232,7 @@ internal class ParkingService(
 
         async Task CompensateOperation()
         {
-            _dbContext.ParkingSet.Remove(parking);
+            _dbContext.ParkingSet.Remove(parkingModel);
             await _dbContext.SaveChangesAsync();
         }
     }

@@ -73,7 +73,7 @@ internal class GeoIndexStateNotificationService(
             async () => await _geoIndicesRetrieverService.GetNextParkingIndices());
     }
 
-    private async Task<List<CurrentParkingState>> GetParkingStates(string index)
+    private async Task<List<ParkingStateModel>> GetParkingStates(string index)
     {
         return await _retryPolicy.ExecuteAsync(
             async () => await _parkingStateProvider.GetParkingStatesAsync(index));
