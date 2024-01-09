@@ -1,4 +1,4 @@
-﻿namespace WebSocketManager.Common;
+﻿namespace WebSocketManager.UserWs;
 
 public static class CacheKeys
 {

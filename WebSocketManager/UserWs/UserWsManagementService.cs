@@ -1,7 +1,6 @@
 ﻿using StackExchange.Redis;
-using WebSocketManager.Common;
 
-namespace WebSocketManager.Services;
+namespace WebSocketManager.UserWs;
 
 internal class UserWsManagementService(
     IConnectionMultiplexer connectionMultiplexer,
