@@ -1,6 +1,6 @@
 ﻿using ErrorOr;
-using ParkingStateService.DTOs;
-using ParkingStateService.Events;
+using Kafka.Events.Contracts.Parking.State;
+using ParkingStateService.Common;
 using ParkingStateService.Models;
 using Polly;
 using Polly.Retry;
@@ -48,7 +48,7 @@ internal class IndexStateNotificationService(
             var parkingStates = await GetParkingStates(index);
             var @event = new IndexStateChangedEvent(
                 Guid.NewGuid().ToString(), index,
-                parkingStates.Select(ActiveParkingStateDto.FromActiveParkingState), DateTime.UtcNow);
+                parkingStates.Select(ps => ps.ToParkingState()), DateTime.UtcNow);
 
             var retryPolicy = Policy
                 .HandleResult<ErrorOr<Success>>(result => result.IsError)

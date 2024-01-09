@@ -1,5 +1,5 @@
 ﻿using ErrorOr;
-using ParkingManagementService.Events;
+using Kafka.Events.Contracts.Parking.Management;
 
 namespace ParkingManagementService.Services;
 

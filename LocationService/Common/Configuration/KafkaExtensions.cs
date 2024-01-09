@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka;
+using Kafka.Settings;
 using KafkaFlow;
 using KafkaFlow.Serializer;
 using SaslMechanism = KafkaFlow.Configuration.SaslMechanism;
@@ -6,9 +7,10 @@ using SecurityProtocol = KafkaFlow.Configuration.SecurityProtocol;
 
 namespace LocationService.Common.Configuration;
 
-public static class StartupExtensions
+public static class KafkaExtensions
 {
-    public static IServiceCollection AddKafkaBroker(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
+    public static IServiceCollection AddKafkaBroker(this IServiceCollection services, IConfiguration configuration,
+        IHostEnvironment environment)
     {
         var kafkaConfig = configuration.GetRequiredSection(KafkaConfig.SectionName).Get<KafkaConfig>()!;
 
@@ -20,11 +22,12 @@ public static class StartupExtensions
                     .AddCluster(
                         cluster => cluster
                             .WithBrokers(new[] { kafkaConfig.Server })
-                            .CreateTopicIfNotExists(KafkaConstants.UserLocationTopic, 1, 1)
+                            .CreateTopicIfNotExists(TopicConfig.UserLocations.TopicName, TopicConfig.UserLocations.NumberOfPartitions,
+                                TopicConfig.UserLocations.ReplicationFactor)
                             .AddProducer(
                                 KafkaConstants.ProducerName,
                                 producer => producer
-                                    .DefaultTopic(KafkaConstants.UserLocationTopic)
+                                    .DefaultTopic(TopicConfig.UserLocations.TopicName)
                                     .AddMiddlewares(m =>
                                         m.AddSerializer<JsonCoreSerializer>()
                                     )
@@ -53,7 +56,7 @@ public static class StartupExtensions
                             .AddProducer(
                                 KafkaConstants.ProducerName,
                                 producer => producer
-                                    .DefaultTopic(KafkaConstants.UserLocationTopic)
+                                    .DefaultTopic(TopicConfig.UserLocations.TopicName)
                                     .AddMiddlewares(m =>
                                         m.AddSerializer<JsonCoreSerializer>()
                                     )

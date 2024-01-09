@@ -1,6 +1,6 @@
-﻿using KafkaFlow;
+﻿using Kafka.Events.Contracts.Location;
+using KafkaFlow;
 using StackExchange.Redis;
-using UserActiveGeoIndexService.Events;
 using UserActiveGeoIndexService.Services;
 
 namespace UserActiveGeoIndexService.Handlers;

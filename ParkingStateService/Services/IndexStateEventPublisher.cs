@@ -1,10 +1,11 @@
 ﻿using Confluent.Kafka;
 using ErrorOr;
+using Kafka.Events.Contracts.Parking.State;
+using Kafka.Settings;
 using KafkaFlow;
 using KafkaFlow.Producers;
 using ParkingStateService.Broker;
 using ParkingStateService.Common;
-using ParkingStateService.Events;
 
 namespace ParkingStateService.Services;
 
@@ -19,7 +20,7 @@ internal class IndexStateEventPublisher(
     {
         _logger.LogDebug("Publishing index state changed event");
 
-        var response = await _messageProducer.ProduceAsync(KafkaConstants.ParkingStateEvents,
+        var response = await _messageProducer.ProduceAsync(TopicConfig.ParkingStateEvents.TopicName,
             indexStateChangedEvent.Index, indexStateChangedEvent);
         
         if (response.Status != PersistenceStatus.Persisted)
