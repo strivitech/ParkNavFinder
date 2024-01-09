@@ -1,4 +1,4 @@
-﻿namespace ParkingStateService.Broker;
+﻿namespace ParkingStateService.Kafka;
 
 public static class KafkaConstants
 {

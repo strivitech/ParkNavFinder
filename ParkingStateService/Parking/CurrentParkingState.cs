@@ -1,6 +1,6 @@
-﻿namespace ParkingStateService.Models;
+﻿namespace ParkingStateService.Parking;
 
-public class ActiveParkingState
+public class CurrentParkingState
 {
     public string ParkingId { get; set; } = null!;
     

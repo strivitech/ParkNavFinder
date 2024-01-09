@@ -3,7 +3,7 @@ using Kafka.Settings;
 using KafkaFlow;
 using KafkaFlow.Serializer;
 
-namespace ParkingStateService.Broker;
+namespace ParkingStateService.Kafka;
 
 public static class KafkaExtensions
 {

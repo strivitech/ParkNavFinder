@@ -1,6 +1,6 @@
-﻿namespace ParkingStateService.Models;
+﻿namespace ParkingStateService.SpatialIndex;
 
-public class ActiveIndex
+public class GeoIndex
 {
     public string Index { get; set; } = null!;
     

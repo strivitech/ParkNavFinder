@@ -1,16 +1,15 @@
 ﻿using System.Data;
 using Microsoft.EntityFrameworkCore;
 using ParkingStateService.Database;
-using ParkingStateService.Jobs;
 
-namespace ParkingStateService.Services;
+namespace ParkingStateService.SpatialIndex;
 
-internal class ParkingIndicesRetrieverService(
+internal class GeoIndicesRetrieverService(
     ParkingStateDbContext dbContext,
-    ILogger<ParkingIndicesRetrieverService> logger) : IParkingIndicesRetrieverService
+    ILogger<GeoIndicesRetrieverService> logger) : IGeoIndicesRetrieverService
 {
     private readonly ParkingStateDbContext _dbContext = dbContext;
-    private readonly ILogger<ParkingIndicesRetrieverService> _logger = logger;
+    private readonly ILogger<GeoIndicesRetrieverService> _logger = logger;
 
     public async Task<IList<string>> GetNextParkingIndices()
     {

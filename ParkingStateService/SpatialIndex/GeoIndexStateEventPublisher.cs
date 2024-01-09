@@ -4,17 +4,17 @@ using Kafka.Events.Contracts.Parking.State;
 using Kafka.Settings;
 using KafkaFlow;
 using KafkaFlow.Producers;
-using ParkingStateService.Broker;
 using ParkingStateService.Common;
+using ParkingStateService.Kafka;
 
-namespace ParkingStateService.Services;
+namespace ParkingStateService.SpatialIndex;
 
-internal class IndexStateEventPublisher(
+internal class GeoIndexStateEventPublisher(
     IProducerAccessor producerAccessor,
-    ILogger<IndexStateEventPublisher> logger) : IIndexStateEventPublisher
+    ILogger<GeoIndexStateEventPublisher> logger) : IGeoIndexStateEventPublisher
 {
     private readonly IMessageProducer _messageProducer = producerAccessor.GetProducer(KafkaConstants.ProducerName);
-    private readonly ILogger<IndexStateEventPublisher> _logger = logger;
+    private readonly ILogger<GeoIndexStateEventPublisher> _logger = logger;
 
     public async Task<ErrorOr<Success>> PublishStateChangedAsync(IndexStateChangedEvent indexStateChangedEvent)
     {

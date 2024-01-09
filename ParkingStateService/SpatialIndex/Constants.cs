@@ -1,4 +1,4 @@
-﻿namespace ParkingStateService.Jobs;
+﻿namespace ParkingStateService.SpatialIndex;
 
 public static class Constants
 {

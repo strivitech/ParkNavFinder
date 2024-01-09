@@ -1,22 +1,21 @@
 ﻿using ErrorOr;
 using Kafka.Events.Contracts.Parking.State;
-using ParkingStateService.Common;
-using ParkingStateService.Models;
+using ParkingStateService.Parking;
 using Polly;
 using Polly.Retry;
 
-namespace ParkingStateService.Services;
+namespace ParkingStateService.SpatialIndex;
 
-internal class IndexStateNotificationService(
-    IParkingIndicesRetrieverService parkingIndicesRetrieverService,
-    ILogger<IndexStateNotificationService> logger,
-    IIndexStateEventPublisher indexStateEventPublisher,
+internal class GeoIndexStateNotificationService(
+    IGeoIndicesRetrieverService geoIndicesRetrieverService,
+    ILogger<GeoIndexStateNotificationService> logger,
+    IGeoIndexStateEventPublisher geoIndexStateEventPublisher,
     IParkingStateProvider parkingStateProvider)
-    : IIndexStateNotificationService
+    : IGeoIndexStateNotificationService
 {
-    private readonly IParkingIndicesRetrieverService _parkingIndicesRetrieverService = parkingIndicesRetrieverService;
-    private readonly ILogger<IndexStateNotificationService> _logger = logger;
-    private readonly IIndexStateEventPublisher _indexStateEventPublisher = indexStateEventPublisher;
+    private readonly IGeoIndicesRetrieverService _geoIndicesRetrieverService = geoIndicesRetrieverService;
+    private readonly ILogger<GeoIndexStateNotificationService> _logger = logger;
+    private readonly IGeoIndexStateEventPublisher _geoIndexStateEventPublisher = geoIndexStateEventPublisher;
     private readonly IParkingStateProvider _parkingStateProvider = parkingStateProvider;
 
     private readonly AsyncRetryPolicy _retryPolicy =
@@ -55,7 +54,7 @@ internal class IndexStateNotificationService(
                 .WaitAndRetryAsync(3, _ => TimeSpan.FromSeconds(1));
 
             var result = await retryPolicy.ExecuteAsync(async () =>
-                await _indexStateEventPublisher.PublishStateChangedAsync(@event));
+                await _geoIndexStateEventPublisher.PublishStateChangedAsync(@event));
 
             if (result.IsError)
             {
@@ -71,10 +70,10 @@ internal class IndexStateNotificationService(
     private async Task<IList<string>> RetrieveNextIndices()
     {
         return await _retryPolicy.ExecuteAsync(
-            async () => await _parkingIndicesRetrieverService.GetNextParkingIndices());
+            async () => await _geoIndicesRetrieverService.GetNextParkingIndices());
     }
 
-    private async Task<List<ActiveParkingState>> GetParkingStates(string index)
+    private async Task<List<CurrentParkingState>> GetParkingStates(string index)
     {
         return await _retryPolicy.ExecuteAsync(
             async () => await _parkingStateProvider.GetParkingStatesAsync(index));
