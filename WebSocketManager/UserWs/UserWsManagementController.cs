@@ -18,7 +18,7 @@ public class UserWsManagementController(IUserWsManagementService userWsService) 
         return wsHandlerUri is null ? NotFound() : Ok(wsHandlerUri);
     }
     
-    [ApiKey(ApiKeyConstants.UserWsHandler)]
+    [ApiKey(ApiKeyConstants.UserWebSocketHandler)]
     [HttpPost]
     public async Task<IActionResult> SetWebSocketHandlerHostForUserId([FromBody] string userId)
     {
@@ -28,7 +28,7 @@ public class UserWsManagementController(IUserWsManagementService userWsService) 
         return Ok();
     }
     
-    [ApiKey(ApiKeyConstants.UserWsHandler)]
+    [ApiKey(ApiKeyConstants.UserWebSocketHandler)]
     [HttpDelete("{userId}")]
     public async Task<IActionResult> RemoveWebSocketHandlerHostForUserId(string userId)
     {

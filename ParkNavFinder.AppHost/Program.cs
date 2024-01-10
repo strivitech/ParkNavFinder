@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var userWsHandler = builder.AddProject<Projects.UserWsHandler>("UserWsHandler");
+var userWebSocketHandler = builder.AddProject<Projects.User_WebSocketHandler>("UserWebSocketHandler");
 
 var webSocketManagerRedis = builder
     .AddRedisContainer(
@@ -10,18 +10,15 @@ var webSocketManagerRedis = builder
         port: builder.Configuration.GetValue<int>("WebSocketManagerRedis:port"));
 var webSocketManager = builder.AddProject<Projects.WebSocketManager>("WebSocketManager");
 
-var locationService = builder.AddProject<Projects.LocationService>("LocationService");
-
 var mapService = builder.AddProject<Projects.MapService>("MapService");
 
-userWsHandler
-    .WithReference(webSocketManager)
-    .WithReference(locationService);
+userWebSocketHandler
+    .WithReference(webSocketManager);
 
 webSocketManager.WithReference(webSocketManagerRedis);
 
 builder.AddProject<Projects.Yarp_ApiGateway>("YarpApiGateway")
-    .WithReference(userWsHandler)
+    .WithReference(userWebSocketHandler)
     .WithLaunchProfile("https");
 
 var userActiveGeoIndexRedis = builder

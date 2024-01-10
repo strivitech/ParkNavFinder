@@ -13,12 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LocationService\LocationService.csproj" />
     <ProjectReference Include="..\MapService\MapService.csproj" />
     <ProjectReference Include="..\ParkingManagementService\ParkingManagementService.csproj" />
     <ProjectReference Include="..\ParkingStateService\ParkingStateService.csproj" />
+    <ProjectReference Include="..\User.WebSocketHandler\User.WebSocketHandler.csproj" />
     <ProjectReference Include="..\UserActiveGeoIndexService\UserActiveGeoIndexService.csproj" />
-    <ProjectReference Include="..\UserWsHandler\UserWsHandler.csproj" />
     <ProjectReference Include="..\WebSocketManager\WebSocketManager.csproj" />
     <ProjectReference Include="..\Yarp.ApiGateway\Yarp.ApiGateway.csproj" />
   </ItemGroup>

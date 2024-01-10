@@ -1,4 +1,4 @@
-﻿using Kafka.Events.Contracts.Location;
+﻿using Kafka.Events.Contracts.User.Location;
 using Kafka.Settings;
 using KafkaFlow;
 using KafkaFlow.Serializer;

@@ -1,4 +1,4 @@
-﻿using Kafka.Events.Contracts.Location;
+﻿using Kafka.Events.Contracts.User.Location;
 using KafkaFlow;
 using StackExchange.Redis;
 using UserActiveGeoIndexService.GeoIndex;
