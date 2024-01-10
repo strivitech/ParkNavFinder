@@ -16,8 +16,8 @@
     <ProjectReference Include="..\MapService\MapService.csproj" />
     <ProjectReference Include="..\ParkingManagementService\ParkingManagementService.csproj" />
     <ProjectReference Include="..\ParkingStateService\ParkingStateService.csproj" />
+    <ProjectReference Include="..\User.LocationService\User.LocationService.csproj" />
     <ProjectReference Include="..\User.WebSocketHandler\User.WebSocketHandler.csproj" />
-    <ProjectReference Include="..\UserActiveGeoIndexService\UserActiveGeoIndexService.csproj" />
     <ProjectReference Include="..\WebSocketManager\WebSocketManager.csproj" />
     <ProjectReference Include="..\Yarp.ApiGateway\Yarp.ApiGateway.csproj" />
   </ItemGroup>

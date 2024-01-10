@@ -1,9 +1,9 @@
 ﻿using Kafka.Events.Contracts.User.Location;
 using KafkaFlow;
 using StackExchange.Redis;
-using UserActiveGeoIndexService.GeoIndex;
+using User.LocationService.Services;
 
-namespace UserActiveGeoIndexService.UserLocation;
+namespace User.LocationService.EventHandlers;
 
 public class UserLocationChangedEventHandler : IMessageHandler<UserLocationChangedEvent>
 {
@@ -16,8 +16,9 @@ public class UserLocationChangedEventHandler : IMessageHandler<UserLocationChang
         
         logger.LogDebug("User location changed event received: {UserId}, {Latitude}, {Longitude}",
             changedEvent.UserId, changedEvent.Latitude, changedEvent.Longitude);
-        
-        var newGeoIndex = await geoIndexService.GetGeoIndexAsync(changedEvent.Latitude, changedEvent.Longitude, 8);
+
+        const int resolution = 7;   
+        var newGeoIndex = await geoIndexService.GetGeoIndexAsync(changedEvent.Latitude, changedEvent.Longitude, resolution);
         logger.LogDebug("User new GeoIndex: {GeoIndex}", newGeoIndex);
         
         var tran = db.CreateTransaction();

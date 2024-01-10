@@ -10,7 +10,7 @@ namespace MapService.GeoIndex;
 [ApiController]
 public class HexagonController : ControllerBase
 {
-    [ApiKey(ApiKeyConstants.UserActiveGeoIndexService)]
+    [ApiKey(ApiKeyConstants.UserLocationService)]
     [HttpGet]
     public ActionResult<H3Index> GetH3Index(double lat, double lon, int resolution) 
     {   

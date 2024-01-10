@@ -1,10 +1,9 @@
 using Auth.Shared;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
-using UserActiveGeoIndexService.Common;
-using UserActiveGeoIndexService.GeoIndex;
-using UserActiveGeoIndexService.Infrastructure;
-using UserActiveGeoIndexService.Kafka;
+using User.LocationService.Common;
+using User.LocationService.Configurations;
+using User.LocationService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +16,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
-builder.AddRedis("UserActiveGeoIndexRedis");
+builder.AddRedis("UserLocationRedis");
 
 builder.Services.Configure<KafkaConfig>(builder.Configuration.GetSection(KafkaConfig.SectionName));
 

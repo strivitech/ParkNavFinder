@@ -1,6 +1,6 @@
 ﻿using InvalidOperationException = System.InvalidOperationException;
 
-namespace UserActiveGeoIndexService.GeoIndex;
+namespace User.LocationService.Services;
 
 internal class GeoIndexService(HttpClient httpClient) : IGeoIndexService
 {

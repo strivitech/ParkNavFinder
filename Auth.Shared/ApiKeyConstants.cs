@@ -9,5 +9,5 @@ public static class ApiKeyConstants
     public const string ParkingOfferingService = nameof(ParkingOfferingService);
     public const string UserWebSocketHandler = nameof(UserWebSocketHandler);
     public const string MapService = nameof(MapService);
-    public const string UserActiveGeoIndexService = nameof(UserActiveGeoIndexService);
+    public const string UserLocationService = nameof(UserLocationService);
 }

@@ -1,4 +1,4 @@
-﻿namespace UserActiveGeoIndexService.Common;
+﻿namespace User.LocationService.Common;
 
 public static class RequestPolly
 {

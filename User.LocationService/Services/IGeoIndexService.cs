@@ -1,4 +1,4 @@
-﻿namespace UserActiveGeoIndexService.GeoIndex;
+﻿namespace User.LocationService.Services;
 
 public interface IGeoIndexService
 {

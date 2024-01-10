@@ -21,13 +21,15 @@ builder.AddProject<Projects.Yarp_ApiGateway>("YarpApiGateway")
     .WithReference(userWebSocketHandler)
     .WithLaunchProfile("https");
 
-var userActiveGeoIndexRedis = builder
-    .AddRedisContainer(
-        name: "UserActiveGeoIndexRedis",
-        port: builder.Configuration.GetValue<int>("UserActiveGeoIndexRedis:port"));
+var userLocationRedis = builder
+    .AddRedisContainer( 
+        name: "UserLocationRedis",
+        port: builder.Configuration.GetValue<int>("UserLocationRedis:port"));
 
-builder.AddProject<Projects.UserActiveGeoIndexService>("UserActiveGeoIndexService")
-    .WithReference(userActiveGeoIndexRedis)
+var userLocationService = builder.AddProject<Projects.User_LocationService>("UserLocationService");
+    
+userLocationService
+    .WithReference(userLocationRedis)
     .WithReference(mapService);
 
 var parkingManagementPostgres = builder
