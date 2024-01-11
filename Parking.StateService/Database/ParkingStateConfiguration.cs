@@ -4,7 +4,7 @@ using Parking.StateService.Domain;
 
 namespace Parking.StateService.Database;
 
-public class ParkingStateModelConfiguration : IEntityTypeConfiguration<ParkingState>
+public class ParkingStateConfiguration : IEntityTypeConfiguration<ParkingState>
 {
     public void Configure(EntityTypeBuilder<ParkingState> builder)
     {
