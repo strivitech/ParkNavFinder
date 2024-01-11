@@ -4,7 +4,7 @@ using H3.Model;
 using Microsoft.AspNetCore.Mvc;
 using NetTopologySuite.Geometries;
 
-namespace MapService.GeoIndex;
+namespace MapService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

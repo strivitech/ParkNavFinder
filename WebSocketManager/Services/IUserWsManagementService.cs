@@ -1,4 +1,4 @@
-﻿namespace WebSocketManager.UserWs;
+﻿namespace WebSocketManager.Services;
 
 public interface IUserWsManagementService
 {

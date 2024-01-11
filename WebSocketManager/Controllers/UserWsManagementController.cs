@@ -1,7 +1,8 @@
 ﻿using Auth.Shared;
 using Microsoft.AspNetCore.Mvc;
+using WebSocketManager.Services;
 
-namespace WebSocketManager.UserWs;
+namespace WebSocketManager.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
