@@ -2,7 +2,7 @@
 
 public record IndexStateChangedEvent(
     string EventId,     
-    string Index,
-    IEnumerable<ParkingState> ParkingState, 
+    string Index,   
+    IList<ParkingStateInfo> ParkingStates, 
     DateTime IssuedUtc
 );  

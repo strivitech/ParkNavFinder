@@ -54,7 +54,7 @@ var parkingStatePostgres = builder
         port: builder.Configuration.GetValue<int>("ParkingStateDb:port"),
         password: builder.Configuration.GetValue<string>("ParkingStateDb:password"))
     .AddDatabase("ParkingStateDb");
-builder.AddProject<Projects.ParkingStateService>("ParkingStateService")
+builder.AddProject<Projects.Parking_StateService>("ParkingStateService")
     .WithReference(parkingStatePostgres);
 
 builder.Build().Run();
