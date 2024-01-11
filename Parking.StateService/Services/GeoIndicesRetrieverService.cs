@@ -26,7 +26,7 @@ internal class GeoIndicesRetrieverService(
                      var indices = await _dbContext.Database.SqlQuery<string>
                          (
                              $"""
-                              SELECT "Index" FROM "ActiveIndices"
+                              SELECT "Index" FROM "GeoIndices"
                               WHERE "LastUpdatedUtc" < {DateTime.UtcNow.AddMinutes(-Constants.UpdateIntervalMinutes)}
                               ORDER BY "LastUpdatedUtc" ASC
                               FOR UPDATE SKIP LOCKED
