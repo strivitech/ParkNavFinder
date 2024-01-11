@@ -14,8 +14,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapService", "MapService\Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yarp.ApiGateway", "Yarp.ApiGateway\Yarp.ApiGateway.csproj", "{BEDA3248-20F9-4484-B1CC-3D1D532FEB85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkingManagementService", "ParkingManagementService\ParkingManagementService.csproj", "{F6A4B096-C2B1-43D0-AA88-8A24AB7B08C3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkingStateService", "ParkingStateService\ParkingStateService.csproj", "{2BE27A40-47F3-4CE4-859F-C535784096AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kafka.Events.Contracts", "Kafka.Events.Contracts\Kafka.Events.Contracts.csproj", "{94B5D199-A6B2-4DC7-9A02-4670381D4A1C}"
@@ -25,6 +23,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.WebSocketHandler", "User.WebSocketHandler\User.WebSocketHandler.csproj", "{D4863AAC-BD50-4D52-AD14-B02DD9C57580}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.LocationService", "User.LocationService\User.LocationService.csproj", "{7C3C45FF-2A09-43C5-8D01-D65D5779DB2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parking.ManagementService", "Parking.ManagementService\Parking.ManagementService.csproj", "{B5873FE5-968E-4DC0-9723-127EA94F825C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,10 +56,6 @@ Global
 		{BEDA3248-20F9-4484-B1CC-3D1D532FEB85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEDA3248-20F9-4484-B1CC-3D1D532FEB85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEDA3248-20F9-4484-B1CC-3D1D532FEB85}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F6A4B096-C2B1-43D0-AA88-8A24AB7B08C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6A4B096-C2B1-43D0-AA88-8A24AB7B08C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F6A4B096-C2B1-43D0-AA88-8A24AB7B08C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6A4B096-C2B1-43D0-AA88-8A24AB7B08C3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2BE27A40-47F3-4CE4-859F-C535784096AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2BE27A40-47F3-4CE4-859F-C535784096AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BE27A40-47F3-4CE4-859F-C535784096AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -80,6 +76,10 @@ Global
 		{7C3C45FF-2A09-43C5-8D01-D65D5779DB2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C3C45FF-2A09-43C5-8D01-D65D5779DB2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C3C45FF-2A09-43C5-8D01-D65D5779DB2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5873FE5-968E-4DC0-9723-127EA94F825C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5873FE5-968E-4DC0-9723-127EA94F825C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5873FE5-968E-4DC0-9723-127EA94F825C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5873FE5-968E-4DC0-9723-127EA94F825C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

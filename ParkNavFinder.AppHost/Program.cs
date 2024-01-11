@@ -44,7 +44,7 @@ var parkingManagementRedis = builder
         name: "ParkingManagementRedis",
         port: builder.Configuration.GetValue<int>("ParkingManagementRedis:port"));
 
-builder.AddProject<Projects.ParkingManagementService>("ParkingManagementService")
+builder.AddProject<Projects.Parking_ManagementService>("ParkingManagementService")
     .WithReference(parkingManagementPostgres)
     .WithReference(parkingManagementRedis);
 
