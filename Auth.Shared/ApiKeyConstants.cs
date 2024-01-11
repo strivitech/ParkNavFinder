@@ -7,8 +7,7 @@ public static class ApiKeyConstants
     public const string HeaderName = "X-Api-Key";
     
     public const string ParkingOfferingService = nameof(ParkingOfferingService);
-    public const string UserWsHandler = nameof(UserWsHandler);
+    public const string UserWebSocketHandler = nameof(UserWebSocketHandler);
     public const string MapService = nameof(MapService);
-    public const string LocationService = nameof(LocationService);
-    public const string UserActiveGeoIndexService = nameof(UserActiveGeoIndexService);
+    public const string UserLocationService = nameof(UserLocationService);
 }

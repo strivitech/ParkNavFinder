@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var userWsHandler = builder.AddProject<Projects.UserWsHandler>("UserWsHandler");
+var userWebSocketHandler = builder.AddProject<Projects.User_WebSocketHandler>("UserWebSocketHandler");
 
 var webSocketManagerRedis = builder
     .AddRedisContainer(
@@ -10,27 +10,26 @@ var webSocketManagerRedis = builder
         port: builder.Configuration.GetValue<int>("WebSocketManagerRedis:port"));
 var webSocketManager = builder.AddProject<Projects.WebSocketManager>("WebSocketManager");
 
-var locationService = builder.AddProject<Projects.LocationService>("LocationService");
-
 var mapService = builder.AddProject<Projects.MapService>("MapService");
 
-userWsHandler
-    .WithReference(webSocketManager)
-    .WithReference(locationService);
+userWebSocketHandler
+    .WithReference(webSocketManager);
 
 webSocketManager.WithReference(webSocketManagerRedis);
 
 builder.AddProject<Projects.Yarp_ApiGateway>("YarpApiGateway")
-    .WithReference(userWsHandler)
+    .WithReference(userWebSocketHandler)
     .WithLaunchProfile("https");
 
-var userActiveGeoIndexRedis = builder
-    .AddRedisContainer(
-        name: "UserActiveGeoIndexRedis",
-        port: builder.Configuration.GetValue<int>("UserActiveGeoIndexRedis:port"));
+var userLocationRedis = builder
+    .AddRedisContainer( 
+        name: "UserLocationRedis",
+        port: builder.Configuration.GetValue<int>("UserLocationRedis:port"));
 
-builder.AddProject<Projects.UserActiveGeoIndexService>("UserActiveGeoIndexService")
-    .WithReference(userActiveGeoIndexRedis)
+var userLocationService = builder.AddProject<Projects.User_LocationService>("UserLocationService");
+    
+userLocationService
+    .WithReference(userLocationRedis)
     .WithReference(mapService);
 
 var parkingManagementPostgres = builder
@@ -45,7 +44,7 @@ var parkingManagementRedis = builder
         name: "ParkingManagementRedis",
         port: builder.Configuration.GetValue<int>("ParkingManagementRedis:port"));
 
-builder.AddProject<Projects.ParkingManagementService>("ParkingManagementService")
+builder.AddProject<Projects.Parking_ManagementService>("ParkingManagementService")
     .WithReference(parkingManagementPostgres)
     .WithReference(parkingManagementRedis);
 
@@ -55,7 +54,7 @@ var parkingStatePostgres = builder
         port: builder.Configuration.GetValue<int>("ParkingStateDb:port"),
         password: builder.Configuration.GetValue<string>("ParkingStateDb:password"))
     .AddDatabase("ParkingStateDb");
-builder.AddProject<Projects.ParkingStateService>("ParkingStateService")
+builder.AddProject<Projects.Parking_StateService>("ParkingStateService")
     .WithReference(parkingStatePostgres);
 
 builder.Build().Run();

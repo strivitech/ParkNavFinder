@@ -1,4 +1,4 @@
-using MapService.Infrastructure;
+using MapService.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
