@@ -55,6 +55,7 @@ var parkingStatePostgres = builder
         password: builder.Configuration.GetValue<string>("ParkingStateDb:password"))
     .AddDatabase("ParkingStateDb");
 builder.AddProject<Projects.Parking_StateService>("ParkingStateService")
-    .WithReference(parkingStatePostgres);
+    .WithReference(parkingStatePostgres)
+    .WithReference(mapService);
 
 builder.Build().Run();
