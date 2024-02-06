@@ -9,7 +9,7 @@ internal class WsManagerService(HttpClient httpClient, ILogger<WsManagerService>
     {
         _logger.LogInformation("Sending user connected message for user {UserId}", userId);
         
-        const string requestUri = "api/UserWsManagement/SetWebSocketHandlerHostForUserId";
+        const string requestUri = "api/UserWsManagement/SetHandler";
         var content = JsonContent.Create(userId);
         var response = await _httpClient.PostAsync(requestUri, content);
         response.EnsureSuccessStatusCode();

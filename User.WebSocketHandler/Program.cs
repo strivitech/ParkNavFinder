@@ -46,6 +46,8 @@ builder.Services.AddHttpClient<IWsManagerService, WsManagerService>(
             Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(RequestPolly.MedianFirstRetryDelaySeconds),
                 RequestPolly.DefaultRetryCount)));
 
+builder.Services.AddScoped<IIndexStateNotificationService, IndexStateNotificationService>();
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();

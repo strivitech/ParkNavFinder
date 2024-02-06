@@ -58,4 +58,9 @@ builder.AddProject<Projects.Parking_StateService>("ParkingStateService")
     .WithReference(parkingStatePostgres)
     .WithReference(mapService);
 
+builder.AddProject<Projects.User_NotificationService>("UserNotificationService")
+    .WithReference(userLocationService)
+    .WithReference(webSocketManager)
+    .WithReference(userWebSocketHandler);
+
 builder.Build().Run();

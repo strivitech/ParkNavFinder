@@ -11,4 +11,5 @@ public static class ApiKeyConstants
     public const string MapService = nameof(MapService);
     public const string UserLocationService = nameof(UserLocationService);
     public const string ParkingStateService = nameof(ParkingStateService);
+    public const string UserNotificationService = nameof(UserNotificationService);
 }
