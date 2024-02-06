@@ -34,6 +34,8 @@ builder.Services.AddHttpClient<IGeoIndexService, GeoIndexService>(
             Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(RequestPolly.MedianFirstRetryDelaySeconds),
                 RequestPolly.DefaultRetryCount)));
 
+builder.Services.AddScoped<IIndicesService, IndicesService>();
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
