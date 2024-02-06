@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parking.ManagementService",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parking.StateService", "Parking.StateService\Parking.StateService.csproj", "{1AFCE6D8-57C5-49C5-A6DE-5B2A6CE583A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.NotificationService", "User.NotificationService\User.NotificationService.csproj", "{207C4353-53E6-4387-ABE7-9111A67C641A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{1AFCE6D8-57C5-49C5-A6DE-5B2A6CE583A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AFCE6D8-57C5-49C5-A6DE-5B2A6CE583A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AFCE6D8-57C5-49C5-A6DE-5B2A6CE583A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{207C4353-53E6-4387-ABE7-9111A67C641A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{207C4353-53E6-4387-ABE7-9111A67C641A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{207C4353-53E6-4387-ABE7-9111A67C641A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{207C4353-53E6-4387-ABE7-9111A67C641A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
