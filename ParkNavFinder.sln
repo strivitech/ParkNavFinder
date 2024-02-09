@@ -28,6 +28,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parking.StateService", "Par
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.NotificationService", "User.NotificationService\User.NotificationService.csproj", "{207C4353-53E6-4387-ABE7-9111A67C641A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{38E70773-857D-4A17-8B57-BEB06DB75CBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapService.Tests", "Tests\MapService.Tests\MapService.Tests.csproj", "{DCA77FB6-2FFE-415F-A941-AA5C8B889040}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,11 +90,18 @@ Global
 		{207C4353-53E6-4387-ABE7-9111A67C641A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{207C4353-53E6-4387-ABE7-9111A67C641A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{207C4353-53E6-4387-ABE7-9111A67C641A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCA77FB6-2FFE-415F-A941-AA5C8B889040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCA77FB6-2FFE-415F-A941-AA5C8B889040}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCA77FB6-2FFE-415F-A941-AA5C8B889040}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCA77FB6-2FFE-415F-A941-AA5C8B889040}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F226D895-A43D-48DB-8EE5-498AD8F49C76}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DCA77FB6-2FFE-415F-A941-AA5C8B889040} = {38E70773-857D-4A17-8B57-BEB06DB75CBC}
 	EndGlobalSection
 EndGlobal
