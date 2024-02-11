@@ -9,14 +9,14 @@ namespace WebSocketManager.Tests;
 public class UserWsManagementServiceTests
 {
     private readonly IConnectionMultiplexer _mockMultiplexer = Substitute.For<IConnectionMultiplexer>();
-    private readonly ILogger<UserWsManagementService> _mockLogger = Substitute.For<ILogger<UserWsManagementService>>();
     private readonly IDatabase _mockDatabase = Substitute.For<IDatabase>();
     private readonly UserWsManagementService _service;
 
     public UserWsManagementServiceTests()
     {
         _mockMultiplexer.GetDatabase().Returns(_mockDatabase);
-        _service = new UserWsManagementService(_mockMultiplexer, _mockLogger);
+        var mockLogger = Substitute.For<ILogger<UserWsManagementService>>();
+        _service = new UserWsManagementService(_mockMultiplexer, mockLogger);
     }
 
     [Fact]
