@@ -4,7 +4,7 @@ using StackExchange.Redis;
 
 namespace User.LocationService.Services;
 
-internal class IndicesService(IConnectionMultiplexer connectionMultiplexer, ILogger<IndicesService> logger)
+public class IndicesService(IConnectionMultiplexer connectionMultiplexer, ILogger<IndicesService> logger)
     : IIndicesService
 {
     private readonly IConnectionMultiplexer _connectionMultiplexer = connectionMultiplexer;
