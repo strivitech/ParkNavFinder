@@ -36,6 +36,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSocketManager.Tests", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.WebSocketHandler.Tests", "Tests\User.WebSocketHandler.Tests\User.WebSocketHandler.Tests.csproj", "{35A92ADB-8D02-4DB3-9C65-CEF14D4BB7A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.LocationService.Tests", "Tests\User.LocationService.Tests\User.LocationService.Tests.csproj", "{1570C051-3F39-451D-9DD7-8B944EA2C955}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Tests\Shared\Shared.csproj", "{774C44EE-5F75-43DE-936F-152543B6DE56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +110,14 @@ Global
 		{35A92ADB-8D02-4DB3-9C65-CEF14D4BB7A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35A92ADB-8D02-4DB3-9C65-CEF14D4BB7A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35A92ADB-8D02-4DB3-9C65-CEF14D4BB7A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1570C051-3F39-451D-9DD7-8B944EA2C955}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1570C051-3F39-451D-9DD7-8B944EA2C955}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1570C051-3F39-451D-9DD7-8B944EA2C955}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1570C051-3F39-451D-9DD7-8B944EA2C955}.Release|Any CPU.Build.0 = Release|Any CPU
+		{774C44EE-5F75-43DE-936F-152543B6DE56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{774C44EE-5F75-43DE-936F-152543B6DE56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{774C44EE-5F75-43DE-936F-152543B6DE56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{774C44EE-5F75-43DE-936F-152543B6DE56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,5 +129,7 @@ Global
 		{DCA77FB6-2FFE-415F-A941-AA5C8B889040} = {38E70773-857D-4A17-8B57-BEB06DB75CBC}
 		{4F4E348E-6D8A-40DE-B829-8C06E15A035A} = {38E70773-857D-4A17-8B57-BEB06DB75CBC}
 		{35A92ADB-8D02-4DB3-9C65-CEF14D4BB7A8} = {38E70773-857D-4A17-8B57-BEB06DB75CBC}
+		{1570C051-3F39-451D-9DD7-8B944EA2C955} = {38E70773-857D-4A17-8B57-BEB06DB75CBC}
+		{774C44EE-5F75-43DE-936F-152543B6DE56} = {38E70773-857D-4A17-8B57-BEB06DB75CBC}
 	EndGlobalSection
 EndGlobal

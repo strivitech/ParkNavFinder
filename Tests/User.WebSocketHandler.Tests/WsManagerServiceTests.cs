@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using Shared;
 using User.WebSocketHandler.Services;
 
 namespace User.WebSocketHandler.Tests;
