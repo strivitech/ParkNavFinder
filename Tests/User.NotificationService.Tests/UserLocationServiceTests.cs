@@ -45,10 +45,10 @@ public class UserLocationServiceTests
     }
 
     [Fact]
-    public async Task GetUsersAttachedToIndex_WhenUnsuccessful_ThrowsHttpRequestException()
+    public async Task GetUsersAttachedToIndex_WhenUnsuccessfulHttpResponse_ThrowsHttpRequestException()
     {
         // Arrange
-        const string index = "testIndex";
+        const string index = "testIndex";   
         var mockResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
         _mockHttpMessageHandler.MockSend(Arg.Any<HttpRequestMessage>(), Arg.Any<CancellationToken>())
             .Returns(mockResponse);
