@@ -1,4 +1,4 @@
-﻿namespace User.WebSocketHandler.Tests;
+﻿namespace Shared;
 
 public class MockHttpMessageHandler : HttpMessageHandler
 {
