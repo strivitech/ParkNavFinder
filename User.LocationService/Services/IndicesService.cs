@@ -16,10 +16,6 @@ public class IndicesService(IConnectionMultiplexer connectionMultiplexer, ILogge
 
         var db = _connectionMultiplexer.GetDatabase();
         var cachedData = await db.SetMembersAsync(index);
-        if (cachedData.Length <= 0)
-        {
-            return [];
-        }
         
         return cachedData.Length <= 0
             ? []
