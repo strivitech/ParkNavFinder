@@ -9,7 +9,7 @@ using Parking.StateService.Configurations;
 
 namespace Parking.StateService.Services;
 
-internal class GeoIndexStateEventPublisher(
+public class GeoIndexStateEventPublisher(
     IProducerAccessor producerAccessor,
     ILogger<GeoIndexStateEventPublisher> logger) : IGeoIndexStateEventPublisher
 {

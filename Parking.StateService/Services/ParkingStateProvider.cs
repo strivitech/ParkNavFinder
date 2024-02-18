@@ -4,7 +4,7 @@ using Parking.StateService.Domain;
 
 namespace Parking.StateService.Services;
 
-internal class ParkingStateProvider(IDbContextFactory<ParkingStateDbContext> dbContextFactory) : IParkingStateProvider
+public class ParkingStateProvider(IDbContextFactory<ParkingStateDbContext> dbContextFactory) : IParkingStateProvider
 {
     private readonly IDbContextFactory<ParkingStateDbContext> _dbContextFactory = dbContextFactory;
 
