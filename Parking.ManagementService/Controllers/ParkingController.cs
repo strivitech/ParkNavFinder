@@ -8,7 +8,7 @@ using Parking.ManagementService.Services;
 namespace Parking.ManagementService.Controllers;
 
 [ApiController]
-// [Authorize(Roles = Roles.Provider)]
+[Authorize(Roles = Roles.Provider)]
 [Route("api/[controller]")]
 public class ParkingController(IParkingService parkingService) : ControllerBase
 {

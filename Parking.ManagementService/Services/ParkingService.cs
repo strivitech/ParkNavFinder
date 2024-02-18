@@ -1,6 +1,7 @@
 ﻿using System.Data.Common;
 using ErrorOr;
 using Kafka.Events.Contracts.Parking.Management;
+using Microsoft.EntityFrameworkCore;
 using Parking.ManagementService.Common;
 using Parking.ManagementService.Contracts;
 using Parking.ManagementService.Database;
@@ -10,7 +11,7 @@ using Parking.ManagementService.Validation;
 namespace Parking.ManagementService.Services;
 
 // TODO: To be implemented correctly, events should be published in a transactional way. For example, using Outbox pattern.
-internal class ParkingService(
+public class ParkingService(
     ParkingDbContext dbContext,
     IParkingServiceEventPublisher eventPublisher,
     ILogger<ParkingService> logger,
@@ -110,7 +111,12 @@ internal class ParkingService(
             return Errors.Parking.UpdateFailed(request.Id);
         }
 
-        await PublishParkingUpdatedEvent(new ParkingUpdatedEvent(request.Id, DateTime.UtcNow));
+        var isPublished = await PublishParkingUpdatedEvent(new ParkingUpdatedEvent(request.Id, DateTime.UtcNow));
+        
+        if (!isPublished)
+        {
+            return Errors.Parking.UpdateFailed(request.Id);
+        }
 
         return new Updated();
     }
@@ -202,7 +208,7 @@ internal class ParkingService(
             await _dbContext.SaveChangesAsync();
             return true;
         }
-        catch (DbException ex)
+        catch (DbUpdateException ex)
         {
             _logger.LogError(ex, "Failed to save changes to database");
             return false;
@@ -210,7 +216,7 @@ internal class ParkingService(
     }
 
     // TODO: Add compensation logic to revert changes in case of failure.
-    private async Task PublishParkingUpdatedEvent(ParkingUpdatedEvent parkingUpdatedEvent)
+    private async Task<bool> PublishParkingUpdatedEvent(ParkingUpdatedEvent parkingUpdatedEvent)
     {
         var response = await _eventPublisher.PublishParkingUpdatedAsync(parkingUpdatedEvent);
 
@@ -218,6 +224,8 @@ internal class ParkingService(
         {
             _logger.LogError("Failed to publish parking updated event");
         }
+        
+        return !response.IsError;
     }
 
     private async Task<bool> PublishParkingAddedEvent(ParkingAddedEvent parkingAddedEvent, Domain.Parking parking)

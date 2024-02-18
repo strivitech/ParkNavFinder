@@ -4,7 +4,7 @@ using User.WebSocketHandler.Hubs;
 
 namespace User.WebSocketHandler.Services;
 
-internal class IndexStateNotificationService(IHubContext<UsersHub, IUsersClient> hub)
+public class IndexStateNotificationService(IHubContext<UsersHub, IUsersClient> hub)
     : IIndexStateNotificationService
 {
     private readonly IHubContext<UsersHub, IUsersClient> _hub = hub;

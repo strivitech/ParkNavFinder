@@ -4,7 +4,7 @@ using StackExchange.Redis;
 
 namespace User.LocationService.Services;
 
-internal class IndicesService(IConnectionMultiplexer connectionMultiplexer, ILogger<IndicesService> logger)
+public class IndicesService(IConnectionMultiplexer connectionMultiplexer, ILogger<IndicesService> logger)
     : IIndicesService
 {
     private readonly IConnectionMultiplexer _connectionMultiplexer = connectionMultiplexer;
@@ -16,10 +16,6 @@ internal class IndicesService(IConnectionMultiplexer connectionMultiplexer, ILog
 
         var db = _connectionMultiplexer.GetDatabase();
         var cachedData = await db.SetMembersAsync(index);
-        if (cachedData.Length <= 0)
-        {
-            return [];
-        }
         
         return cachedData.Length <= 0
             ? []

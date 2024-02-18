@@ -9,7 +9,7 @@ using Parking.ManagementService.Configurations;
 
 namespace Parking.ManagementService.Services;
 
-internal class ParkingServiceEventPublisher(
+public class ParkingServiceEventPublisher(
     IProducerAccessor producerAccessor,
     ILogger<ParkingServiceEventPublisher> logger) : IParkingServiceEventPublisher
 {

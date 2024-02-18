@@ -3,7 +3,7 @@ using WebSocketManager.Common;
 
 namespace WebSocketManager.Services;
 
-internal class UserWsManagementService(
+public class UserWsManagementService(
     IConnectionMultiplexer connectionMultiplexer,
     ILogger<UserWsManagementService> logger) : IUserWsManagementService
 {

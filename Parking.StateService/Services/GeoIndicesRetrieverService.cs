@@ -5,7 +5,7 @@ using Parking.StateService.Database;
 
 namespace Parking.StateService.Services;
 
-internal class GeoIndicesRetrieverService(
+public class GeoIndicesRetrieverService(
     ParkingStateDbContext dbContext,
     ILogger<GeoIndicesRetrieverService> logger) : IGeoIndicesRetrieverService
 {

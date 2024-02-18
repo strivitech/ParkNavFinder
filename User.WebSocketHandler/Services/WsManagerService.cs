@@ -1,6 +1,6 @@
 ﻿namespace User.WebSocketHandler.Services;
 
-internal class WsManagerService(HttpClient httpClient, ILogger<WsManagerService> logger) : IWsManagerService
+public class WsManagerService(HttpClient httpClient, ILogger<WsManagerService> logger) : IWsManagerService
 {
     private readonly HttpClient _httpClient = httpClient;
     private readonly ILogger<WsManagerService> _logger = logger;

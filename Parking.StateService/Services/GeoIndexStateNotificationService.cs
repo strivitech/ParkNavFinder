@@ -7,7 +7,7 @@ using ParkingState = Parking.StateService.Domain.ParkingState;
 
 namespace Parking.StateService.Services;
 
-internal class GeoIndexStateNotificationService(
+public class GeoIndexStateNotificationService(
     IGeoIndicesRetrieverService geoIndicesRetrieverService,
     ILogger<GeoIndexStateNotificationService> logger,
     IGeoIndexStateEventPublisher geoIndexStateEventPublisher,
