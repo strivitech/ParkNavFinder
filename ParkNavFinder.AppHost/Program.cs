@@ -63,4 +63,6 @@ builder.AddProject<Projects.User_NotificationService>("UserNotificationService")
     .WithReference(webSocketManager)
     .WithReference(userWebSocketHandler);
 
+builder.AddProject<Projects.DataManager_Api>("DataManagerApi");
+
 builder.Build().Run();
