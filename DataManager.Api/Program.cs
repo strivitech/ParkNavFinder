@@ -27,6 +27,14 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.AddControllers();
 
+builder.Services.AddCors(config =>
+    config.AddPolicy(
+        "AllowedOrigins",
+        p => p.WithOrigins(builder.Configuration["AllowedCorsOrigins"]!.Split(','))
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()));
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
@@ -41,7 +49,9 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler(_ => { });
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowedOrigins");
+
 app.MapControllers();
 
 app.Run();
-
