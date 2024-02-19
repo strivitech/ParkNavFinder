@@ -1,5 +1,4 @@
-﻿using Auth0.ManagementApi.Models;
-using DataManager.Api.Contracts;
+﻿using DataManager.Api.Contracts;
 using GetUsersRequest = DataManager.Api.Contracts.GetUsersRequest;
 
 namespace DataManager.Api.Services;

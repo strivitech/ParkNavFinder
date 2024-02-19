@@ -22,6 +22,9 @@ builder.Services.AddScoped<ManagementApiClient>(_ => new ManagementApiClient(
 
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IRequestValidator, RequestValidator>();
+builder.Services.AddScoped<IUserGenerator, UserGenerator>();
+// builder.Services.AddScoped<IPasswordGenerator, PasswordGenerator>();
+builder.Services.AddScoped<IEmailGenerator, GmailSubEmailsGenerator>();
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
@@ -54,4 +57,13 @@ app.UseCors("AllowedOrigins");
 
 app.MapControllers();
 
-app.Run();
+try
+{
+    app.EnsureUsersCreated();
+
+    app.Run();
+}
+catch (Exception ex)
+{
+    // Add logs and flush
+}
