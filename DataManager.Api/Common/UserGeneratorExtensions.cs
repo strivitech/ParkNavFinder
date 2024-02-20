@@ -4,7 +4,7 @@ using DataManager.Api.Services;
 
 namespace DataManager.Api.Common;
 
-public static class AppExtensions
+public static class UserGeneratorExtensions
 {
     public static WebApplication EnsureUsersCreated(this WebApplication app)
     {
