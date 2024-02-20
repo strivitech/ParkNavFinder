@@ -23,6 +23,7 @@ builder.Services.AddScoped<ManagementApiClient>(_ => new ManagementApiClient(
     new Uri($"{builder.Configuration["Auth0:Authority"]}api/v2")));
 
 builder.Services.AddScoped<IUserManager, UserManager>();
+builder.Services.Decorate<IUserManager, CachingUserManager>();
 builder.Services.AddScoped<IRequestValidator, RequestValidator>();
 builder.Services.AddScoped<IUserGenerator, UserGenerator>();
 // builder.Services.AddScoped<IPasswordGenerator, PasswordGenerator>();
