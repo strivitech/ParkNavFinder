@@ -15,13 +15,23 @@ public class ParkingController(IParkingService parkingService) : ControllerBase
     private readonly IParkingService _parkingService = parkingService;
 
     [AllowAnonymous]
-    [HttpGet]
-    public async Task<ActionResult<GetParkingResponse>> Get([FromQuery] GetParkingRequest request)
+    [HttpGet("{parkingId:guid}")]
+    public async Task<ActionResult<GetParkingResponse>> Get(Guid parkingId)
     {
-        var response = await _parkingService.GetAsync(request);
+        var response = await _parkingService.GetAsync(new GetParkingRequest(parkingId));
 
         return response.MatchFirst(
             Ok,
+            error => error.ToErrorResponse());
+    }
+    
+    [HttpGet]
+    public async Task<ActionResult<List<GetParkingResponse>>> GetAllByProvider()
+    {
+        var response = await _parkingService.GetAllByProviderAsync();
+        
+        return response.MatchFirst<ActionResult>(
+            x => x.Count == 0 ? NoContent() : Ok(x),
             error => error.ToErrorResponse());
     }
 

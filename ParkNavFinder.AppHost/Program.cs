@@ -44,7 +44,7 @@ var parkingManagementRedis = builder
         name: "ParkingManagementRedis",
         port: builder.Configuration.GetValue<int>("ParkingManagementRedis:port"));
 
-builder.AddProject<Projects.Parking_ManagementService>("ParkingManagementService")
+var parkingManagementService = builder.AddProject<Projects.Parking_ManagementService>("ParkingManagementService")
     .WithReference(parkingManagementPostgres)
     .WithReference(parkingManagementRedis);
 
@@ -63,6 +63,7 @@ builder.AddProject<Projects.User_NotificationService>("UserNotificationService")
     .WithReference(webSocketManager)
     .WithReference(userWebSocketHandler);
 
-builder.AddProject<Projects.DataManager_Api>("DataManagerApi");
+builder.AddProject<Projects.DataManager_Api>("DataManagerApi")
+    .WithReference(parkingManagementService);
 
 builder.Build().Run();

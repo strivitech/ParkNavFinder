@@ -4,6 +4,8 @@ using DataManager.Api.Common;
 using DataManager.Api.Services;
 using DataManager.Api.Validation;
 using FluentValidation;
+using Polly;
+using Polly.Contrib.WaitAndRetry;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,8 +27,18 @@ builder.Services.AddScoped<IRequestValidator, RequestValidator>();
 builder.Services.AddScoped<IUserGenerator, UserGenerator>();
 // builder.Services.AddScoped<IPasswordGenerator, PasswordGenerator>();
 builder.Services.AddScoped<IEmailGenerator, GmailSubEmailsGenerator>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IParkingManager, ParkingManager>();
+builder.Services.AddSingleton<ITokenStorage, InMemoryAccessTokenStorage>();
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+builder.Services.AddHttpClient<IParkingManager, ParkingManager>(
+        client => { client.BaseAddress = new Uri("http://ParkingManagementService/"); })
+    .AddTransientHttpErrorPolicy(
+        policyBuilder => policyBuilder.WaitAndRetryAsync(
+            Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromMilliseconds(200),
+                1)));
 
 builder.Services.AddControllers();
 
@@ -60,6 +72,8 @@ app.MapControllers();
 try
 {
     app.EnsureUsersCreated();
+    app.SetInMemoryTokensForUsers();
+    app.EnsureParkingCreated();
 
     app.Run();
 }

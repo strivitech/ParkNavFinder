@@ -24,15 +24,15 @@ public class ParkingControllerTests
     public async Task Get_WhenSuccessful_ReturnsOkObjectResultWithParkingDetails()
     {
         // Arrange
-        var request = new GetParkingRequest(Guid.NewGuid());
+        var id = Guid.NewGuid();
         var expectedResponse = new GetParkingResponse(
-            request.Id, "ProviderId", "ParkingName", "Description", 
+            id, "ProviderId", "ParkingName", "Description", 
             new Address("Country", "City", "Street", "123"),
             10.11, 10.11, 100);
-        _parkingService.GetAsync(request).Returns(expectedResponse);
+        _parkingService.GetAsync(Arg.Is<GetParkingRequest>(x => x.Id == id)).Returns(expectedResponse);
 
         // Act
-        var result = await _controller.Get(request);
+        var result = await _controller.Get(id);
 
         // Assert
         result.Result.Should().BeOfType<OkObjectResult>();
@@ -44,12 +44,12 @@ public class ParkingControllerTests
     public async Task Get_WhenValidationFails_ReturnsBadRequestObjectResult()
     {
         // Arrange
-        var request = new GetParkingRequest(Guid.NewGuid());
+        var id = Guid.NewGuid();
         var validationError = Error.Validation("ValidationFailed", "Validation error occurred");
-        _parkingService.GetAsync(request).Returns(validationError);
+        _parkingService.GetAsync(Arg.Is<GetParkingRequest>(x => x.Id == id)).Returns(validationError);
 
         // Act
-        var result = await _controller.Get(request);
+        var result = await _controller.Get(id);
 
         // Assert
         result.Result.Should().BeOfType<BadRequestObjectResult>();
@@ -61,12 +61,12 @@ public class ParkingControllerTests
     public async Task Get_WhenNotFound_ReturnsNotFoundObjectResult()
     {
         // Arrange
-        var request = new GetParkingRequest(Guid.NewGuid());
+        var id = Guid.NewGuid();
         var notFoundError = Error.NotFound("NotFound", "Parking not found");
-        _parkingService.GetAsync(request).Returns(notFoundError);
+        _parkingService.GetAsync(Arg.Is<GetParkingRequest>(x => x.Id == id)).Returns(notFoundError);
 
         // Act
-        var result = await _controller.Get(request);
+        var result = await _controller.Get(id);
 
         // Assert
         result.Result.Should().BeOfType<NotFoundObjectResult>();

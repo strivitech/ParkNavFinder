@@ -69,6 +69,15 @@ public class ParkingService(
         return MappersFinder.Parking.ToGetParkingResponse(parking);
     }
 
+    public async Task<ErrorOr<List<GetParkingResponse>>> GetAllByProviderAsync()
+    {
+        var parkingList = await _dbContext.ParkingSet
+            .Where(parking => parking.ProviderId == _currentUserService.SessionData.UserId)
+            .ToListAsync();
+
+        return parkingList.Select(MappersFinder.Parking.ToGetParkingResponse).ToList();
+    }
+
     private async Task<ErrorOr<Created>> AddParkingAsync(Domain.Parking parking, AddParkingRequest request)
     {
         _dbContext.ParkingSet.Add(parking);
