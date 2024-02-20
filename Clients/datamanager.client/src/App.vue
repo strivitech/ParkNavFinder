@@ -56,6 +56,7 @@ export default {
     const menuItems = [
       { title: 'Home', path: '/' },
       { title: 'Users', path: '/users' },
+      { title: 'Parkings', path: '/parkings' }
     ];
 
     return {
