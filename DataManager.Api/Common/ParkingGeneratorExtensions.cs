@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using Auth.Shared;
+using Bogus;
 using DataManager.Api.Contracts;
 using DataManager.Api.Services;
 
@@ -28,44 +29,29 @@ public static class ParkingGeneratorExtensions
 
     private static void CreateParkingForProvider(IParkingManager parkingManager, string token, int count)
     {
-        foreach (var parking in GenerateRandomParkingData(count))
+        foreach (var parking in GenerateRealisticParkingData(count))
         {
             parkingManager.CreateAsync(parking, token).Wait();
         }
     }
     
-    private static IEnumerable<CreateParkingRequest> GenerateRandomParkingData(int count)
+    private static IEnumerable<CreateParkingRequest> GenerateRealisticParkingData(int count)
     {
+        var faker = new Faker();
         for (int i = 0; i < count; i++)
         {
+            var address = faker.Address;
             yield return new CreateParkingRequest(
-                Name: RandomString(1, 100),
-                Description: RandomString(1, 2000),
+                Name: faker.Company.CompanyName(),
+                Description: faker.Lorem.Paragraph(),
                 Address: new Address(
-                    Country: RandomString(1, 100),
-                    City: RandomString(1, 100),
-                    Street: RandomString(1, 200),
-                    StreetNumber: RandomString(1, 10)),
-                Latitude: RandomDouble(-90, 90),
-                Longitude: RandomDouble(-180, 180),
-                TotalSpaces: Random.Shared.Next(1, 10000));
+                    Country: address.Country(),
+                    City: address.City(),
+                    Street: address.StreetName(),
+                    StreetNumber: address.BuildingNumber()),
+                Latitude: address.Latitude(50.30, 50.52),
+                Longitude: address.Longitude(30.35, 30.67),
+                TotalSpaces: faker.Random.Int(10, 500));
         }
-    }
-
-    private static string RandomString(int minLength, int maxLength)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        int length = Random.Shared.Next(minLength, maxLength + 1);
-        char[] stringChars = new char[length];
-        for (int i = 0; i < length; i++)
-        {
-            stringChars[i] = chars[Random.Shared.Next(chars.Length)];
-        }
-        return new string(stringChars);
-    }
-
-    private static double RandomDouble(double min, double max)
-    {
-        return min + Random.Shared.NextDouble() * (max - min);
     }
 }
