@@ -1,5 +1,4 @@
-﻿using DataManager.Api.Common;
-using DataManager.Api.Contracts;
+﻿using DataManager.Api.Contracts;
 using DataManager.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;

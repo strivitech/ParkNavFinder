@@ -31,6 +31,7 @@ builder.Services.AddScoped<IEmailGenerator, GmailSubEmailsGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IParkingManager, ParkingManager>();
 builder.Services.AddSingleton<ITokenStorage, InMemoryAccessTokenStorage>();
+builder.Services.AddScoped<IParkingGenerator, ParkingGenerator>();
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
