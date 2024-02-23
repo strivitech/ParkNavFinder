@@ -64,6 +64,7 @@ builder.AddProject<Projects.User_NotificationService>("UserNotificationService")
     .WithReference(userWebSocketHandler);
 
 builder.AddProject<Projects.DataManager_Api>("DataManagerApi")
-    .WithReference(parkingManagementService);
+    .WithReference(parkingManagementService)
+    .WithReference(userWebSocketHandler);
 
 builder.Build().Run();

@@ -1,4 +1,5 @@
 using System.Reflection;
+using Auth.Shared;
 using Auth0.ManagementApi;
 using DataManager.Api.Common;
 using DataManager.Api.Services;
@@ -32,6 +33,10 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IParkingManager, ParkingManager>();
 builder.Services.AddSingleton<ITokenStorage, InMemoryAccessTokenStorage>();
 builder.Services.AddScoped<IParkingGenerator, ParkingGenerator>();
+builder.Services.AddScoped<IUserWebSocketConnectionBuilder, UserWebSocketConnectionBuilder>();
+builder.Services.AddScoped<IRouteCreator, RouteCreator>();
+builder.Services.AddScoped<IRouteGenerator, RouteGenerator>();
+builder.Services.AddScoped<IMapService, MapService>();
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
@@ -41,6 +46,20 @@ builder.Services.AddHttpClient<IParkingManager, ParkingManager>(
         policyBuilder => policyBuilder.WaitAndRetryAsync(
             Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromMilliseconds(200),
                 1)));
+
+builder.Services.AddHttpClient<IMapService, MapService>(
+        client =>
+        {
+            client.BaseAddress = new Uri("http://MapService/");
+            client.DefaultRequestHeaders.Add(ApiKeyConstants.HeaderName,
+                builder.Configuration[ApiKeyConstants.OwnApiKeyName]);
+        })
+    .AddTransientHttpErrorPolicy(
+        policyBuilder => policyBuilder.WaitAndRetryAsync(
+            Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromMilliseconds(200),
+                1)));
+
+builder.Services.AddHostedService<UserCoordinatesSenderService>();
 
 builder.Services.AddControllers();
 
