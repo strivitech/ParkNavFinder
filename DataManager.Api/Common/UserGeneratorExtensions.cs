@@ -1,5 +1,4 @@
 ﻿using Auth.Shared;
-using DataManager.Api.Contracts;
 using DataManager.Api.Services;
 
 namespace DataManager.Api.Common;
@@ -16,36 +15,15 @@ public static class UserGeneratorExtensions
         int providerCount = configuration.GetValue<int>("Generator:ProviderCount");
         int adminCount = configuration.GetValue<int>("Generator:AdminCount");
 
-        var currentUserCount = GetCurrentUserCount(userManager);
-        var currentProviderCount = GetCurrentProviderCount(userManager);
-        var currentAdminCount = GetCurrentAdminCount(userManager);
+        var currentUserCount = userManager.CountGeneratedUsersAsync(Roles.User).Result;
+        var currentProviderCount = userManager.CountGeneratedUsersAsync(Roles.Provider).Result;
+        var currentAdminCount = userManager.CountGeneratedUsersAsync(Roles.Admin).Result;
 
         GenerateUsers(userGenerator, Roles.User, userCount, currentUserCount);
         GenerateUsers(userGenerator, Roles.Provider, providerCount, currentProviderCount);
         GenerateUsers(userGenerator, Roles.Admin, adminCount, currentAdminCount);
         
         return app;
-    }
-
-    private static int GetCurrentAdminCount(IUserManager userManager)
-    {
-        int currentAdminCount = userManager.GetUsersAsync(new GetUsersRequest(Roles.Admin)).Result
-            .Count(x => x.Email.Contains(Constants.GeneratedEmailSharedKey));
-        return currentAdminCount;
-    }
-
-    private static int GetCurrentProviderCount(IUserManager userManager)
-    {
-        int currentProviderCount = userManager.GetUsersAsync(new GetUsersRequest(Roles.Provider)).Result
-            .Count(x => x.Email.Contains(Constants.GeneratedEmailSharedKey));
-        return currentProviderCount;
-    }
-
-    private static int GetCurrentUserCount(IUserManager userManager)
-    {
-        int currentUserCount = userManager.GetUsersAsync(new GetUsersRequest(Roles.User)).Result
-            .Count(x => x.Email.Contains(Constants.GeneratedEmailSharedKey));
-        return currentUserCount;
     }
 
     private static void GenerateUsers(IUserGenerator generator, string role, int count, int currentCount)

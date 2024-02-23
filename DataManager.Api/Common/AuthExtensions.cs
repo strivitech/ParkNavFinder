@@ -1,5 +1,4 @@
 ﻿using Auth.Shared;
-using DataManager.Api.Contracts;
 using DataManager.Api.Services;
 
 namespace DataManager.Api.Common;
@@ -26,8 +25,7 @@ public static class AuthExtensions
     private static void GetAndStoreToken(IAuthService authService, ITokenStorage tokenStorage, IUserManager userManager,
         string role, string password)
     {
-        var users = userManager.GetUsersAsync(new GetUsersRequest(role)).Result
-            .Where(u => u.Email.Contains(Constants.GeneratedEmailSharedKey));
+        var users = userManager.GetGeneratedUsersAsync(role).Result;
         foreach (var user in users)
         {
             var token = authService.GetAccessTokenAsync(user.Email, password).Result;

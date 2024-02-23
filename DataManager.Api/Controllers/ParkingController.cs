@@ -18,8 +18,7 @@ public class ParkingController(IUserManager userManager, IParkingManager parking
     [HttpGet]
     public async Task<ActionResult<List<GetParkingResponse>>> GetAll()
     {
-        var providers = await _userManager.GetUsersAsync(new GetUsersRequest(Roles.Provider));
-        var generatedProviders = providers.Where(x => x.Email.Contains(Constants.GeneratedEmailSharedKey)).ToList();
+        var generatedProviders = _userManager.GetGeneratedUsersAsync(Roles.Provider).Result;
 
         if (generatedProviders.Count == 0)
         {
