@@ -22,36 +22,42 @@ public class Driver : IDriver
 
     public bool IsAtDestination => _lastRoutePositionIndex == Route.Coordinates.Count - 1;
 
-    public List<Coordinate> MoveToNextPosition(double maxJumpKilometers)
+    public Coordinate MoveToNextPosition(double maxJumpKilometers)
     {
         if (IsAtDestination)
         {
-            return [];
+            return CurrentPosition;
         }
 
-        List<Coordinate> path = [];
         double totalDistance = 0;
+        int currentIndex = _lastRoutePositionIndex;
 
-        for (int i = _lastRoutePositionIndex + 1; i < Route.Coordinates.Count; i++)
+        while (currentIndex + 1 < Route.Coordinates.Count)
         {
-            double distanceToNext = GeographicalCalculator.CalculateDistance(CurrentPosition, Route.Coordinates[i]);
+            double distanceToNext = CalculateDistanceToNext(currentIndex);
+
             if (totalDistance + distanceToNext > maxJumpKilometers)
             {
                 double remainingDistance = maxJumpKilometers - totalDistance;
-                Coordinate interpolatedCoordinate = GeographicalCalculator.InterpolateCoordinate(CurrentPosition,
-                    Route.Coordinates[i],
-                    remainingDistance, distanceToNext);
-                path.Add(interpolatedCoordinate);
-                CurrentPosition = interpolatedCoordinate;
-                break;
+                return UpdatePosition(currentIndex, GeographicalCalculator.InterpolateCoordinate(
+                    Route.Coordinates[currentIndex], Route.Coordinates[currentIndex + 1], remainingDistance,
+                    distanceToNext));
             }
 
-            path.Add(Route.Coordinates[i]);
             totalDistance += distanceToNext;
-            _lastRoutePositionIndex = i;
-            CurrentPosition = Route.Coordinates[i];
+            currentIndex++;
         }
 
-        return path;
+        return UpdatePosition(currentIndex, Route.Coordinates[currentIndex]);
+    }
+
+    private double CalculateDistanceToNext(int currentIndex) =>
+        GeographicalCalculator.CalculateDistance(Route.Coordinates[currentIndex], Route.Coordinates[currentIndex + 1]);
+
+    private Coordinate UpdatePosition(int newIndex, Coordinate newPosition)
+    {
+        _lastRoutePositionIndex = newIndex;
+        CurrentPosition = newPosition;
+        return newPosition;
     }
 }

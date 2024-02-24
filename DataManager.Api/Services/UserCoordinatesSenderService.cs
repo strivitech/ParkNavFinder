@@ -50,13 +50,14 @@ public class UserCoordinatesSenderService(
             var sendTasks = userIdToDrivers
                 .Select(async kp =>
                 {
-                    var path = kp.Value.MoveToNextPosition(0.1);
-                    if (path.Count == 0)
+                    if (kp.Value.IsAtDestination)
                     {
                         return;
                     }
                     
-                    await connections[kp.Key].SendAsync("SendLocation", path, cancellationToken: stoppingToken);
+                    var coordinate = kp.Value.MoveToNextPosition(0.1);
+                    
+                    await connections[kp.Key].SendAsync("SendLocation", coordinate, cancellationToken: stoppingToken);
                 });
             await Task.WhenAll(sendTasks);
         }
