@@ -21,7 +21,7 @@ public class HexagonControllerTests
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result.Result);
-        Assert.IsType<H3Index>(okResult.Value);
+        Assert.IsType<string>(okResult.Value);
     }
     
     [Theory]
