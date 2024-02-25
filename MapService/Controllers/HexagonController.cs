@@ -23,7 +23,7 @@ public class HexagonController : ControllerBase
         var latLng = LatLng.FromCoordinate(new Coordinate(lon, lat));
         var h3Index = H3Index.FromLatLng(latLng, resolution);
 
-        return Ok(h3Index);
+        return Ok(h3Index.ToString());
     }
 
     private static string? ValidateCoordinatesAndResolution(double lat, double lon, int resolution)
