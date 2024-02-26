@@ -2,11 +2,24 @@
     <v-container>
         <l-map :zoom="zoom" :center="center" style="height: 85vh;">
             <l-tile-layer :url="url" />
-            <l-marker v-for="user in validUsers" :key="user.id" :lat-lng="getLatLng(user)" :icon="carIcon">
-            </l-marker>
+            <l-marker v-for="user in validUsers" :key="user.id" :lat-lng="getLatLng(user)" :icon="carIcon"
+                @click="openCarDialog(user)"></l-marker>
             <l-marker v-for="parking in parkings" :key="parking.id" :lat-lng="[parking.latitude, parking.longitude]"
                 @click="openParkingDialog(parking)"></l-marker>
         </l-map>
+
+        <v-dialog v-model="carDialogVisible" persistent max-width="30vw">
+            <v-card>
+                <v-card-title>Car Details</v-card-title>
+                <v-card-text>
+                    <div>User ID: {{ selectedUser.id }}</div>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" text @click="carDialogVisible = false">Close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
 
         <v-dialog v-model="dialogVisible" persistent max-width="30vw">
             <v-card>
@@ -55,7 +68,9 @@ export default {
                 iconSize: [20, 20], // Adjust the size as needed
             }),
             dialogVisible: false,
-            selectedParking: {}
+            selectedParking: {},
+            carDialogVisible: false,
+            selectedUser: {}
         };
     },
     computed: {
@@ -72,6 +87,10 @@ export default {
         openParkingDialog(parking) {
             this.selectedParking = parking;
             this.dialogVisible = true;
+        },
+        openCarDialog(user) {
+            this.selectedUser = user;
+            this.carDialogVisible = true;
         },
         updateMarkerPosition(userId, newCoordinate) {
             const userIndex = this.users.findIndex(u => u.id === userId);
