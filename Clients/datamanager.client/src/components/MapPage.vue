@@ -4,9 +4,26 @@
             <l-tile-layer :url="url" />
             <l-marker v-for="user in validUsers" :key="user.id" :lat-lng="getLatLng(user)" :icon="carIcon">
             </l-marker>
-            <l-marker v-for="parking in parkings" :key="parking.id"
-                :lat-lng="[parking.latitude, parking.longitude]"></l-marker>
+            <l-marker v-for="parking in parkings" :key="parking.id" :lat-lng="[parking.latitude, parking.longitude]"
+                @click="openParkingDialog(parking)"></l-marker>
         </l-map>
+
+        <v-dialog v-model="dialogVisible" persistent max-width="30vw">
+            <v-card>
+                <v-card-title>Parking Details</v-card-title>
+                <v-card-text>
+                    <div>ID: {{ selectedParking.id }}</div>
+                    <div>Name: {{ selectedParking.name }}</div>
+                    <div>Provider ID: {{ selectedParking.providerId }}</div>
+                    <div>Latitude: {{ selectedParking.latitude }}</div>
+                    <div>Longitude: {{ selectedParking.longitude }}</div>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" text @click="dialogVisible = false">Close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
   
@@ -37,6 +54,8 @@ export default {
                 iconUrl: require('@/assets/car.png'), // Replace with the path to your car icon
                 iconSize: [20, 20], // Adjust the size as needed
             }),
+            dialogVisible: false,
+            selectedParking: {}
         };
     },
     computed: {
@@ -49,6 +68,10 @@ export default {
     methods: {
         getLatLng(user) {
             return [user.latitude, user.longitude];
+        },
+        openParkingDialog(parking) {
+            this.selectedParking = parking;
+            this.dialogVisible = true;
         },
         updateMarkerPosition(userId, newCoordinate) {
             const userIndex = this.users.findIndex(u => u.id === userId);
@@ -90,7 +113,6 @@ export default {
                 .build();
 
             this.connection.on('ReceiveDriverLocation', (userId, coordinate) => {
-                console.log('Received location update:', userId, coordinate);
                 this.updateMarkerPosition(userId, coordinate);
             });
 
