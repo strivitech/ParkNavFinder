@@ -9,7 +9,7 @@ public class MapService(HttpClient httpClient) : IMapService
     public async Task<Route> GetRouteAsync(Coordinate start, Coordinate end)
     {
         HttpResponseMessage response = await _httpClient.GetAsync(
-            $"route?startLat={start.Latitude}&startLong={start.Longitude}&endLat={end.Latitude}&endLong={end.Longitude}");
+            $"api/route?startLat={start.Latitude}&startLong={start.Longitude}&endLat={end.Latitude}&endLong={end.Longitude}");
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadFromJsonAsync<Route>() ??
                throw new InvalidOperationException("No route returned");

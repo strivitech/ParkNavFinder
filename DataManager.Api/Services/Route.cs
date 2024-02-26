@@ -3,4 +3,4 @@ using DataManager.Api.Contracts;
 
 namespace DataManager.Api.Services;
 
-public record Route(ImmutableList<Coordinate> Coordinates);
+public record Route(double Distance, ImmutableList<Coordinate> Coordinates);

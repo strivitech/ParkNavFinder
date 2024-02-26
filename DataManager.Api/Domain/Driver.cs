@@ -6,7 +6,7 @@ namespace DataManager.Api.Domain;
 
 public class Driver : IDriver
 {
-    private int _lastRoutePositionIndex = 0;
+    private int _currentRouteIndex = 0;
 
     public Driver(Route route)
     {
@@ -20,7 +20,7 @@ public class Driver : IDriver
     public Route Route { get; }
     public Coordinate CurrentPosition { get; private set; }
 
-    public bool IsAtDestination => _lastRoutePositionIndex == Route.Coordinates.Count - 1;
+    public bool IsAtDestination => _currentRouteIndex >= Route.Coordinates.Count - 1;
 
     public Coordinate MoveToNextPosition(double maxJumpKilometers)
     {
@@ -29,35 +29,29 @@ public class Driver : IDriver
             return CurrentPosition;
         }
 
-        double totalDistance = 0;
-        int currentIndex = _lastRoutePositionIndex;
+        double remainingDistance = maxJumpKilometers;
 
-        while (currentIndex + 1 < Route.Coordinates.Count)
+        while (_currentRouteIndex < Route.Coordinates.Count - 1 && remainingDistance > 0)
         {
-            double distanceToNext = CalculateDistanceToNext(currentIndex);
+            Coordinate nextPoint = Route.Coordinates[_currentRouteIndex + 1];
+            double distanceToNext = GeographicalCalculator.CalculateDistance(CurrentPosition, nextPoint);
 
-            if (totalDistance + distanceToNext > maxJumpKilometers)
+            if (distanceToNext <= remainingDistance)
             {
-                double remainingDistance = maxJumpKilometers - totalDistance;
-                return UpdatePosition(currentIndex, GeographicalCalculator.InterpolateCoordinate(
-                    Route.Coordinates[currentIndex], Route.Coordinates[currentIndex + 1], remainingDistance,
-                    distanceToNext));
+                // Move to the next point and update remaining distance
+                CurrentPosition = nextPoint;
+                remainingDistance -= distanceToNext;
+                _currentRouteIndex++;
             }
-
-            totalDistance += distanceToNext;
-            currentIndex++;
+            else
+            {
+                // Move partially towards the next point
+                CurrentPosition = GeographicalCalculator.InterpolateCoordinate(
+                    CurrentPosition, nextPoint, remainingDistance, distanceToNext);
+                remainingDistance = 0; // No more distance can be covered
+            }
         }
 
-        return UpdatePosition(currentIndex, Route.Coordinates[currentIndex]);
-    }
-
-    private double CalculateDistanceToNext(int currentIndex) =>
-        GeographicalCalculator.CalculateDistance(Route.Coordinates[currentIndex], Route.Coordinates[currentIndex + 1]);
-
-    private Coordinate UpdatePosition(int newIndex, Coordinate newPosition)
-    {
-        _lastRoutePositionIndex = newIndex;
-        CurrentPosition = newPosition;
-        return newPosition;
+        return CurrentPosition;
     }
 }

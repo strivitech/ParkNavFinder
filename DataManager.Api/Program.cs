@@ -2,6 +2,7 @@ using System.Reflection;
 using Auth.Shared;
 using Auth0.ManagementApi;
 using DataManager.Api.Common;
+using DataManager.Api.Hubs;
 using DataManager.Api.Services;
 using DataManager.Api.Validation;
 using FluentValidation;
@@ -44,7 +45,7 @@ builder.Services.AddHttpClient<IParkingManager, ParkingManager>(
         client => { client.BaseAddress = new Uri("http://ParkingManagementService/"); })
     .AddTransientHttpErrorPolicy(
         policyBuilder => policyBuilder.WaitAndRetryAsync(
-            Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromMilliseconds(200),
+            Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(1),
                 1)));
 
 builder.Services.AddHttpClient<IMapService, MapService>(
@@ -56,11 +57,12 @@ builder.Services.AddHttpClient<IMapService, MapService>(
         })
     .AddTransientHttpErrorPolicy(
         policyBuilder => policyBuilder.WaitAndRetryAsync(
-            Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromMilliseconds(200),
-                1)));
+            Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(1),
+                2)));
 
-builder.Services.AddHostedService<UserCoordinatesSenderService>();
+builder.Services.AddHostedService<DrivingBackgroundService>();
 
+builder.Services.AddSignalR();
 builder.Services.AddControllers();
 
 builder.Services.AddCors(config =>
@@ -89,6 +91,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowedOrigins");
 
 app.MapControllers();
+app.MapHub<DriversHub>("/api/drivershub");
 
 try
 {
