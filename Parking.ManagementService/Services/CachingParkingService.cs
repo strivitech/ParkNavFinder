@@ -9,15 +9,27 @@ namespace Parking.ManagementService.Services;
 public class CachingParkingService(
     IParkingService parkingService,
     IConnectionMultiplexer redisConnection,
-    ILogger<CachingParkingService> logger)
+    ILogger<CachingParkingService> logger,
+    ICurrentUserService currentUserService)
     : IParkingService   
 {
     private readonly IParkingService _parkingService = parkingService;
     private readonly IConnectionMultiplexer _redisConnection = redisConnection;
     private readonly ILogger<CachingParkingService> _logger = logger;
+    private readonly ICurrentUserService _currentUserService = currentUserService;
 
-    public async Task<ErrorOr<Created>> AddAsync(AddParkingRequest request) =>
-        await _parkingService.AddAsync(request);
+    public async Task<ErrorOr<Created>> AddAsync(AddParkingRequest request)
+    { 
+        var result = await _parkingService.AddAsync(request);
+        return await result.MatchAsync<ErrorOr<Created>>(
+            async created =>
+            {
+                await InvalidateProviderParkingCacheAsync(_currentUserService.SessionData.UserId);
+                return created;
+            },
+            errors => Task.FromResult<ErrorOr<Created>>(errors));
+    }
+        
 
     public async Task<ErrorOr<Updated>> UpdateAsync(UpdateParkingRequest request)
     {
@@ -25,7 +37,8 @@ public class CachingParkingService(
         return await result.MatchAsync<ErrorOr<Updated>>(
             async updated =>
             {
-                await InvalidateCacheAsync(request.Id);
+                await InvalidateParkingCacheAsync(request.Id);
+                await InvalidateProviderParkingCacheAsync(_currentUserService.SessionData.UserId);
                 return updated;
             },
             errors => Task.FromResult<ErrorOr<Updated>>(errors));
@@ -37,7 +50,8 @@ public class CachingParkingService(
         return await result.MatchAsync<ErrorOr<Deleted>>(
             async deleted =>
             {
-                await InvalidateCacheAsync(request.Id);
+                await InvalidateParkingCacheAsync(request.Id);
+                await InvalidateProviderParkingCacheAsync(_currentUserService.SessionData.UserId);
                 return deleted;
             },
             errors => Task.FromResult<ErrorOr<Deleted>>(errors));
@@ -72,9 +86,45 @@ public class CachingParkingService(
         return response;
     }
 
-    private async Task InvalidateCacheAsync(Guid parkingId)
+    public async Task<ErrorOr<List<GetParkingResponse>>> GetAllByProviderAsync()
+    {
+        var cacheKey = CacheKeys.ProviderParkingKey(_currentUserService.SessionData.UserId);
+        var db = _redisConnection.GetDatabase();
+        var cachedData = await db.StringGetAsync(cacheKey);
+
+        if (cachedData.HasValue)
+        {
+            try
+            {
+                return (ErrorOr<List<GetParkingResponse>>)JsonSerializer.Deserialize<List<GetParkingResponse>>(cachedData!)!;
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogError(ex, "Failed to deserialize cached parking data");
+            }
+        }
+
+        var response = await _parkingService.GetAllByProviderAsync();
+
+        if (!response.IsError)
+        {
+            var serializedData = JsonSerializer.Serialize(response.Value);
+            await db.StringSetAsync(cacheKey, serializedData);
+        }
+
+        return response;
+    }
+
+    private async Task InvalidateParkingCacheAsync(Guid parkingId)
     {
         var cacheKey = CacheKeys.ParkingKey(parkingId.ToString());
+        var db = _redisConnection.GetDatabase();
+        await db.KeyDeleteAsync(cacheKey);
+    }
+
+    private async Task InvalidateProviderParkingCacheAsync(string providerId)
+    {   
+        var cacheKey = CacheKeys.ProviderParkingKey(providerId);
         var db = _redisConnection.GetDatabase();
         await db.KeyDeleteAsync(cacheKey);
     }
