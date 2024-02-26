@@ -4,6 +4,8 @@
             <l-tile-layer :url="url" />
             <l-marker v-for="user in validUsers" :key="user.id" :lat-lng="getLatLng(user)" :icon="carIcon">
             </l-marker>
+            <l-marker v-for="parking in parkings" :key="parking.id"
+                :lat-lng="[parking.latitude, parking.longitude]"></l-marker>
         </l-map>
     </v-container>
 </template>
@@ -14,6 +16,7 @@ import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
 import L from 'leaflet'; // Import core Leaflet
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import TWEEN from '@tweenjs/tween.js';
+import axios from 'axios';
 
 export default {
     name: 'MapPage',
@@ -28,6 +31,7 @@ export default {
             zoom: 12,
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             users: [], // Store user locations here
+            parkings: [], // Store parking locations here
             connection: null,
             carIcon: new L.Icon({
                 iconUrl: require('@/assets/car.png'), // Replace with the path to your car icon
@@ -72,6 +76,14 @@ export default {
             // Trigger reactivity in Vue
             this.users = [...this.users];
         },
+        async fetchParkingData() {
+            try {
+                const response = await axios.get('http://localhost:5009/api/parking/getAll');
+                this.parkings = response.data;
+            } catch (error) {
+                console.error('Error fetching parking data:', error);
+            }
+        },
         initializeSignalR() {
             this.connection = new HubConnectionBuilder()
                 .withUrl('http://localhost:5009/api/drivershub')
@@ -92,6 +104,7 @@ export default {
     mounted() {
         this.initializeSignalR();
         this.animate();
+        this.fetchParkingData();
     }
 };
 </script>
