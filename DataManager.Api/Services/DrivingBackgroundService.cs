@@ -106,7 +106,7 @@ public class DrivingBackgroundService(
                         return;
                     }
 
-                    const double maxJumpKilometers = 0.08;
+                    const double maxJumpKilometers = 0.07;
                     var coordinate = kp.Value.MoveToNextPosition(maxJumpKilometers);
 
                     await connections[kp.Key]
