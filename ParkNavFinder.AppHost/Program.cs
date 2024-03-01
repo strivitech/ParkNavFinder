@@ -63,9 +63,14 @@ builder.AddProject<Projects.User_NotificationService>("UserNotificationService")
     .WithReference(webSocketManager)
     .WithReference(userWebSocketHandler);
 
-builder.AddProject<Projects.DataManager_Api>("DataManagerApi")
+var dataManagerApi = builder.AddProject<Projects.DataManager_Api>("DataManagerApi")
     .WithReference(parkingManagementService)
     .WithReference(userWebSocketHandler)
     .WithReference(mapService);
+
+builder.AddNpmApp("DataManagerVue", "../Clients/datamanager.client", "serve")
+    .WithReference(dataManagerApi)
+    .WithEndpoint(containerPort: builder.Configuration.GetValue<int>("DataManagerVue:port"), scheme: "https")
+    .AsDockerfileInManifest();
 
 builder.Build().Run();
