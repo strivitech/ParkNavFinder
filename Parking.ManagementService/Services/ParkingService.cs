@@ -89,7 +89,7 @@ public class ParkingService(
         }
 
         var isPublished = await PublishParkingAddedEvent(
-            new ParkingAddedEvent(parking.Id, request.Latitude, request.Longitude, DateTime.UtcNow),
+            new ParkingAddedEvent(parking.Id, request.Latitude, request.Longitude),
             parking);
 
         return isPublished
@@ -120,7 +120,7 @@ public class ParkingService(
             return Errors.Parking.UpdateFailed(request.Id);
         }
 
-        var isPublished = await PublishParkingUpdatedEvent(new ParkingUpdatedEvent(request.Id, DateTime.UtcNow));
+        var isPublished = await PublishParkingUpdatedEvent(new ParkingUpdatedEvent(request.Id));
         
         if (!isPublished)
         {
@@ -165,7 +165,7 @@ public class ParkingService(
             return Errors.Parking.DeleteFailed(request.Id);
         }
 
-        var isPublished = await PublishParkingDeletedEvent(new ParkingDeletedEvent(request.Id, DateTime.UtcNow));
+        var isPublished = await PublishParkingDeletedEvent(new ParkingDeletedEvent(request.Id));
         
         if (!isPublished)
         {
