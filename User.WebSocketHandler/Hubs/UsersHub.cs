@@ -58,8 +58,7 @@ public class UsersHub(
         await _userLocationService.PostLocationAsync(new PostUserLocationRequest(
             UserId: userId,
             Latitude: coordinate.Latitude,
-            Longitude: coordinate.Longitude,
-            Timestamp: DateTime.UtcNow));
+            Longitude: coordinate.Longitude));
     }
 
     private string GetUserId()

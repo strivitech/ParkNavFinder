@@ -46,9 +46,8 @@ public class GeoIndexStateNotificationService(
         try
         {
             var parkingStates = await GetParkingStates(index);
-            var @event = new IndexStateChangedEvent(
-                Guid.NewGuid().ToString(), index,
-                parkingStates.Select(ps => ps.ToParkingState()).ToArray(), DateTime.UtcNow);
+            var @event = new IndexStateChangedEvent(index,
+                parkingStates.Select(ps => ps.ToParkingState()).ToArray());
 
             var retryPolicy = Policy
                 .HandleResult<ErrorOr<Success>>(result => result.IsError)

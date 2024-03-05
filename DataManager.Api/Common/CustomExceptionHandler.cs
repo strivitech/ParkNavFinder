@@ -27,9 +27,7 @@ public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IE
         }
         
         var exceptionMessage = exception.Message;
-        _logger.LogError(
-            "Error Message: {ExceptionMessage}, Time of occurrence {Time}",
-            exceptionMessage, DateTime.UtcNow);
+        _logger.LogError("Error Message: {ExceptionMessage}", exceptionMessage);
 
         await httpContext.Response.WriteAsJsonAsync(new ProblemDetails
         {

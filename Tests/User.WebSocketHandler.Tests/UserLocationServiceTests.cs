@@ -34,7 +34,7 @@ public class UserLocationServiceTests
     public async Task PostLocationAsync_ValidRequest_ProducesMessage()
     {
         // Arrange
-        var request = new PostUserLocationRequest("UserId", 10.0, 20.0, DateTime.UtcNow);
+        var request = new PostUserLocationRequest("UserId", 10.0, 20.0);
 
         // Act
         await _service.PostLocationAsync(request);
@@ -50,7 +50,7 @@ public class UserLocationServiceTests
     public async Task PostLocationAsync_InvalidRequest_ThrowsValidationException()
     {
         // Arrange
-        var invalidRequest = new PostUserLocationRequest("", 0, 0, DateTime.MinValue);
+        var invalidRequest = new PostUserLocationRequest("", 0, 0);
 
         _mockRequestValidator.WhenForAnyArgs(x => x.ThrowIfNotValid(Arg.Any<PostUserLocationRequest>()))
             .Do(_ => throw new RequestValidationException());

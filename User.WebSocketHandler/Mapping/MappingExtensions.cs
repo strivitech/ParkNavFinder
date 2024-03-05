@@ -12,7 +12,6 @@ public static class MappingExtensions
             UserId = postUserLocationRequest.UserId,
             Latitude = postUserLocationRequest.Latitude,
             Longitude = postUserLocationRequest.Longitude,
-            Timestamp = DateTime.UtcNow
         };
     }
 }
