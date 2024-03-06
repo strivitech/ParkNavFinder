@@ -26,9 +26,9 @@ public class DrivingBackgroundService(
         {
             using var scope = _serviceProvider.CreateScope();
             var userWsConnections = scope.ServiceProvider.GetRequiredService<IUserWebSocketConnectionBuilder>();
-            var userManager = scope.ServiceProvider.GetRequiredService<IUserManager>();
+            var usersPool = scope.ServiceProvider.GetRequiredService<IUsersPool>();
             var routeGenerator = scope.ServiceProvider.GetRequiredService<IRouteGenerator>();
-            var users = await userManager.GetGeneratedUsersAsync(Roles.User);
+            var users = usersPool.GetUsers(Roles.User);
             
             var connections = await InitializeConnections(users, userWsConnections, stoppingToken);
 

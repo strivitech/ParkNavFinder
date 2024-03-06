@@ -8,17 +8,17 @@ namespace DataManager.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class ParkingController(IUserManager userManager, IParkingManager parkingManager, ITokenStorage tokenStorage)
+public class ParkingController(IUsersPool usersPool, IParkingManager parkingManager, ITokenStorage tokenStorage)
     : ControllerBase
 {
-    private readonly IUserManager _userManager = userManager;
+    private readonly IUsersPool _usersPool = usersPool;
     private readonly IParkingManager _parkingManager = parkingManager;
     private readonly ITokenStorage _tokenStorage = tokenStorage;
 
     [HttpGet]
     public async Task<ActionResult<List<GetParkingResponse>>> GetAll()
     {
-        var generatedProviders = _userManager.GetGeneratedUsersAsync(Roles.Provider).Result;
+        var generatedProviders = _usersPool.GetUsers(Roles.Provider);
 
         if (generatedProviders.Count == 0)
         {
