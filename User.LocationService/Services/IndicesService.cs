@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-using System.Text.Json;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 
 namespace User.LocationService.Services;
 
