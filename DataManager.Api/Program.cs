@@ -33,6 +33,7 @@ builder.Services.AddScoped<IEmailGenerator, GmailSubEmailsGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IParkingManager, ParkingManager>();
 builder.Services.AddSingleton<ITokenStorage, InMemoryAccessTokenStorage>();
+builder.Services.AddSingleton<IUsersPool, GeneratedUsersPool>();
 builder.Services.AddScoped<IParkingGenerator, ParkingGenerator>();
 builder.Services.AddScoped<IUserWebSocketConnectionBuilder, UserWebSocketConnectionBuilder>();
 builder.Services.AddScoped<IRouteCreator, RouteCreator>();

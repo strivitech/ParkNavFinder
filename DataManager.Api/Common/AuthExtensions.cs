@@ -10,22 +10,22 @@ public static class AuthExtensions
         using var scope = app.Services.CreateScope();
         var authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
         var tokenStorage = scope.ServiceProvider.GetRequiredService<ITokenStorage>();
-        var userManager = scope.ServiceProvider.GetRequiredService<IUserManager>();
+        var usersPool = scope.ServiceProvider.GetRequiredService<IUsersPool>();
         var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
         var password = configuration["Generator:Password"] ??
                        throw new InvalidOperationException("Password not found in configuration.");
 
-        GetAndStoreToken(authService, tokenStorage, userManager, Roles.User, password);
-        GetAndStoreToken(authService, tokenStorage, userManager, Roles.Provider, password);
-        GetAndStoreToken(authService, tokenStorage, userManager, Roles.Admin, password);
+        GetAndStoreToken(authService, tokenStorage, usersPool, Roles.User, password);
+        GetAndStoreToken(authService, tokenStorage, usersPool, Roles.Provider, password);
+        GetAndStoreToken(authService, tokenStorage, usersPool, Roles.Admin, password);
 
         return app;
     }
 
-    private static void GetAndStoreToken(IAuthService authService, ITokenStorage tokenStorage, IUserManager userManager,
+    private static void GetAndStoreToken(IAuthService authService, ITokenStorage tokenStorage, IUsersPool usersPool,
         string role, string password)
     {
-        var users = userManager.GetGeneratedUsersAsync(role).Result;
+        var users = usersPool.GetUsers(role);
         foreach (var user in users)
         {
             var token = authService.GetAccessTokenAsync(user.Email, password).Result;

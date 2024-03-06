@@ -9,9 +9,9 @@ public static class ParkingGeneratorExtensions
     {
         using var scope = app.Services.CreateScope();
         var parkingManager = scope.ServiceProvider.GetRequiredService<IParkingManager>();
-        var userManager = scope.ServiceProvider.GetRequiredService<IUserManager>();
+        var usersPool = scope.ServiceProvider.GetRequiredService<IUsersPool>();
         var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-        var providers = userManager.GetGeneratedUsersAsync(Roles.Provider).Result;
+        var providers = usersPool.GetUsers(Roles.Provider);
         var tokenStorage = scope.ServiceProvider.GetRequiredService<ITokenStorage>();
         var parkingGenerator = scope.ServiceProvider.GetRequiredService<IParkingGenerator>();
         var parkingCount = configuration.GetValue<int>("Generator:ParkingCountForEachProvider");
