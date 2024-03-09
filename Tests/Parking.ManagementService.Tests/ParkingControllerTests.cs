@@ -28,7 +28,7 @@ public class ParkingControllerTests
         var expectedResponse = new GetParkingResponse(
             id, "ProviderId", "ParkingName", "Description", 
             new Address("Country", "City", "Street", "123"),
-            10.11, 10.11, 100);
+            10.11, 10.11, "Index", 100);
         _parkingService.GetAsync(Arg.Is<GetParkingRequest>(x => x.Id == id)).Returns(expectedResponse);
 
         // Act

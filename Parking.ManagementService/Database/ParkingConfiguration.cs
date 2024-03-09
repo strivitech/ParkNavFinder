@@ -15,6 +15,8 @@ public class ParkingConfiguration : IEntityTypeConfiguration<Domain.Parking>
         builder.Property(p => p.Latitude).IsRequired();
         builder.Property(p => p.Longitude).IsRequired();
         builder.Property(p => p.TotalSpaces).IsRequired();
+
+        builder.HasIndex(p => p.Index);
         
         builder.OwnsOne(p => p.Address, address =>
         {

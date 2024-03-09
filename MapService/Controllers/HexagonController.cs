@@ -11,7 +11,7 @@ namespace MapService.Controllers;
 [ApiController]
 public class HexagonController : ControllerBase
 {
-    [ApiKey(ApiKeyConstants.UserLocationService, ApiKeyConstants.ParkingStateService)]
+    [ApiKey(ApiKeyConstants.UserLocationService, ApiKeyConstants.ParkingManagementService)]
     [HttpGet]   
     public ActionResult<string> GetH3Index(double lat, double lon, int resolution)
     {

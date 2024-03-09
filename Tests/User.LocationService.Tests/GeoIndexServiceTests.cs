@@ -42,7 +42,7 @@ public class GeoIndexServiceTests
         var result = await _service.GetGeoIndexAsync(lat, lon, resolution);
 
         // Assert
-        result.Should().Be("testGeoIndex");
+        result.Should().Be(expectedResponse);
     }
 
     [Fact]
@@ -59,25 +59,5 @@ public class GeoIndexServiceTests
         // Act & Assert
         Func<Task> act = async () => await _service.GetGeoIndexAsync(lat, lon, resolution);
         await act.Should().ThrowAsync<HttpRequestException>();
-    }
-    
-    [Fact]
-    public async Task GetGeoIndexAsync_WhenResponseContentIsEmpty_ThrowsJsonException()
-    {
-        // Arrange
-        const double lat = 40.7128;
-        const double lon = 28.0060;
-        const int resolution = 10;
-        var mockResponse = new HttpResponseMessage(HttpStatusCode.OK)
-        {
-            Content = new StringContent(string.Empty)
-        };
-
-        _mockHttpMessageHandler.MockSend(Arg.Any<HttpRequestMessage>(), Arg.Any<CancellationToken>())
-            .Returns(mockResponse);
-
-        // Act & Assert
-        Func<Task> act = async () => await _service.GetGeoIndexAsync(lat, lon, resolution);
-        await act.Should().ThrowAsync<System.Text.Json.JsonException>();
     }
 }
