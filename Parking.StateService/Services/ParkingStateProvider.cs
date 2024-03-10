@@ -11,6 +11,6 @@ public class ParkingStateProvider(IDbContextFactory<ParkingStateDbContext> dbCon
     public async Task<List<ParkingState>> GetParkingStatesAsync(string index)
     {
         await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
-        return await dbContext.ParkingStates.Where(ps => ps.Index == index).ToListAsync();
+        return await dbContext.ParkingStates.Where(ps => ps.GeoIndex == index).ToListAsync();
     }
 }

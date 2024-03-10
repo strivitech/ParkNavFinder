@@ -1,6 +1,6 @@
 ﻿namespace Kafka.Events.Contracts.Parking.State;
 
 public record IndexStateChangedEvent(
-    string Index,   
+    string GeoIndex,   
     IList<ParkingStateInfo> ParkingStates
 );  

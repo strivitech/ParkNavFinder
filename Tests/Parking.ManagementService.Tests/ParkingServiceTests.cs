@@ -449,7 +449,7 @@ public class ParkingServiceTests
             Address = new Address("CountryName", "CityName", "StreetName", "123"),
             Latitude = 40.7128,
             Longitude = -74.0060,
-            Index = "Index",
+            GeoIndex = "Index",
             TotalSpaces = 100
         };
 

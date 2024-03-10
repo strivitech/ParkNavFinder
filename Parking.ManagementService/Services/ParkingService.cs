@@ -91,7 +91,7 @@ public class ParkingService(
         }
 
         var isPublished = await PublishParkingAddedEvent(
-            new ParkingAddedEvent(parking.Id, parking.Name, parking.Latitude, parking.Longitude, parking.Index,
+            new ParkingAddedEvent(parking.Id, parking.Name, parking.Latitude, parking.Longitude, parking.GeoIndex,
                 parking.TotalSpaces), parking);
 
         return isPublished
@@ -112,7 +112,7 @@ public class ParkingService(
         parking.ProviderId = _currentUserService.SessionData.UserId;
 
         var index = await _mapService.GetIndexAsync(request.Latitude, request.Longitude, 8);
-        parking.Index = index;
+        parking.GeoIndex = index;
 
         return parking;
     }

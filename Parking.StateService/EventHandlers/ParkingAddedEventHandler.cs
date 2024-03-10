@@ -15,12 +15,12 @@ public class ParkingAddedEventHandler : IMessageHandler<ParkingAddedEvent>
 
         logger.LogDebug("ParkingAddedEvent received: {ParkingId}", addedEvent.ParkingId);
 
-        if (!await GeoIndexExistsAsync(dbContext, addedEvent.Index))
+        if (!await GeoIndexExistsAsync(dbContext, addedEvent.GeoIndex))
         {
-            AddGeoIndex(dbContext, addedEvent.Index);
+            AddGeoIndex(dbContext, addedEvent.GeoIndex);
         }
 
-        AddParkingState(dbContext, addedEvent, addedEvent.Index);
+        AddParkingState(dbContext, addedEvent, addedEvent.GeoIndex);
 
         try
         {
@@ -43,7 +43,7 @@ public class ParkingAddedEventHandler : IMessageHandler<ParkingAddedEvent>
         dbContext.ParkingStates.Add(new ParkingState
         {
             ParkingId = addedEvent.ParkingId.ToString(),
-            Index = newGeoIndex,
+            GeoIndex = newGeoIndex,
             LastCalculatedUtc = default
         });
     }
