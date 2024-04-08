@@ -22,4 +22,11 @@ public static class TopicConfig
         public const int NumberOfPartitions = 1;
         public const short ReplicationFactor = 1;
     }
+    
+    public static class UserLocationAreasAnalytics
+    {
+        public const string TopicName = "user-location-areas-analytics";
+        public const int NumberOfPartitions = 1;
+        public const short ReplicationFactor = 1;
+    }
 }

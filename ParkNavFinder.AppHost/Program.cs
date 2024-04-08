@@ -46,7 +46,8 @@ var parkingManagementRedis = builder
 
 var parkingManagementService = builder.AddProject<Projects.Parking_ManagementService>("ParkingManagementService")
     .WithReference(parkingManagementPostgres)
-    .WithReference(parkingManagementRedis);
+    .WithReference(parkingManagementRedis)
+    .WithReference(mapService);
 
 var parkingStatePostgres = builder
     .AddPostgresContainer(
@@ -54,9 +55,9 @@ var parkingStatePostgres = builder
         port: builder.Configuration.GetValue<int>("ParkingStateDb:port"),
         password: builder.Configuration.GetValue<string>("ParkingStateDb:password"))
     .AddDatabase("ParkingStateDb");
+
 builder.AddProject<Projects.Parking_StateService>("ParkingStateService")
-    .WithReference(parkingStatePostgres)
-    .WithReference(mapService);
+    .WithReference(parkingStatePostgres);
 
 builder.AddProject<Projects.User_NotificationService>("UserNotificationService")
     .WithReference(userLocationService)

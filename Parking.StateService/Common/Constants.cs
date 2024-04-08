@@ -6,5 +6,5 @@ public static class Constants
     
     public const int MaxParkingIndicesPerUpdate = 100;
     
-    public const int GeoIndexResolution = 7;
+    public const int GeoIndexResolution = 8;
 }

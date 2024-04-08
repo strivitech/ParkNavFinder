@@ -6,6 +6,8 @@ using Parking.ManagementService.Configurations;
 using Parking.ManagementService.Database;
 using Parking.ManagementService.Services;
 using Parking.ManagementService.Validation;
+using Polly;
+using Polly.Contrib.WaitAndRetry;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,18 @@ builder.Services.AddScoped<IParkingService, ParkingService>();
 builder.Services.Decorate<IParkingService, CachingParkingService>();
 builder.Services.AddScoped<IParkingServiceEventPublisher, ParkingServiceEventPublisher>();
 builder.Services.AddScoped<IRequestValidator, RequestValidator>();
+
+builder.Services.AddHttpClient<IMapService, MapService>(
+        client =>
+        {
+            client.BaseAddress = new Uri("http://MapService/");
+            client.DefaultRequestHeaders.Add(ApiKeyConstants.HeaderName,
+                builder.Configuration[ApiKeyConstants.OwnApiKeyName]);
+        })
+    .AddTransientHttpErrorPolicy(
+        policyBuilder => policyBuilder.WaitAndRetryAsync(
+            Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(RequestPolly.MedianFirstRetryDelaySeconds),
+                RequestPolly.DefaultRetryCount)));
 
 var app = builder.Build();
 

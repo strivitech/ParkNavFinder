@@ -20,6 +20,7 @@ public class ParkingServiceTests
     private readonly ICurrentUserService _currentUserService;
     private readonly IRequestValidator _requestValidator;
     private readonly IParkingServiceEventPublisher _eventPublisher;
+    private readonly IMapService _mapService;
 
     public ParkingServiceTests()
     {
@@ -33,8 +34,9 @@ public class ParkingServiceTests
         var logger = Substitute.For<ILogger<ParkingService>>();
         _currentUserService = Substitute.For<ICurrentUserService>();
         _requestValidator = Substitute.For<IRequestValidator>();
+        _mapService = Substitute.For<IMapService>();
 
-        _service = new ParkingService(_dbContext, _eventPublisher, logger, _currentUserService, _requestValidator);
+        _service = new ParkingService(_dbContext, _eventPublisher, logger, _currentUserService, _requestValidator, _mapService);
     }
 
     [Fact]
@@ -447,6 +449,7 @@ public class ParkingServiceTests
             Address = new Address("CountryName", "CityName", "StreetName", "123"),
             Latitude = 40.7128,
             Longitude = -74.0060,
+            GeoIndex = "Index",
             TotalSpaces = 100
         };
 

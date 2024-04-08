@@ -16,6 +16,8 @@ public class ParkingConfiguration : IEntityTypeConfiguration<Domain.Parking>
         builder.Property(p => p.Longitude).IsRequired();
         builder.Property(p => p.TotalSpaces).IsRequired();
         
+        builder.HasIndex(p => p.GeoIndex);
+        
         builder.OwnsOne(p => p.Address, address =>
         {
             address.Property(a => a.Country).IsRequired().HasMaxLength(100);
