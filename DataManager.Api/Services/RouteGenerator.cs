@@ -1,4 +1,6 @@
 ﻿using DataManager.Api.Contracts;
+using Polly;
+using Polly.Retry;
 
 namespace DataManager.Api.Services;
 
@@ -10,11 +12,19 @@ public class RouteGenerator(IRouteCreator routeCreator, IConfiguration configura
     private readonly double _longitudeMin = configuration.GetValue<double>("Generator:User:LongitudeMin");
     private readonly double _longitudeMax = configuration.GetValue<double>("Generator:User:LongitudeMax");
     private readonly double _minRouteDistanceKm = configuration.GetValue<double>("Generator:User:MinRouteDistanceKm");
-    private readonly int _maxRouteDistanceAttempts = configuration.GetValue<int>("Generator:User:MaxRouteDistanceAttempts");
+    private readonly int _maxRouteDistanceAttempts =
+        configuration.GetValue<int>("Generator:User:MaxRouteDistanceAttempts");
 
-    public async Task<Route> GenerateRouteAsync()
+    private const int MaxRouteGenerationAttempts = 5;
+    private readonly AsyncRetryPolicy _retryPolicy =
+        Policy.Handle<Exception>().RetryAsync(MaxRouteGenerationAttempts);
+
+    public async Task<Route> GenerateRouteAsync() =>
+        await _retryPolicy.ExecuteAsync(async () => await GenerateRouteInternalAsync());
+
+    private async Task<Route> GenerateRouteInternalAsync()
     {
-        int maxAttempts = _maxRouteDistanceAttempts;    
+        int maxAttempts = _maxRouteDistanceAttempts;
         var bestAttempt = (Start: new Coordinate(0, 0), End: new Coordinate(0, 0), Distance: 0.0);
 
         while (maxAttempts-- > 0)
@@ -22,18 +32,18 @@ public class RouteGenerator(IRouteCreator routeCreator, IConfiguration configura
             var startCoordinate = GenerateRandomCoordinate();
             var endCoordinate = GenerateRandomCoordinate();
             var currentDistance = GeographicalCalculator.CalculateDistance(startCoordinate, endCoordinate);
-            
+
             if (currentDistance > bestAttempt.Distance)
             {
                 bestAttempt = (startCoordinate, endCoordinate, currentDistance);
             }
-            
+
             if (currentDistance >= _minRouteDistanceKm)
             {
                 break;
             }
         }
-        
+
         return await _routeCreator.CreateRouteAsync(bestAttempt.Start, bestAttempt.End);
     }
 
