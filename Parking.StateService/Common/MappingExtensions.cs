@@ -8,7 +8,6 @@ public static class MappingExtensions
         new(
             parkingState.ParkingId,
             parkingState.TotalObservers,
-            parkingState.TotalPlaces,
             parkingState.Probability,
             parkingState.LastCalculatedUtc);
 }

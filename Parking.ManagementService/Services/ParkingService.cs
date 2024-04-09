@@ -91,7 +91,7 @@ public class ParkingService(
         }
 
         var isPublished = await PublishParkingAddedEvent(
-            new ParkingAddedEvent(parking.Id, parking.Name, parking.Latitude, parking.Longitude, parking.GeoIndex,
+            new ParkingAddedEvent(parking.Id, parking.Latitude, parking.Longitude, parking.GeoIndex,
                 parking.TotalSpaces), parking);
 
         return isPublished
