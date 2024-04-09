@@ -15,9 +15,9 @@
   <ItemGroup>
     <ProjectReference Include="..\DataManager.Api\DataManager.Api.csproj" />
     <ProjectReference Include="..\MapService\MapService.csproj" />
+    <ProjectReference Include="..\Parking.AnalyticsService\Parking.AnalyticsService.csproj" />
     <ProjectReference Include="..\Parking.ManagementService\Parking.ManagementService.csproj" />
     <ProjectReference Include="..\Parking.StateService\Parking.StateService.csproj" />
-    <ProjectReference Include="..\User.Location.AnalyticsService\User.Location.AnalyticsService.csproj" />
     <ProjectReference Include="..\User.LocationService\User.LocationService.csproj" />
     <ProjectReference Include="..\User.NotificationService\User.NotificationService.csproj" />
     <ProjectReference Include="..\User.WebSocketHandler\User.WebSocketHandler.csproj" />

@@ -73,16 +73,16 @@ builder.AddNpmApp("DataManagerVue", "../Clients/datamanager.client", "serve")
     .WithReference(dataManagerApi)
     .WithEndpoint(containerPort: builder.Configuration.GetValue<int>("DataManagerVue:port"), scheme: "https")
     .AsDockerfileInManifest();
-
-var userLocationAnalyticsPostgres = builder
+    
+var parkingAnalyticsPostgres = builder
     .AddPostgresContainer(
-        name: "UserLocationAnalyticsPostgres", 
-        port: builder.Configuration.GetValue<int>("UserLocationAnalyticsDb:port"),
-        password: builder.Configuration.GetValue<string>("UserLocationAnalyticsDb:password"))
-    .AddDatabase("UserLocationAnalyticsDb");
+        name: "ParkingAnalyticsPostgres", 
+        port: builder.Configuration.GetValue<int>("ParkingAnalyticsDb:port"),
+        password: builder.Configuration.GetValue<string>("ParkingAnalyticsDb:password"))
+    .AddDatabase("ParkingAnalyticsDb");
 
-builder.AddProject<Projects.User_Location_AnalyticsService>("UserLocationAnalyticsService")
-    .WithReference(userLocationAnalyticsPostgres)
+builder.AddProject<Projects.Parking_AnalyticsService>("ParkingAnalyticsService")
+    .WithReference(parkingAnalyticsPostgres)
     .WithReference(userLocationService);
 
 builder.Build().Run();
