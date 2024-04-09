@@ -10,7 +10,7 @@ public class IndicesController(IIndicesService indicesService) : ControllerBase
 {
     private readonly IIndicesService _indicesService = indicesService;
 
-    [ApiKey(ApiKeyConstants.UserNotificationService)]
+    [ApiKey(ApiKeyConstants.UserNotificationService, ApiKeyConstants.UserLocationAnalyticsService)]
     [HttpGet("{index}/users")]
     public async Task<IActionResult> GetUsersAttachedToIndex(string index)
     {

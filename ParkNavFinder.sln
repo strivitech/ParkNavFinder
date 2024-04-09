@@ -46,6 +46,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parking.ManagementService.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataManager.Api", "DataManager.Api\DataManager.Api.csproj", "{AEA01AE0-3ED5-4F5B-8763-EE4327F4A488}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.Location.AnalyticsService", "User.Location.AnalyticsService\User.Location.AnalyticsService.csproj", "{70CA5985-A0A6-4DFC-BA7E-03E6D8E1E762}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -136,6 +138,10 @@ Global
 		{AEA01AE0-3ED5-4F5B-8763-EE4327F4A488}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEA01AE0-3ED5-4F5B-8763-EE4327F4A488}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEA01AE0-3ED5-4F5B-8763-EE4327F4A488}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70CA5985-A0A6-4DFC-BA7E-03E6D8E1E762}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70CA5985-A0A6-4DFC-BA7E-03E6D8E1E762}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70CA5985-A0A6-4DFC-BA7E-03E6D8E1E762}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70CA5985-A0A6-4DFC-BA7E-03E6D8E1E762}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
