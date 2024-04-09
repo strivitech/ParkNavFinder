@@ -3,6 +3,5 @@
 public record ParkingStateInfo(
     string ParkingId,
     int TotalObservers,
-    int TotalPlaces,
-    int Probability,
+    double Probability, 
     DateTime LastCalculatedUtc);

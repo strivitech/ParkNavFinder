@@ -8,9 +8,9 @@ public class ParkingState
     
     public int TotalObservers { get; set; }
     
-    public int TotalPlaces { get; set; }
+    public int TotalSpaces { get; set; }
     
-    public int Probability { get; set; }
+    public double Probability { get; set; }
     
     public DateTime LastCalculatedUtc { get; set; }
 }
