@@ -26,7 +26,7 @@ public class IndexStateNotificationServiceTests
         var userIds = new List<string> { "User1", "User2" };
         var parkingStateInfos = new List<ParkingStateInfo>
         {
-            new("ParkingA", 10, 100, 75, DateTime.UtcNow)
+            new("ParkingA", 10, 0.75, DateTime.UtcNow)
         };
 
         _mockHubContext.Clients.Users(Arg.Is<List<string>>(ids => ids.SequenceEqual(userIds))).Returns(_mockUsersClient);
