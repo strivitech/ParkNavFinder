@@ -20,8 +20,8 @@ public class GeoIndexStateEventPublisher(
     {
         _logger.LogDebug("Publishing index state changed event");
 
-        var response = await _messageProducer.ProduceAsync(TopicConfig.ParkingStateEvents.TopicName,
-            indexStateChangedEvent.Index, indexStateChangedEvent);
+        var response = await _messageProducer.ProduceAsync(TopicConfig.IndexStateEvents.TopicName,
+            indexStateChangedEvent.GeoIndex, indexStateChangedEvent);
         
         if (response.Status != PersistenceStatus.Persisted)
         {

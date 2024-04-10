@@ -1,4 +1,3 @@
-using Auth.Shared;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
@@ -6,8 +5,6 @@ using Parking.StateService.Common;
 using Parking.StateService.Configurations;
 using Parking.StateService.Database;
 using Parking.StateService.Services;
-using Polly;
-using Polly.Contrib.WaitAndRetry;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,17 +37,6 @@ builder.Services.AddScoped<IGeoIndicesRetrieverService, GeoIndicesRetrieverServi
 builder.Services.AddScoped<IGeoIndexStateNotificationService, GeoIndexStateNotificationService>();
 builder.Services.AddScoped<IGeoIndexStateEventPublisher, GeoIndexStateEventPublisher>();
 builder.Services.AddScoped<IParkingStateProvider, ParkingStateProvider>();
-builder.Services.AddHttpClient<IGeoIndexService, GeoIndexService>(
-        client =>
-        {
-            client.BaseAddress = new Uri("http://MapService/");
-            client.DefaultRequestHeaders.Add(ApiKeyConstants.HeaderName,
-                builder.Configuration[ApiKeyConstants.OwnApiKeyName]);
-        })
-    .AddTransientHttpErrorPolicy(
-        policyBuilder => policyBuilder.WaitAndRetryAsync(
-            Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(RequestPolly.MedianFirstRetryDelaySeconds),
-                RequestPolly.DefaultRetryCount)));
 
 var app = builder.Build();
 

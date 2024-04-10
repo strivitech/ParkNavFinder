@@ -8,4 +8,5 @@ public record GetParkingResponse(
     Address Address,
     double Latitude,
     double Longitude,
+    string GeoIndex,
     int TotalSpaces);

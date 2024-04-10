@@ -23,10 +23,10 @@ public class ParkingDeletedEventHandler : IMessageHandler<ParkingDeletedEvent>
 
         dbContext.ParkingStates.Remove(parkingState);
 
-        var geoIndexIsUsed = await dbContext.ParkingStates.AnyAsync(ps => ps.Index == parkingState.Index && ps.ParkingId != parkingState.ParkingId);
+        var geoIndexIsUsed = await dbContext.ParkingStates.AnyAsync(ps => ps.GeoIndex == parkingState.GeoIndex && ps.ParkingId != parkingState.ParkingId);
         if (!geoIndexIsUsed)
         {
-            dbContext.GeoIndices.Remove(new GeoIndex { Index = parkingState.Index });
+            dbContext.GeoIndices.Remove(new GeoIndex { Index = parkingState.GeoIndex });
         }
 
         try

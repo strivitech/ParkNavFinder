@@ -19,12 +19,12 @@ public static class KafkaExtensions
                 .AddCluster(
                     cluster => cluster
                         .WithBrokers(new[] { kafkaConfig.Server })
-                        .CreateTopicIfNotExists(TopicConfig.ParkingStateEvents.TopicName, TopicConfig.ParkingStateEvents.NumberOfPartitions,
-                            TopicConfig.ParkingStateEvents.ReplicationFactor)
+                        .CreateTopicIfNotExists(TopicConfig.IndexStateEvents.TopicName, TopicConfig.IndexStateEvents.NumberOfPartitions,
+                            TopicConfig.IndexStateEvents.ReplicationFactor)
                         .AddProducer(
                             KafkaConstants.ProducerName,
                             producer => producer
-                                .DefaultTopic(TopicConfig.ParkingStateEvents.TopicName)
+                                .DefaultTopic(TopicConfig.IndexStateEvents.TopicName)
                                 .AddMiddlewares(m =>
                                     m.AddSerializer<JsonCoreSerializer>()
                                 )

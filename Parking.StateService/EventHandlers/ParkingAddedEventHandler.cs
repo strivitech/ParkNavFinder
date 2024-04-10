@@ -1,10 +1,8 @@
 ﻿using Kafka.Events.Contracts.Parking.Management;
 using KafkaFlow;
 using Microsoft.EntityFrameworkCore;
-using Parking.StateService.Common;
 using Parking.StateService.Database;
 using Parking.StateService.Domain;
-using Parking.StateService.Services;
 
 namespace Parking.StateService.EventHandlers;
 
@@ -13,20 +11,16 @@ public class ParkingAddedEventHandler : IMessageHandler<ParkingAddedEvent>
     public async Task Handle(IMessageContext context, ParkingAddedEvent addedEvent)
     {
         var logger = context.DependencyResolver.Resolve<ILogger<ParkingAddedEventHandler>>();
-        var geoIndexService = context.DependencyResolver.Resolve<IGeoIndexService>();
         var dbContext = context.DependencyResolver.Resolve<ParkingStateDbContext>();
 
         logger.LogDebug("ParkingAddedEvent received: {ParkingId}", addedEvent.ParkingId);
 
-        var newGeoIndex = await geoIndexService.GetGeoIndexAsync(addedEvent.Latitude, addedEvent.Longitude,
-            Constants.GeoIndexResolution);
-
-        if (!await GeoIndexExistsAsync(dbContext, newGeoIndex))
+        if (!await GeoIndexExistsAsync(dbContext, addedEvent.GeoIndex))
         {
-            AddGeoIndex(dbContext, newGeoIndex);
+            AddGeoIndex(dbContext, addedEvent.GeoIndex);
         }
 
-        AddParkingState(dbContext, addedEvent, newGeoIndex);
+        AddParkingState(dbContext, addedEvent, addedEvent.GeoIndex);
 
         try
         {
@@ -49,7 +43,7 @@ public class ParkingAddedEventHandler : IMessageHandler<ParkingAddedEvent>
         dbContext.ParkingStates.Add(new ParkingState
         {
             ParkingId = addedEvent.ParkingId.ToString(),
-            Index = newGeoIndex,
+            GeoIndex = newGeoIndex,
             LastCalculatedUtc = default
         });
     }

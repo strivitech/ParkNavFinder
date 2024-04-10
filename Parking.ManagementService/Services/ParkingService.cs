@@ -16,20 +16,22 @@ public class ParkingService(
     IParkingServiceEventPublisher eventPublisher,
     ILogger<ParkingService> logger,
     ICurrentUserService currentUserService,
-    IRequestValidator requestValidator) : IParkingService
+    IRequestValidator requestValidator,
+    IMapService mapService) : IParkingService
 {
     private readonly ParkingDbContext _dbContext = dbContext;
     private readonly IParkingServiceEventPublisher _eventPublisher = eventPublisher;
     private readonly ILogger<ParkingService> _logger = logger;
     private readonly ICurrentUserService _currentUserService = currentUserService;
     private readonly IRequestValidator _requestValidator = requestValidator;
+    private readonly IMapService _mapService = mapService;
 
     public async Task<ErrorOr<Created>> AddAsync(AddParkingRequest request)
     {
-        var createEntityResult = CreateParkingEntityFromRequest(request);
-        
+        var createEntityResult = await CreateParkingEntityFromRequest(request);
+
         return await createEntityResult.MatchAsync(
-            async parking => await AddParkingAsync(parking, request),
+            async parking => await AddParkingAsync(parking),
             errors => Task.FromResult<ErrorOr<Created>>(errors));
     }
 
@@ -45,7 +47,7 @@ public class ParkingService(
     public async Task<ErrorOr<Deleted>> DeleteAsync(DeleteParkingRequest request)
     {
         var deleteEntityResult = await DeleteParkingEntityFromRequest(request);
-        
+
         return await deleteEntityResult.MatchAsync(
             async parking => await DeleteParkingAsync(parking, request),
             errors => Task.FromResult<ErrorOr<Deleted>>(errors));
@@ -58,7 +60,7 @@ public class ParkingService(
         {
             return errorList;
         }
-        
+
         var parking = await _dbContext.ParkingSet.FindAsync(request.Id);
 
         if (parking is null)
@@ -78,7 +80,7 @@ public class ParkingService(
         return parkingList.Select(MappersFinder.Parking.ToGetParkingResponse).ToList();
     }
 
-    private async Task<ErrorOr<Created>> AddParkingAsync(Domain.Parking parking, AddParkingRequest request)
+    private async Task<ErrorOr<Created>> AddParkingAsync(Domain.Parking parking)
     {
         _dbContext.ParkingSet.Add(parking);
 
@@ -89,26 +91,29 @@ public class ParkingService(
         }
 
         var isPublished = await PublishParkingAddedEvent(
-            new ParkingAddedEvent(parking.Id, request.Latitude, request.Longitude),
-            parking);
+            new ParkingAddedEvent(parking.Id, parking.Latitude, parking.Longitude, parking.GeoIndex,
+                parking.TotalSpaces), parking);
 
         return isPublished
             ? new Created()
             : Errors.Parking.AddFailed(parking.Id);
     }
-    
-    private ErrorOr<Domain.Parking> CreateParkingEntityFromRequest(AddParkingRequest request)
-    {      
+
+    private async Task<ErrorOr<Domain.Parking>> CreateParkingEntityFromRequest(AddParkingRequest request)
+    {
         var errorList = _requestValidator.Validate(request);
         if (errorList.Count != 0)
-        {   
+        {
             return errorList;
         }
-        
+
         var parking = MappersFinder.Parking.ToEntity(request);
         parking.Id = Guid.NewGuid();
         parking.ProviderId = _currentUserService.SessionData.UserId;
-        
+
+        var index = await _mapService.GetIndexAsync(request.Latitude, request.Longitude, 8);
+        parking.GeoIndex = index;
+
         return parking;
     }
 
@@ -120,8 +125,8 @@ public class ParkingService(
             return Errors.Parking.UpdateFailed(request.Id);
         }
 
-        var isPublished = await PublishParkingUpdatedEvent(new ParkingUpdatedEvent(request.Id));
-        
+        var isPublished = await PublishParkingUpdatedEvent(new ParkingUpdatedEvent(request.Id, request.TotalSpaces));
+
         if (!isPublished)
         {
             return Errors.Parking.UpdateFailed(request.Id);
@@ -129,7 +134,7 @@ public class ParkingService(
 
         return new Updated();
     }
-    
+
     private async Task<ErrorOr<Domain.Parking>> UpdateParkingEntityFromRequest(UpdateParkingRequest request)
     {
         var errorList = _requestValidator.Validate(request);
@@ -137,7 +142,7 @@ public class ParkingService(
         {
             return errorList;
         }
-        
+
         var parking = await _dbContext.ParkingSet.FindAsync(request.Id);
 
         if (parking is null)
@@ -151,13 +156,13 @@ public class ParkingService(
         }
 
         MappersFinder.Parking.ToEntity(request, parking);
-        
+
         return parking;
     }
 
     private async Task<ErrorOr<Deleted>> DeleteParkingAsync(Domain.Parking parking, DeleteParkingRequest request)
     {
-        _dbContext.ParkingSet.Remove(parking);  
+        _dbContext.ParkingSet.Remove(parking);
 
         var isSaved = await SaveChangesAsync();
         if (!isSaved)
@@ -166,7 +171,7 @@ public class ParkingService(
         }
 
         var isPublished = await PublishParkingDeletedEvent(new ParkingDeletedEvent(request.Id));
-        
+
         if (!isPublished)
         {
             return Errors.Parking.DeleteFailed(request.Id);
@@ -174,30 +179,30 @@ public class ParkingService(
 
         return new Deleted();
     }
-    
+
     private async Task<ErrorOr<Domain.Parking>> DeleteParkingEntityFromRequest(DeleteParkingRequest request)
     {
         var errorList = _requestValidator.Validate(request);
-        if (errorList.Count != 0)   
+        if (errorList.Count != 0)
         {
             return errorList;
         }
-        
+
         var parking = await _dbContext.ParkingSet.FindAsync(request.Id);
 
         if (parking is null)
         {
             return Errors.Parking.NotFound(request.Id);
         }
-        
+
         if (parking.ProviderId != _currentUserService.SessionData.UserId)
         {
             return Errors.Parking.NotOwnedByCurrentUser(request.Id);
         }
-        
+
         return parking;
     }
-    
+
     private async Task<bool> PublishParkingDeletedEvent(ParkingDeletedEvent parkingDeletedEvent)
     {
         var response = await _eventPublisher.PublishParkingDeletedAsync(parkingDeletedEvent);
@@ -233,7 +238,7 @@ public class ParkingService(
         {
             _logger.LogError("Failed to publish parking updated event");
         }
-        
+
         return !response.IsError;
     }
 

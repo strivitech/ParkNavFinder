@@ -38,7 +38,7 @@ public class UserLocationServiceTests
             .Returns(mockResponse);
 
         // Act
-        var result = await _service.GetUsersAttachedToIndex(index);
+        var result = await _service.GetUsersAttachedToIndexAsync(index);
 
         // Assert
         result.UserIds.Should().BeEquivalentTo(users);
@@ -54,7 +54,7 @@ public class UserLocationServiceTests
             .Returns(mockResponse);
 
         // Act & Assert
-        Func<Task> act = async () => await _service.GetUsersAttachedToIndex(index);
+        Func<Task> act = async () => await _service.GetUsersAttachedToIndexAsync(index);
         await act.Should().ThrowAsync<HttpRequestException>();
     }
 }

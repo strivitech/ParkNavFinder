@@ -20,7 +20,7 @@ public static class KafkaExtensions
                     cluster => cluster
                         .WithBrokers(new[] { kafkaConfig.Server })
                         .AddConsumer(consumer => consumer
-                            .Topic(TopicConfig.ParkingStateEvents.TopicName)
+                            .Topic(TopicConfig.IndexStateEvents.TopicName)
                             .WithName($"{KafkaConstants.ConsumerName}-{Guid.NewGuid()}")
                             .WithGroupId(KafkaConstants.ConsumerName)
                             .WithAutoOffsetReset(AutoOffsetReset.Latest)

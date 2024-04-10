@@ -13,8 +13,8 @@ public class ParkingStateConfiguration : IEntityTypeConfiguration<ParkingState>
             .HasMaxLength(36)
             .IsRequired();
 
-        builder.HasIndex(p => p.Index);
-        builder.Property(p => p.Index)
+        builder.HasIndex(p => p.GeoIndex);
+        builder.Property(p => p.GeoIndex)
             .HasMaxLength(16)
             .IsRequired();
     }

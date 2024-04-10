@@ -1,4 +1,5 @@
-﻿using Kafka.Events.Contracts.User.Location;
+﻿using Confluent.Kafka;
+using Kafka.Events.Contracts.User.Location;
 using Kafka.Settings;
 using KafkaFlow;
 using KafkaFlow.Serializer;
@@ -19,6 +20,17 @@ public static class KafkaExtensions
                 .AddCluster(
                     cluster => cluster
                         .WithBrokers(new[] { kafkaConfig.Server })
+                        .CreateTopicIfNotExists(TopicConfig.UserLocationAreasAnalytics.TopicName, TopicConfig.UserLocationAreasAnalytics.NumberOfPartitions,
+                            TopicConfig.UserLocationAreasAnalytics.ReplicationFactor)
+                        .AddProducer(
+                            KafkaConstants.ProducerName,
+                            producer => producer
+                                .DefaultTopic(TopicConfig.UserLocationAreasAnalytics.TopicName)
+                                .AddMiddlewares(m =>
+                                    m.AddSerializer<JsonCoreSerializer>()
+                                )
+                                .WithCompression(CompressionType.Gzip)
+                        )
                         .AddConsumer(consumer => consumer
                             .Topic(TopicConfig.UserLocations.TopicName)
                             .WithName($"{KafkaConstants.ConsumerName}-{Guid.NewGuid()}")

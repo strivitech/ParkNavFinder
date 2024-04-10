@@ -9,5 +9,6 @@ public class Parking
     public Address Address { get; set; } = null!;
     public double Latitude { get; set; }
     public double Longitude { get; set; }
+    public string GeoIndex { get; set; } = null!;
     public int TotalSpaces { get; set; }
 }

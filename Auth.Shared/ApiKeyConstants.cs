@@ -12,4 +12,6 @@ public static class ApiKeyConstants
     public const string ParkingStateService = nameof(ParkingStateService);
     public const string UserNotificationService = nameof(UserNotificationService);
     public const string DataManagerApi = nameof(DataManagerApi);
+    public const string ParkingManagementService = nameof(ParkingManagementService);
+    public const string ParkingAnalyticsService = nameof(ParkingAnalyticsService);
 }

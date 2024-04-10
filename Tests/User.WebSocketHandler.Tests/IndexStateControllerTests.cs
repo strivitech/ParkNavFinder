@@ -26,7 +26,7 @@ public class IndexStateControllerTests
         var indexStateNotification = new IndexStateNotification
         {
             ReceiverIds = ["User1", "User2"],
-            State = [new ParkingStateInfo("ParkingA", 10, 100, 75, DateTime.UtcNow)]
+            State = [new ParkingStateInfo("ParkingA", 100, 0.75, DateTime.UtcNow)]
         };
 
         // Act
@@ -43,7 +43,7 @@ public class IndexStateControllerTests
         var indexStateNotification = new IndexStateNotification
         {
             ReceiverIds = ["User1", "User2"],
-            State = [new ParkingStateInfo("ParkingA", 10, 100, 75, DateTime.UtcNow)]
+            State = [new ParkingStateInfo("ParkingA", 100, 0.75, DateTime.UtcNow)]
         };
 
         // Act

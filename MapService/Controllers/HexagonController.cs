@@ -1,5 +1,6 @@
 ﻿using Auth.Shared;
 using H3;
+using H3.Algorithms;
 using H3.Model;
 using Microsoft.AspNetCore.Mvc;
 using NetTopologySuite.Geometries;
@@ -10,9 +11,9 @@ namespace MapService.Controllers;
 [ApiController]
 public class HexagonController : ControllerBase
 {
-    [ApiKey(ApiKeyConstants.UserLocationService, ApiKeyConstants.ParkingStateService)]
-    [HttpGet]
-    public ActionResult<H3Index> GetH3Index(double lat, double lon, int resolution) 
+    [ApiKey(ApiKeyConstants.UserLocationService, ApiKeyConstants.ParkingManagementService)]
+    [HttpGet]   
+    public ActionResult<string> GetH3Index(double lat, double lon, int resolution) 
     {
         var validationMessage = ValidateCoordinatesAndResolution(lat, lon, resolution);
         if (validationMessage is not null)
@@ -24,6 +25,26 @@ public class HexagonController : ControllerBase
         var h3Index = H3Index.FromLatLng(latLng, resolution);
 
         return Ok(h3Index.ToString());
+    }
+    
+    [ApiKey(ApiKeyConstants.UserLocationService)]
+    [Route("GetRingIndices")]
+    [HttpGet]   
+    public ActionResult<List<string>> GetRingIndices(double lat, double lon, int resolution, int k)
+    {   
+        var validationMessage = ValidateCoordinatesAndResolution(lat, lon, resolution);
+        if (validationMessage is not null)
+        {
+            return BadRequest(validationMessage);
+        }
+
+        var latLng = LatLng.FromCoordinate(new Coordinate(lon, lat));
+        var h3Index = H3Index.FromLatLng(latLng, resolution);
+        var ringCells = h3Index.GridDiskDistances(k)
+            .Select(x => x.Index.ToString())
+            .ToList();
+
+        return Ok(ringCells);
     }
 
     private static string? ValidateCoordinatesAndResolution(double lat, double lon, int resolution)

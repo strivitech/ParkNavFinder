@@ -1,3 +1,3 @@
 ﻿namespace Kafka.Events.Contracts.Parking.Management;
 
-public record ParkingUpdatedEvent(Guid ParkingId);
+public record ParkingUpdatedEvent(Guid ParkingId, int TotalSpaces);

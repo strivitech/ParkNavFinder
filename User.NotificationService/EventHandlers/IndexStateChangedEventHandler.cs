@@ -16,7 +16,7 @@ public class IndexStateChangedEventHandler : IMessageHandler<IndexStateChangedEv
 
         var userLocationService = context.DependencyResolver.Resolve<IUserLocationService>();
 
-        var usersToNotify = await userLocationService.GetUsersAttachedToIndex(message.Index);
+        var usersToNotify = await userLocationService.GetUsersAttachedToIndexAsync(message.GeoIndex);
         logger.LogDebug("Users to notify: {UsersToNotify}", usersToNotify.UserIds);
 
         var userHandler = context.DependencyResolver.Resolve<IWebsocketManager>();
@@ -51,7 +51,7 @@ public class IndexStateChangedEventHandler : IMessageHandler<IndexStateChangedEv
         const int userChunkSize = 100;
         var userChunks = usersToNotify.UserIds.Chunk(userChunkSize);
 
-        var userHandlerTasks = userChunks.Select(chunk => userHandler.GetHandlersAsync(chunk));
+        var userHandlerTasks = userChunks.Select(userHandler.GetHandlersAsync);
 
         List<UserHandlerDescription>[] userHandlerDescriptions = null!;
 
