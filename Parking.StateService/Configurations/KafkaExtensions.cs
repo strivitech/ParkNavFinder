@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka;
+using Kafka.Events.Contracts.Parking.State;
 using Kafka.Settings;
 using KafkaFlow;
 using KafkaFlow.Serializer;
@@ -43,6 +44,21 @@ public static class KafkaExtensions
                                         .WithHandlerLifetime(InstanceLifetime.Scoped)
                                         .AddHandler<ParkingAddedEventHandler>()
                                         .AddHandler<ParkingDeletedEventHandler>()
+                                )
+                            )
+                        )
+                        .AddConsumer(consumer => consumer
+                            .Topic(TopicConfig.ParkingAnalyticsData.TopicName)
+                            .WithName($"{KafkaConstants.ConsumerName}-{Guid.NewGuid()}")
+                            .WithGroupId(KafkaConstants.ConsumerName)
+                            .WithAutoOffsetReset(AutoOffsetReset.Latest)
+                            .WithBufferSize(1)
+                            .WithWorkersCount(3)
+                            .AddMiddlewares(middlewares => middlewares
+                                .AddSingleTypeDeserializer<ParkingAnalyticsChangedEvent, JsonCoreDeserializer>()
+                                .AddTypedHandlers(handlers => handlers
+                                    .WithHandlerLifetime(InstanceLifetime.Scoped)
+                                    .AddHandler<ParkingAnalyticsChangedEventHandler>()
                                 )
                             )
                         )
