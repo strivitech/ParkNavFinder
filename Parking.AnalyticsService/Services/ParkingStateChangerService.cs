@@ -3,6 +3,8 @@ using Kafka.Events.Contracts.Parking.State;
 using Kafka.Settings;
 using KafkaFlow;
 using KafkaFlow.Producers;
+using Microsoft.FeatureManagement;
+using Parking.AnalyticsService.Common;
 using Parking.AnalyticsService.Configurations;
 using Parking.AnalyticsService.Contracts;
 
@@ -11,11 +13,15 @@ namespace Parking.AnalyticsService.Services;
 public class ParkingStateChangerService(
     IParkingStatesCalculator parkingStatesCalculator,
     IProducerAccessor producerAccessor,
-    ILogger<ParkingStateChangerService> logger)
+    ILogger<ParkingStateChangerService> logger,
+    IParkingAnalyticsArchivalService parkingAnalyticsArchivalService,
+    IFeatureManager featureManager)
 {
     private readonly IParkingStatesCalculator _parkingStatesCalculator = parkingStatesCalculator;
     private readonly IMessageProducer _messageProducer = producerAccessor.GetProducer(KafkaConstants.ProducerName);
     private readonly ILogger<ParkingStateChangerService> _logger = logger;
+    private readonly IParkingAnalyticsArchivalService _parkingAnalyticsArchivalService = parkingAnalyticsArchivalService;
+    private readonly IFeatureManager _featureManager = featureManager;
 
     public async Task Complete()
     {
@@ -33,6 +39,11 @@ public class ParkingStateChangerService(
             _logger.LogDebug("Calculated parking analytics data: {@ParkingAnalyticsData}", parkingAnalyticsData);
 
             await PublishAsync(parkingAnalyticsData);
+            
+            if (await _featureManager.IsEnabledAsync(FeatureFlags.ArchiveFeature))
+            {
+                await _parkingAnalyticsArchivalService.ArchiveAsync(parkingAnalyticsData);
+            }
         }
     }
 

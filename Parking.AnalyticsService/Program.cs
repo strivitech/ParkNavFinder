@@ -1,6 +1,8 @@
+using Amazon.S3;
 using Auth.Shared;
 using Hangfire;
 using Hangfire.PostgreSql;
+using Microsoft.FeatureManagement;
 using Parking.AnalyticsService.Common;
 using Parking.AnalyticsService.Configurations;
 using Parking.AnalyticsService.Database;
@@ -45,6 +47,13 @@ builder.Services.AddHttpClient<IUserLocationService, UserLocationService>(
         policyBuilder => policyBuilder.WaitAndRetryAsync(
             Backoff.DecorrelatedJitterBackoffV2(TimeSpan.FromSeconds(RequestPolly.MedianFirstRetryDelaySeconds),
                 RequestPolly.DefaultRetryCount)));
+
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonS3>();
+
+builder.Services.AddScoped<IParkingAnalyticsArchivalService, ParkingAnalyticsArchivalService>();
+
+builder.Services.AddFeatureManagement();
 
 var app = builder.Build();
 
