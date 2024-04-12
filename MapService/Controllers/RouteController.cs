@@ -13,7 +13,7 @@ public class RouteController(IRouteService routeService) : ControllerBase
     private readonly IRouteService _routeService = routeService;
 
     [HttpGet]
-    [ApiKey(ApiKeyConstants.DataManagerApi)]
+    [ApiKey(ApiKeyConstants.DataManagerApi, ApiKeyConstants.UserSelectParkingService)]
     public async Task<ActionResult<Route>> GetRoute(double startLat, double startLong, double endLat, double endLong)
     {
         var route = await _routeService.GetRouteAsync(new Coordinate(startLat, startLong), new Coordinate(endLat, endLong));
