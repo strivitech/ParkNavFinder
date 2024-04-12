@@ -20,6 +20,7 @@
     <ProjectReference Include="..\Parking.StateService\Parking.StateService.csproj" />
     <ProjectReference Include="..\User.LocationService\User.LocationService.csproj" />
     <ProjectReference Include="..\User.NotificationService\User.NotificationService.csproj" />
+    <ProjectReference Include="..\User.SelectParkingService\User.SelectParkingService.csproj" />
     <ProjectReference Include="..\User.WebSocketHandler\User.WebSocketHandler.csproj" />
     <ProjectReference Include="..\WebSocketManager\WebSocketManager.csproj" />
     <ProjectReference Include="..\Yarp.ApiGateway\Yarp.ApiGateway.csproj" />

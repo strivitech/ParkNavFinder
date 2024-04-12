@@ -85,4 +85,16 @@ builder.AddProject<Projects.Parking_AnalyticsService>("ParkingAnalyticsService")
     .WithReference(parkingAnalyticsPostgres)
     .WithReference(userLocationService);
 
+var userSelectingParkingDb = builder
+    .AddPostgresContainer(
+        name: "UserSelectingParkingPostgres", 
+        port: builder.Configuration.GetValue<int>("UserSelectingParkingDb:port"),
+        password: builder.Configuration.GetValue<string>("UserSelectingParkingDb:password"))
+    .AddDatabase("UserSelectingParkingDb");
+
+builder.AddProject<Projects.User_SelectParkingService>("UserSelectParkingService")
+    .WithReference(mapService)
+    .WithReference(parkingManagementService)
+    .WithReference(userSelectingParkingDb);
+
 builder.Build().Run();
