@@ -1,6 +1,6 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Concurrent;
+using System.Collections.Immutable;
 using Auth.Shared;
-using DataManager.Api.Common;
 using DataManager.Api.Contracts;
 using DataManager.Api.Domain;
 using DataManager.Api.Hubs;
@@ -35,7 +35,7 @@ public class DrivingBackgroundService(
             var routes = await GenerateRoutesAsync(users, routeGenerator);
             var userIdToDrivers = MapUserIdToDrivers(users, routes);
 
-            await ProcessDriverUpdatesAsync(connections, userIdToDrivers, stoppingToken);
+            await ProcessDriverUpdatesAsync(connections, userIdToDrivers, routeGenerator, stoppingToken);
             
             await DisposeConnectionsAsync(connections);
         }
@@ -59,15 +59,23 @@ public class DrivingBackgroundService(
         return connections;
     }
 
-    private static Dictionary<string, Driver> MapUserIdToDrivers(List<GetUserResponse> users, Route[] routes)
+    private static ConcurrentDictionary<string, Driver> MapUserIdToDrivers(List<GetUserResponse> users, Route[] routes)
     {
-        Dictionary<string, Driver> userIdToDrivers = [];
+        ConcurrentDictionary<string, Driver> userIdToDrivers = [];
         for (int i = 0; i < users.Count; i++)
         {
             userIdToDrivers[users[i].UserId] = new Driver(routes[i]);
         }
 
         return userIdToDrivers;
+    }
+    
+    private static async Task ResetDriverObjForUserAsync(string userId, IRouteGenerator routeGenerator, ConcurrentDictionary<string, Driver> userIdToDrivers)
+    {
+        var newRoute = await routeGenerator.GenerateRouteAsync();
+
+        var newDriver = new Driver(newRoute);
+        userIdToDrivers[userId] = newDriver;
     }
 
     private static async Task<Route[]> GenerateRoutesAsync(List<GetUserResponse> users, IRouteGenerator routeGenerator)
@@ -92,7 +100,8 @@ public class DrivingBackgroundService(
 
     private async Task ProcessDriverUpdatesAsync(
         ImmutableDictionary<string, HubConnection> connections,
-        Dictionary<string, Driver> userIdToDrivers,
+        ConcurrentDictionary<string, Driver> userIdToDrivers,
+        IRouteGenerator routeGenerator,
         CancellationToken stoppingToken)
     {
         using PeriodicTimer timer = new(TimeSpan.FromSeconds(CoordsUpdatePeriodInSeconds));
@@ -103,7 +112,7 @@ public class DrivingBackgroundService(
                 {
                     if (kp.Value.IsAtDestination)
                     {
-                        return;
+                        await ResetDriverObjForUserAsync(kp.Key, routeGenerator, userIdToDrivers);
                     }
 
                     const double maxJumpKilometers = 0.07;
