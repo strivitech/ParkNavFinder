@@ -14,7 +14,6 @@ app.use(
     clientId: process.env.VUE_APP_AUTH0_CLIENT_ID,
     authorizationParams: {
       redirect_uri: process.env.VUE_APP_AUTH0_REDIRECT_URI,
-      audience: process.env.VUE_APP_AUTH0_AUDIENCE,  // Optional if using an API
     },
     cacheLocation: 'localstorage',  // Options: 'memory', 'localstorage' for persistence
     useRefreshTokens: true,         // Enables refresh tokens for longer session durations
