@@ -2,7 +2,7 @@
     <v-container>
         <l-map :zoom="zoom" :center="center" style="height: 85vh;">
             <l-tile-layer :url="url" />
-            <l-marker v-for="parking in parkings" :key="parking.id" :lat-lng="[parking.latitude, parking.longitude]" 
+            <l-marker v-for="parking in parkings" :key="parking.id" :lat-lng="[parking.latitude, parking.longitude]"
                       @click="openParkingDialog(parking)">
             </l-marker>
             <l-marker :lat-lng="currentPosition" :icon="carIcon" />
@@ -16,6 +16,12 @@
                     <div>Name: {{ selectedParking.name }}</div>
                     <div>Latitude: {{ selectedParking.latitude }}</div>
                     <div>Longitude: {{ selectedParking.longitude }}</div>
+                    <div v-if="selectedParking.state">
+                        <div>Total Observers: {{ selectedParking.state.TotalObservers }}</div>
+                        <div>Probability: {{ selectedParking.state.Probability }}</div>
+                        <div>Last Calculated: {{ selectedParking.state.LastCalculatedUtc }}</div>
+                    </div>
+                    <div v-else>State: Not available yet</div>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -55,184 +61,44 @@ export default {
             routeCoordinates: [
                 // Your list of coordinates here
                 [
-                        30.381128,
-                        50.42368
+                        30.396747,
+                        50.430504
                     ],
                     [
-                        30.380449,
-                        50.423271
+                        30.396938,
+                        50.430841
                     ],
                     [
-                        30.380673,
-                        50.423113
+                        30.396848,
+                        50.430958
                     ],
                     [
-                        30.380834,
-                        50.423011
+                        30.396936,
+                        50.431114
                     ],
                     [
-                        30.381472,
-                        50.422658
+                        30.396677,
+                        50.431184
                     ],
                     [
-                        30.382062,
-                        50.423011
+                        30.397017,
+                        50.431796
                     ],
                     [
-                        30.382462,
-                        50.422691
+                        30.397014,
+                        50.431917
                     ],
                     [
-                        30.382595,
-                        50.422604
+                        30.396991,
+                        50.432066
                     ],
                     [
-                        30.38038,
-                        50.421212
+                        30.397005,
+                        50.432151
                     ],
                     [
-                        30.37865,
-                        50.42224
-                    ],
-                    [
-                        30.378323,
-                        50.422452
-                    ],
-                    [
-                        30.377762,
-                        50.422822
-                    ],
-                    [
-                        30.37624,
-                        50.423835
-                    ],
-                    [
-                        30.375898,
-                        50.424099
-                    ],
-                    [
-                        30.375624,
-                        50.424345
-                    ],
-                    [
-                        30.375137,
-                        50.424828
-                    ],
-                    [
-                        30.374731,
-                        50.425286
-                    ],
-                    [
-                        30.374524,
-                        50.425552
-                    ],
-                    [
-                        30.374419,
-                        50.425843
-                    ],
-                    [
-                        30.374437,
-                        50.426041
-                    ],
-                    [
-                        30.374498,
-                        50.42613
-                    ],
-                    [
-                        30.374598,
-                        50.42622
-                    ],
-                    [
-                        30.375049,
-                        50.426577
-                    ],
-                    [
-                        30.375176,
-                        50.42665
-                    ],
-                    [
-                        30.381215,
-                        50.428169
-                    ],
-                    [
-                        30.384025,
-                        50.428915
-                    ],
-                    [
-                        30.384196,
-                        50.428956
-                    ],
-                    [
-                        30.384457,
-                        50.428979
-                    ],
-                    [
-                        30.38482,
-                        50.428946
-                    ],
-                    [
-                        30.384895,
-                        50.428922
-                    ],
-                    [
-                        30.385092,
-                        50.428885
-                    ],
-                    [
-                        30.385297,
-                        50.428882
-                    ],
-                    [
-                        30.385496,
-                        50.428914
-                    ],
-                    [
-                        30.385675,
-                        50.428977
-                    ],
-                    [
-                        30.385821,
-                        50.429069
-                    ],
-                    [
-                        30.385925,
-                        50.429181
-                    ],
-                    [
-                        30.385951,
-                        50.429227
-                    ],
-                    [
-                        30.386255,
-                        50.429454
-                    ],
-                    [
-                        30.386424,
-                        50.429528
-                    ],
-                    [
-                        30.387153,
-                        50.429728
-                    ],
-                    [
-                        30.391613,
-                        50.430911
-                    ],
-                    [
-                        30.392133,
-                        50.431043
-                    ],
-                    [
-                        30.392659,
-                        50.431176
-                    ],
-                    [
-                        30.393419,
-                        50.431368
-                    ],
-                    [
-                        30.396206,
-                        50.432073
+                        30.397063,
+                        50.432239
                     ],
                     [
                         30.397198,
@@ -547,44 +413,12 @@ export default {
                         50.45147
                     ],
                     [
-                        30.424459,
-                        50.452019
+                        30.427537,
+                        50.45097
                     ],
                     [
-                        30.424496,
-                        50.45212
-                    ],
-                    [
-                        30.424587,
-                        50.452363
-                    ],
-                    [
-                        30.424684,
-                        50.452624
-                    ],
-                    [
-                        30.42483,
-                        50.453015
-                    ],
-                    [
-                        30.424951,
-                        50.45334
-                    ],
-                    [
-                        30.424979,
-                        50.453414
-                    ],
-                    [
-                        30.425142,
-                        50.453853
-                    ],
-                    [
-                        30.425189,
-                        50.453979
-                    ],
-                    [
-                        30.425881,
-                        50.453835
+                        30.427239,
+                        50.450226
                     ]
             ],
             interval: 5000, // 5 seconds
@@ -605,6 +439,14 @@ export default {
                 console.error('Error fetching parking data:', error);
             }
         },
+        async sendLocation(position) {
+            if (this.connection && this.connection.state === 'Connected') {
+                await this.connection.invoke('SendLocation', { 
+                    Longitude: position[0], 
+                    Latitude: position[1] 
+                });
+            }
+        },
         async initializeSignalR() {
             const { getAccessTokenSilently } = useAuth0();
             const token = await getAccessTokenSilently();
@@ -614,6 +456,22 @@ export default {
                 })
                 .withAutomaticReconnect()
                 .build();
+
+            this.connection.on('ReceiveParkingState', (parkingStateInfos) => {
+                console.log('Received parking states:', parkingStateInfos);
+                parkingStateInfos.forEach(stateInfo => {
+                    const parking = this.parkings.find(p => p.id === stateInfo.parkingId);
+                    if (parking) {
+                        parking.state = {
+                            TotalObservers: stateInfo.totalObservers,
+                            Probability: stateInfo.probability,
+                            LastCalculatedUtc: stateInfo.lastCalculatedUtc
+                        };
+                        console.log('Updated parking with id', parking.id);
+                    }
+                });
+            });
+
             await this.connection.start();
             this.prepareRouteQueue();
             this.processMovementQueue();
@@ -666,14 +524,6 @@ export default {
                 lng1 + (lng2 - lng1) * t,
                 lat1 + (lat2 - lat1) * t
             ];
-        },
-        async sendLocation(position) {
-            if (this.connection && this.connection.state === 'Connected') {
-                await this.connection.invoke('SendLocation', { 
-                    Longitude: position[0], 
-                    Latitude: position[1] 
-                });
-            }
         },
         animate(time) {
             requestAnimationFrame(this.animate);
