@@ -70,6 +70,7 @@ export default {
 
     const menuItems = [
       { title: 'User Profile', path: '/' },
+      { title: 'Map', path: '/map' },
     ];
 
     // Auth0 setup for login and logout
