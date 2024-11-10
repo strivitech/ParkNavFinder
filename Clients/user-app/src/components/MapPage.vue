@@ -2,8 +2,27 @@
     <v-container>
         <l-map :zoom="zoom" :center="center" style="height: 85vh;">
             <l-tile-layer :url="url" />
+            <l-marker v-for="parking in parkings" :key="parking.id" :lat-lng="[parking.latitude, parking.longitude]" 
+                      @click="openParkingDialog(parking)">
+            </l-marker>
             <l-marker :lat-lng="currentPosition" :icon="carIcon" />
         </l-map>
+
+        <v-dialog v-model="dialogVisible" persistent max-width="30vw">
+            <v-card>
+                <v-card-title>Parking Details</v-card-title>
+                <v-card-text>
+                    <div>ID: {{ selectedParking.id }}</div>
+                    <div>Name: {{ selectedParking.name }}</div>
+                    <div>Latitude: {{ selectedParking.latitude }}</div>
+                    <div>Longitude: {{ selectedParking.longitude }}</div>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" text @click="dialogVisible = false">Close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -14,6 +33,7 @@ import L from 'leaflet';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import TWEEN from '@tweenjs/tween.js';
 import { useAuth0 } from '@auth0/auth0-vue';
+import axios from 'axios';
 
 export default {
     name: 'MapPage',
@@ -29,6 +49,9 @@ export default {
                 iconSize: [20, 20],
             }),
             connection: null,
+            parkings: [],
+            dialogVisible: false,
+            selectedParking: {},
             routeCoordinates: [
                 // Your list of coordinates here
                 [
@@ -569,6 +592,19 @@ export default {
         };
     },
     methods: {
+        openParkingDialog(parking) {
+            this.selectedParking = parking;
+            this.dialogVisible = true;
+        },
+        async fetchParkingData() {
+            try {
+                const response = await axios.get('http://localhost:5007/api/Parking/all');
+                this.parkings = response.data;
+                console.log('Parking data:', this.parkings);
+            } catch (error) {
+                console.error('Error fetching parking data:', error);
+            }
+        },
         async initializeSignalR() {
             const { getAccessTokenSilently } = useAuth0();
             const token = await getAccessTokenSilently();
@@ -645,6 +681,7 @@ export default {
         }
     },
     mounted() {
+        this.fetchParkingData();
         this.initializeSignalR();
         this.animate();
     }
