@@ -18,13 +18,18 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSignalR();
 
-builder.Services.AddSharedAuth(new AuthConfig
-{
-    Authority = builder.Configuration["Auth0:Authority"]!,
-    Audience = builder.Configuration["Auth0:Audience"]!
-});
+builder.Services.AddCustomAuth(builder.Configuration);
 
 builder.Services.AddControllers();
+
+builder.Services.AddCors(config =>
+    config.AddPolicy(
+        "AllowedOrigins",
+        p => p.WithOrigins(builder.Configuration["AllowedCorsOrigins"]!.Split(','))
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()));
+
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
@@ -62,6 +67,8 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler(_ => { });
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowedOrigins");
 
 app.UseSharedAuth();
 
