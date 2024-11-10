@@ -13,7 +13,7 @@ public class ParkingManager(IRequestValidator requestValidator, HttpClient httpC
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         
-        var response = await _httpClient.GetFromJsonAsync<List<GetParkingResponse>>("api/parking");
+        var response = await _httpClient.GetFromJsonAsync<List<GetParkingResponse>>("api/parking/all-by-provider");
         return response ?? [];
     }
 
