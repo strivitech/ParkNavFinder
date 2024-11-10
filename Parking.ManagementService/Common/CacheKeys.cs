@@ -7,4 +7,6 @@ public static class CacheKeys
     public static string ParkingKey(string parkingId) => $"{ParkingPrefix}{parkingId}";
     
     public static string ProviderParkingKey(string providerId) => $"{ParkingPrefix}-provider-{providerId}";
+    
+    public static string AllParkingKey() => $"{ParkingPrefix}-all";
 }

@@ -10,4 +10,5 @@ public interface IParkingService
     Task<ErrorOr<Deleted>> DeleteAsync(DeleteParkingRequest request);
     Task<ErrorOr<GetParkingResponse>> GetAsync(GetParkingRequest request);
     Task<ErrorOr<List<GetParkingResponse>>> GetAllByProviderAsync();
+    Task<ErrorOr<List<GetParkingResponse>>> GetAllAsync();
 }

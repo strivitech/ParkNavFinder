@@ -25,11 +25,23 @@ public class ParkingController(IParkingService parkingService) : ControllerBase
             error => error.ToErrorResponse());
     }
     
-    [HttpGet]
+    [HttpGet("all-by-provider")]
     public async Task<ActionResult<List<GetParkingResponse>>> GetAllByProvider()
     {
         var response = await _parkingService.GetAllByProviderAsync();
         
+        return response.MatchFirst<ActionResult>(
+            x => x.Count == 0 ? NoContent() : Ok(x),
+            error => error.ToErrorResponse());
+    }
+
+    // TODO: Not optimal to return all parkings at once
+    [AllowAnonymous]
+    [HttpGet("all")]
+    public async Task<ActionResult<List<GetParkingResponse>>> GetAll()
+    {
+        var response = await _parkingService.GetAllAsync();
+
         return response.MatchFirst<ActionResult>(
             x => x.Count == 0 ? NoContent() : Ok(x),
             error => error.ToErrorResponse());
