@@ -14,25 +14,27 @@
 
     <!-- Sidebar with Adjusted Properties -->
     <v-navigation-drawer v-model="drawer" app class="sidebar">
-      <v-list dense>
-        <v-list-item-group v-model="activeItem" active-class="active-item">
-          <v-list-item
-            v-for="(item, index) in menuItems"
-            :key="index"
-            :to="item.path"
-            link
-            @click="setActiveItem(item.path)"
-            :class="{ 'router-link-active': activeItem === item.path }"
-          >
-            <v-list-item-content>
-              <v-list-item-title class="text-center">
-                {{ item.title }}
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-    </v-navigation-drawer>
+  <v-list dense>
+    <!-- Render the entire list only if authenticated -->
+    <v-list-item-group v-if="isAuthenticated" v-model="activeItem" active-class="active-item">
+      <v-list-item
+        v-for="(item, index) in menuItems"
+        :key="index"
+        :to="item.path"
+        link
+        @click="setActiveItem(item.path)"
+        :class="{ 'router-link-active': activeItem === item.path }"
+      >
+        <v-list-item-content>
+          <v-list-item-title class="text-center">
+            {{ item.title }}
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list-item-group>
+  </v-list>
+</v-navigation-drawer>
+
 
     <!-- Main Content -->
     <v-main>
