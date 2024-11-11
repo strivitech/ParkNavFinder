@@ -18,6 +18,14 @@ builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 builder.Services.AddControllers();
 
+builder.Services.AddCors(config =>
+    config.AddPolicy(
+        "AllowedOrigins",
+        p => p.WithOrigins(builder.Configuration["AllowedCorsOrigins"]!.Split(','))
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()));
+
 builder.Services.AddSharedAuth(new AuthConfig
 {
     Authority = builder.Configuration["Auth0:Authority"]!,
@@ -70,6 +78,8 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler(_ => { });
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowedOrigins");
 
 app.UseSharedAuth();
 
