@@ -25,6 +25,7 @@ public class CachingParkingService(
             async created =>
             {
                 await InvalidateProviderParkingCacheAsync(_currentUserService.SessionData.UserId);
+                await InvalidateAllParkingCacheAsync();
                 return created;
             },
             errors => Task.FromResult<ErrorOr<Created>>(errors));
@@ -39,6 +40,7 @@ public class CachingParkingService(
             {
                 await InvalidateParkingCacheAsync(request.Id);
                 await InvalidateProviderParkingCacheAsync(_currentUserService.SessionData.UserId);
+                await InvalidateAllParkingCacheAsync();
                 return updated;
             },
             errors => Task.FromResult<ErrorOr<Updated>>(errors));
@@ -52,6 +54,7 @@ public class CachingParkingService(
             {
                 await InvalidateParkingCacheAsync(request.Id);
                 await InvalidateProviderParkingCacheAsync(_currentUserService.SessionData.UserId);
+                await InvalidateAllParkingCacheAsync();
                 return deleted;
             },
             errors => Task.FromResult<ErrorOr<Deleted>>(errors));
@@ -115,6 +118,35 @@ public class CachingParkingService(
         return response;
     }
 
+    public async Task<ErrorOr<List<GetParkingResponse>>> GetAllAsync()
+    {
+        var cacheKey = CacheKeys.AllParkingKey();
+        var db = _redisConnection.GetDatabase();
+        var cachedData = await db.StringGetAsync(cacheKey);
+
+        if (cachedData.HasValue)
+        {
+            try
+            {
+                return (ErrorOr<List<GetParkingResponse>>)JsonSerializer.Deserialize<List<GetParkingResponse>>(cachedData!)!;
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogError(ex, "Failed to deserialize cached parking data");
+            }
+        }
+
+        var response = await _parkingService.GetAllAsync();
+
+        if (!response.IsError)
+        {
+            var serializedData = JsonSerializer.Serialize(response.Value);
+            await db.StringSetAsync(cacheKey, serializedData);
+        }
+
+        return response;
+    }
+
     private async Task InvalidateParkingCacheAsync(Guid parkingId)
     {
         var cacheKey = CacheKeys.ParkingKey(parkingId.ToString());
@@ -125,6 +157,13 @@ public class CachingParkingService(
     private async Task InvalidateProviderParkingCacheAsync(string providerId)
     {   
         var cacheKey = CacheKeys.ProviderParkingKey(providerId);
+        var db = _redisConnection.GetDatabase();
+        await db.KeyDeleteAsync(cacheKey);
+    }
+    
+    private async Task InvalidateAllParkingCacheAsync()
+    {
+        var cacheKey = CacheKeys.AllParkingKey();
         var db = _redisConnection.GetDatabase();
         await db.KeyDeleteAsync(cacheKey);
     }

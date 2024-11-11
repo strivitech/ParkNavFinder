@@ -92,9 +92,16 @@ var userSelectingParkingDb = builder
         password: builder.Configuration.GetValue<string>("UserSelectingParkingDb:password"))
     .AddDatabase("UserSelectingParkingDb");
 
-builder.AddProject<Projects.User_SelectParkingService>("UserSelectParkingService")
+var userSelectParkingService = builder.AddProject<Projects.User_SelectParkingService>("UserSelectParkingService")
     .WithReference(mapService)
     .WithReference(parkingManagementService)
     .WithReference(userSelectingParkingDb);
+
+builder.AddNpmApp("UserAppVue", "../Clients/user-app", "serve")
+    .WithReference(userWebSocketHandler)
+    .WithReference(parkingManagementService)
+    .WithReference(userSelectParkingService)
+    .WithEndpoint(containerPort: builder.Configuration.GetValue<int>("UserAppVue:port"), scheme: "https")
+    .AsDockerfileInManifest();
 
 builder.Build().Run();

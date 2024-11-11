@@ -80,7 +80,7 @@ try
     RecurringJob.AddOrUpdate<ParkingStateChangerService>(
         recurringJobId: nameof(ParkingStateChangerService),
         methodCall: x => x.Complete(),
-        cronExpression: "*/5 * * * *");
+        cronExpression: Constants.ParkingStateChangerServiceCronExpression);
 
     app.MapHangfireDashboard();
 

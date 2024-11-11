@@ -27,7 +27,7 @@ public class ParkingRetrieverService(
                           (  
                               $"""
                                SELECT * FROM "ParkingSet"
-                               WHERE "LastCalculatedUtc" < {DateTime.UtcNow.AddMinutes(-Constants.UpdateDelayMinutes)}
+                               WHERE "LastCalculatedUtc" < {DateTime.UtcNow.AddSeconds(-Constants.UpdateDelaySeconds)}
                                ORDER BY "GeoIndex" ASC, "LastCalculatedUtc" ASC
                                FOR UPDATE SKIP LOCKED
                                LIMIT {Constants.MaxParkingBatchSize}

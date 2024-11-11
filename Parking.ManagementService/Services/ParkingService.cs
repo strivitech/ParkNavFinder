@@ -80,6 +80,13 @@ public class ParkingService(
         return parkingList.Select(MappersFinder.Parking.ToGetParkingResponse).ToList();
     }
 
+    public async Task<ErrorOr<List<GetParkingResponse>>> GetAllAsync()
+    {
+        var parkingList = await _dbContext.ParkingSet.ToListAsync();
+
+        return parkingList.Select(MappersFinder.Parking.ToGetParkingResponse).ToList();
+    }
+
     private async Task<ErrorOr<Created>> AddParkingAsync(Domain.Parking parking)
     {
         _dbContext.ParkingSet.Add(parking);
