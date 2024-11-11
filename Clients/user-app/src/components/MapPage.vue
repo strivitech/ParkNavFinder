@@ -10,6 +10,7 @@
                 @click="openParkingDialog(parking)">
             </l-marker>
             <l-marker :lat-lng="currentPosition" :icon="carIcon" />
+            <l-polyline v-if="routeLine.length" :lat-lngs="routeLine" :color="'red'" />
         </l-map>
 
         <v-dialog v-model="dialogVisible" persistent max-width="30vw">
@@ -29,16 +30,18 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
+                    <v-btn color="green" text @click="findRoute(selectedParking)">Find a route</v-btn>
                     <v-btn color="primary" text @click="dialogVisible = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
     </v-container>
 </template>
 
 <script>
 import 'leaflet/dist/leaflet.css';
-import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
+import { LMap, LTileLayer, LMarker, LPolyline } from '@vue-leaflet/vue-leaflet';
 import L from 'leaflet';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import TWEEN from '@tweenjs/tween.js';
@@ -47,7 +50,7 @@ import axios from 'axios';
 
 export default {
     name: 'MapPage',
-    components: { LMap, LTileLayer, LMarker },
+    components: { LMap, LTileLayer, LMarker, LPolyline },
     data() {
         return {
             center: [50.4321, 30.3887],
@@ -78,10 +81,12 @@ export default {
                 iconSize: [35, 35],
                 iconAnchor: [17, 17],
             }),
+            token: null,
             connection: null,
             parkings: [],
             dialogVisible: false,
             selectedParking: {},
+            routeLine: [], // Array to store polyline coordinates
             routeCoordinates: [
                 // Your list of coordinates here
                 [
@@ -454,6 +459,36 @@ export default {
             this.selectedParking = parking;
             this.dialogVisible = true;
         },
+        async findRoute(parking) {
+            this.dialogVisible = false;
+
+            try {
+                const response = await axios.post(
+                    'http://localhost:5011/api/SelectParking',
+                    {
+                        UserPosition: {
+                            Latitude: this.currentPosition[0],
+                            Longitude: this.currentPosition[1]
+                        },
+                        ParkingId: parking.id
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.token}` // Use the stored token
+                        }
+                    }
+                );
+
+                const route = response.data;
+                this.drawRoute(route.coordinates);
+            } catch (error) {
+                console.error('Error finding route:', error);
+            }
+        },
+        drawRoute(coordinates) {
+            this.routeLine = coordinates.map(coord => [coord.latitude, coord.longitude]);
+            console.log('Route coordinates:', this.routeLine);
+        },
         getParkingIcon(parking) {
             if (parking.state) {
                 const probability = parking.state.Probability;
@@ -482,10 +517,10 @@ export default {
         },
         async initializeSignalR() {
             const { getAccessTokenSilently } = useAuth0();
-            const token = await getAccessTokenSilently();
+            this.token = await getAccessTokenSilently();
             this.connection = new HubConnectionBuilder()
                 .withUrl('http://localhost:5002/api/usershub', {
-                    accessTokenFactory: () => token,
+                    accessTokenFactory: () => this.token,
                 })
                 .withAutomaticReconnect()
                 .build();
