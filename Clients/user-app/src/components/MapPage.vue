@@ -2,8 +2,12 @@
     <v-container>
         <l-map :zoom="zoom" :center="center" style="height: 85vh;">
             <l-tile-layer :url="url" />
-            <l-marker v-for="parking in parkings" :key="parking.id" :lat-lng="[parking.latitude, parking.longitude]"
-                      @click="openParkingDialog(parking)">
+            <l-marker 
+                v-for="parking in parkings" 
+                :key="parking.id" 
+                :lat-lng="[parking.latitude, parking.longitude]"
+                :icon="getParkingIcon(parking)"
+                @click="openParkingDialog(parking)">
             </l-marker>
             <l-marker :lat-lng="currentPosition" :icon="carIcon" />
         </l-map>
@@ -53,6 +57,26 @@ export default {
             carIcon: new L.Icon({
                 iconUrl: require('@/assets/car.png'),
                 iconSize: [20, 20],
+            }),
+            greenIcon: new L.Icon({
+            iconUrl: require('@/assets/green-parking.png'),
+            iconSize: [35, 35],
+            iconAnchor: [17, 17],
+            }),
+            yellowIcon: new L.Icon({
+                iconUrl: require('@/assets/yellow-parking.png'),
+                iconSize: [35, 35],
+                iconAnchor: [17, 17],
+            }),
+            redIcon: new L.Icon({
+                iconUrl: require('@/assets/red-parking.png'),
+                iconSize: [35, 35],
+                iconAnchor: [17, 17],
+            }),
+            blueIcon: new L.Icon({
+                iconUrl: require('@/assets/blue-parking.png'),
+                iconSize: [35, 35],
+                iconAnchor: [17, 17],
             }),
             connection: null,
             parkings: [],
@@ -429,6 +453,15 @@ export default {
         openParkingDialog(parking) {
             this.selectedParking = parking;
             this.dialogVisible = true;
+        },
+        getParkingIcon(parking) {
+            if (parking.state) {
+                const probability = parking.state.Probability;
+                if (probability >= 0.8) return this.greenIcon;
+                if (probability >= 0.5) return this.yellowIcon;
+                return this.redIcon;
+            }
+            return this.blueIcon;
         },
         async fetchParkingData() {
             try {
