@@ -67,7 +67,7 @@ try
     RecurringJob.AddOrUpdate<GeoIndexStateNotificationJob>(
         recurringJobId: nameof(GeoIndexStateNotificationJob),
         methodCall: x => x.Complete(),
-    cronExpression: "*/5 * * * *");
+    cronExpression: Constants.GeoIndexStateNotificationJobCronExpression);
 
     app.MapHangfireDashboard();
 

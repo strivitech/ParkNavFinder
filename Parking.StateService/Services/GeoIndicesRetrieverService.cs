@@ -27,7 +27,7 @@ public class GeoIndicesRetrieverService(
                          (
                              $"""
                               SELECT "Index" FROM "GeoIndices"
-                              WHERE "LastUpdatedUtc" < {DateTime.UtcNow.AddMinutes(-Constants.UpdateDelayMinutes)}
+                              WHERE "LastUpdatedUtc" < {DateTime.UtcNow.AddSeconds(-Constants.UpdateDelaySeconds)}
                               ORDER BY "LastUpdatedUtc" ASC
                               FOR UPDATE SKIP LOCKED
                               LIMIT {Constants.MaxParkingIndicesPerUpdate}
